@@ -1,86 +1,99 @@
 @extends('layouts.app')
 
 @section('content')
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<div class="bg-gray-50 min-h-screen py-8 font-sans">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row gap-6">
+            
+            <div class="w-full md:w-1/4">
+                <div class="bg-white rounded-xl shadow-sm p-5 text-center sticky top-24 border border-gray-100">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 text-blue-600 text-2xl font-bold border-4 border-blue-50 shadow-sm">
+                        {{ substr(Auth::user()->name, 0, 1) }} 
+                    </div>
+                    <h2 class="text-lg font-bold text-gray-900 truncate">{{ Auth::user()->name }}</h2>
+                    <p class="text-gray-500 text-xs mb-5">Mahasiswa / Alumni</p>
 
-<div class="bg-gray-50 min-h-screen py-10 font-sans">
-    <div class="max-w-5xl mx-auto px-4">
-        
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-900">Bookmark Saya</h1>
-            <button id="btn-clear" onclick="clearBookmarks()" class="text-red-500 text-sm hover:underline font-bold hidden">
-                Hapus Semua
-            </button>
-        </div>
-
-        <div id="bookmark-container" class="space-y-4"></div>
-
-        <div id="empty-state" class="hidden bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center flex-col items-center justify-center min-h-[400px]">
-            <div class="w-24 h-24 mb-6 text-gray-300">
-                <i class="far fa-bookmark text-6xl"></i>
+                    <div class="space-y-1 text-left">
+                        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-blue-50 hover:text-blue-600">
+                            <i class="fas fa-th-large w-4 text-center"></i> Overview
+                        </a>
+                        <a href="{{ route('user.tracer.create') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-blue-50 hover:text-blue-600">
+                            <i class="fas fa-edit w-4 text-center"></i> Update Tracer
+                        </a>
+                        <a href="{{ route('user.lamaran.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-blue-50 hover:text-blue-600">
+                            <i class="fas fa-file-alt w-4 text-center"></i> Lamaran Saya
+                        </a>
+                        <a href="{{ route('user.bookmark.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition bg-blue-600 text-white shadow-md shadow-blue-200">
+                            <i class="fas fa-bookmark w-4 text-center"></i> Bookmark
+                        </a>
+                        <a href="{{ route('user.rekomendasi') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-blue-50 hover:text-blue-600">
+                            <i class="fas fa-magic w-4 text-center"></i> Rekomendasi
+                        </a>
+                    </div>
+                </div>
             </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">Belum ada bookmark</h3>
-            <p class="text-gray-500 mb-8">Simpan lowongan menarik di sini.</p>
-            <a href="{{ route('user.lokers.index') }}" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition">Cari Lowongan</a>
-        </div>
 
+            <div class="w-full md:w-3/4">
+                <div class="mb-6 border-b border-gray-200 pb-4 flex justify-between items-center">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Bookmark Saya</h1>
+                        <p class="text-sm text-gray-500 mt-1">Lowongan yang Anda simpan.</p>
+                    </div>
+                    <button id="btn-clear" onclick="clearBookmarks()" class="hidden text-red-500 text-xs font-bold hover:bg-red-50 px-3 py-1.5 rounded-lg transition border border-red-100">
+                        <i class="fas fa-trash-alt mr-1"></i> Hapus Semua
+                    </button>
+                </div>
+
+                <div id="bookmark-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+                <div id="empty-state" class="hidden bg-white rounded-xl shadow-sm border border-gray-100 p-10 text-center">
+                    <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300">
+                        <i class="far fa-bookmark text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">Belum ada bookmark</h3>
+                    <p class="text-gray-500 text-sm mb-4">Simpan lowongan favoritmu di sini.</p>
+                    <a href="{{ route('user.lokers.index') }}" class="inline-block bg-blue-600 text-white px-5 py-2 rounded-lg font-bold text-xs hover:bg-blue-700 transition">Cari Lowongan</a>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 
 <script>
     function renderBookmarks() {
-        // Ambil data dengan aman
         let bookmarks = [];
-        try {
-            bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
-        } catch (e) {
-            console.error("Data bookmark rusak, mereset...", e);
-            localStorage.removeItem('bookmarks');
-        }
+        try { bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || []; } catch (e) {}
 
         const container = document.getElementById('bookmark-container');
         const emptyState = document.getElementById('empty-state');
         const btnClear = document.getElementById('btn-clear');
 
-        container.innerHTML = ''; // Bersihkan container
+        container.innerHTML = '';
 
         if (bookmarks.length === 0) {
             emptyState.classList.remove('hidden');
-            emptyState.classList.add('flex');
             btnClear.classList.add('hidden'); 
         } else {
-            emptyState.classList.add('hidden');
-            emptyState.classList.remove('flex');
             btnClear.classList.remove('hidden');
-
             bookmarks.forEach(job => {
-                // PENGAMAN ERROR: Gunakan default value jika data kosong
-                const company = job.company || 'Perusahaan';
-                const initial = company.substring(0, 2).toUpperCase();
-                const title = job.title || 'Posisi Tidak Diketahui';
-                const location = job.location || '-';
-                const url = job.url || '#';
-
                 const card = `
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col md:flex-row items-center gap-6 relative group hover:shadow-md transition">
-                        <div class="w-16 h-16 bg-blue-600 text-white rounded-xl flex items-center justify-center text-2xl font-bold flex-shrink-0">
-                            ${initial}
-                        </div>
-                        <div class="flex-1 w-full text-center md:text-left">
-                            <h3 class="text-xl font-bold text-blue-600">${title}</h3>
-                            <p class="text-gray-800 font-medium">${company}</p>
-                            <div class="flex gap-2 mt-2 text-xs text-gray-500 justify-center md:justify-start">
-                                <span><i class="fas fa-map-marker-alt"></i> ${location}</span>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition duration-300 group flex flex-col items-start gap-3 h-full">
+                        <div class="flex items-center gap-4 w-full">
+                            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-lg font-bold flex-shrink-0">
+                                ${job.company.substring(0, 2).toUpperCase()}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="text-sm font-bold text-gray-900 truncate group-hover:text-blue-600 transition">${job.title}</h3>
+                                <p class="text-xs text-gray-500 font-medium truncate">${job.company}</p>
                             </div>
                         </div>
-                        <div class="flex gap-2 w-full md:w-auto">
-                            <a href="${url}" class="flex-1 md:flex-none text-center bg-blue-600 text-white px-6 py-2.5 rounded-lg font-bold hover:bg-blue-700 transition">
-                                Daftar Sekarang
-                            </a>
-                            <button onclick="removeOne('${job.id}')" class="bg-red-100 text-red-600 px-4 py-2.5 rounded-lg hover:bg-red-200 transition">
-                                <i class="fas fa-trash"></i>
+                        
+                        <div class="w-full pt-3 mt-auto border-t border-gray-50 flex justify-between items-center">
+                            <button onclick="removeOne('${job.id}')" class="text-xs text-red-500 hover:text-red-700 font-medium flex items-center gap-1">
+                                <i class="fas fa-trash-alt"></i> Hapus
                             </button>
+                            <a href="${job.url}" class="text-xs font-bold text-blue-600 hover:underline">Detail</a>
                         </div>
                     </div>
                 `;
@@ -91,19 +104,17 @@
 
     function removeOne(id) {
         let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
-        bookmarks = bookmarks.filter(job => job.id != id); // Filter data selain ID yg dihapus
+        bookmarks = bookmarks.filter(job => job.id != id);
         localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-        renderBookmarks(); // Render ulang
+        renderBookmarks();
     }
 
     function clearBookmarks() {
         if(confirm('Hapus semua bookmark?')) {
             localStorage.removeItem('bookmarks');
-            location.reload();
+            renderBookmarks();
         }
     }
-
-    // Jalankan render saat halaman dimuat
     renderBookmarks();
 </script>
 @endsection

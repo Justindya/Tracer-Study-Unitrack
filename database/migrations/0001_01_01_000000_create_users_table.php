@@ -13,21 +13,23 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('nim');
+            $table->string('name'); 
+            $table->string('nim')->unique()->nullable(); // NIM boleh kosong buat admin murni
             $table->string('email')->unique();
-            $table->string('no_hp');
-            $table->string('angkatan');
-            $table->string('tahun_lulus');
-            $table->string('program_studi');
-            $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
-            $table->text('alamat');
+            $table->string('no_hp')->nullable();        
+            $table->string('angkatan')->nullable();     
+            $table->string('tahun_lulus')->nullable();  
+            $table->string('program_studi')->nullable();
+            $table->enum('jenis_kelamin', ['laki-laki', 'perempuan'])->nullable(); 
+            $table->text('alamat')->nullable();         
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->foreignId('alumni_id')->nullable()->constrained('alumnis')->onDelete('cascade');
-            $table->string('nim')->unique();
+
+
+            $table->foreignId('alumni_id')->nullable(); 
+        
             $table->string('role')->default('user');
         });
 

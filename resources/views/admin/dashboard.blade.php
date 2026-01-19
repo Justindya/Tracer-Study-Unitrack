@@ -1,180 +1,181 @@
 @extends('layouts.app')
+
 @section('content')
-    <div class="container mt-4">
-        <h1 class="text-center fs-1">Admin Dashboard</h1>
-        <p class="text-center fs-2">Selamat datang di dashboard admin.</p>
+<div class="bg-gray-50 min-h-screen py-8 font-sans">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+            <p class="text-gray-500 mt-1">Selamat datang kembali, Administrator.</p>
+        </div>
 
-        <div class="row mt-4">
-            <div class="col-md-3">
-                <div class="card text-white bg-primary mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Alumni</h5>
-                        <p class="card-text display-6">{{ \App\Models\User::count() }}</p>
-                        <a href="{{ route('admin.alumni.index') }}" class="text-white">Lihat Detail</a>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+            
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="p-3 bg-blue-100 text-blue-600 rounded-lg">
+                        <i class="fas fa-user-graduate text-xl"></i>
                     </div>
+                    <span class="text-xs font-bold text-gray-400 uppercase">Total</span>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-white bg-success mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Event</h5>
-                        <p class="card-text display-6">{{ \App\Models\event::count() }}</p>
-                        <a href="{{ route('admin.event.index') }}" class="text-white">Lihat Detail</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-white bg-warning mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Loker</h5>
-                        <p class="card-text display-6">{{ \App\Models\loker::count() }}</p>
-                        <a href="{{ route('admin.loker.index') }}" class="text-white">Lihat Detail</a>
-                    </div>
-                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ $totalAlumni }}</h3>
+                <p class="text-sm text-gray-500 mb-4">Alumni Terdaftar</p>
+                <a href="{{ route('admin.alumni.index') }}" class="text-xs font-bold text-blue-600 hover:underline">Lihat Detail -></a>
             </div>
 
-            <div class="col-md-3">
-                <div class="card text-white bg-info mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Kusioner</h5>
-                        <p class="card-text display-6">{{ \App\Models\kusioner::count() }}</p>
-                        <a href="{{ route('admin.kusioner.index') }}" class="text-white">Lihat Detail</a>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="p-3 bg-emerald-100 text-emerald-600 rounded-lg">
+                        <i class="fas fa-calendar-alt text-xl"></i>
                     </div>
+                    <span class="text-xs font-bold text-gray-400 uppercase">Aktif</span>
                 </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ \App\Models\Event::count() }}</h3>
+                <p class="text-sm text-gray-500 mb-4">Event Kampus</p>
+                <a href="{{ route('admin.event.index') }}" class="text-xs font-bold text-emerald-600 hover:underline">Lihat Detail -></a>
             </div>
 
-            <div class="col-md-3">
-                <div class="card text-white bg-secondary mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Tracer Study</h5>
-                        <p class="card-text display-6">{{ \App\Models\tracer::count() }}</p>
-                        <a href="{{ route('admin.tracer.index') }}" class="text-white">Lihat Detail</a>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="p-3 bg-amber-100 text-amber-600 rounded-lg">
+                        <i class="fas fa-briefcase text-xl"></i>
                     </div>
+                    <span class="text-xs font-bold text-gray-400 uppercase">Open</span>
                 </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ \App\Models\Loker::count() }}</h3>
+                <p class="text-sm text-gray-500 mb-4">Lowongan Kerja</p>
+                <a href="{{ route('admin.loker.index') }}" class="text-xs font-bold text-amber-600 hover:underline">Lihat Detail -></a>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="p-3 bg-cyan-100 text-cyan-600 rounded-lg">
+                        <i class="fas fa-poll text-xl"></i>
+                    </div>
+                    <span class="text-xs font-bold text-gray-400 uppercase">Data</span>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ \App\Models\Kusioner::count() }}</h3>
+                <p class="text-sm text-gray-500 mb-4">Kusioner</p>
+                <a href="{{ route('admin.kusioner.index') }}" class="text-xs font-bold text-cyan-600 hover:underline">Lihat Detail -></a>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="p-3 bg-indigo-100 text-indigo-600 rounded-lg">
+                        <i class="fas fa-chart-line text-xl"></i>
+                    </div>
+                    <span class="text-xs font-bold text-gray-400 uppercase">Input</span>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ $totalTracer }}</h3>
+                <p class="text-sm text-gray-500 mb-4">Data Tracer</p>
+                <a href="{{ route('admin.tracer.index') }}" class="text-xs font-bold text-indigo-600 hover:underline">Lihat Detail -></a>
             </div>
         </div>
 
-        <div class="row mt-4">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">Grafik Tracer Study berdasarkan Gender</h5>
-                        <div>
-                            <a href="{{ route('admin.alumni.export.all') }}" class="btn btn-success btn-sm me-2">
-                                <i class="fas fa-file-excel"></i> Export Alumni
-                            </a>
-                            <a href="{{ route('admin.tracer.export.all') }}" class="btn btn-info btn-sm">
-                                <i class="fas fa-file-excel"></i> Export Tracer
-                            </a>
-                        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                    <h3 class="font-bold text-gray-800 text-lg">Grafik Tracer Study (Gender)</h3>
+                    <div class="flex gap-2 mt-4 md:mt-0">
+                        <a href="{{ route('admin.alumni.export.all') }}" class="bg-green-600 hover:bg-green-700 text-white text-xs px-4 py-2 rounded-lg font-bold transition flex items-center gap-2">
+                            <i class="fas fa-file-excel"></i> Export Alumni
+                        </a>
+                        <a href="{{ route('admin.tracer.export.all') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-2 rounded-lg font-bold transition flex items-center gap-2">
+                            <i class="fas fa-file-excel"></i> Export Tracer
+                        </a>
                     </div>
-                    <div class="card-body">
-                        <div style="position: relative; height: 400px; width: 100%;">
-                            <canvas id="tracerGenderChart"></canvas>
-                        </div>
+                </div>
+                
+                <div class="relative h-80 w-full">
+                    <canvas id="tracerGenderChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-fit">
+                <h3 class="font-bold text-gray-800 text-lg mb-6 border-b border-gray-100 pb-4">Statistik Tracer</h3>
+                
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div class="text-center p-4 bg-blue-50 rounded-xl">
+                        <h6 class="text-blue-600 font-bold text-sm mb-1">Laki-laki</h6>
+                        <p class="text-2xl font-bold text-gray-800">{{ $tracerMale }}</p>
+                        <small class="text-xs text-gray-500">dari {{ $totalMale }} alumni</small>
+                    </div>
+                    <div class="text-center p-4 bg-pink-50 rounded-xl">
+                        <h6 class="text-pink-600 font-bold text-sm mb-1">Perempuan</h6>
+                        <p class="text-2xl font-bold text-gray-800">{{ $tracerFemale }}</p>
+                        <small class="text-xs text-gray-500">dari {{ $totalFemale }} alumni</small>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-xl text-center border border-gray-100">
+                    <h6 class="text-gray-500 font-bold text-sm mb-2">Total Populasi Alumni</h6>
+                    <p class="text-4xl font-extrabold text-gray-900">{{ $totalAlumni }}</p>
+                    <div class="mt-2 text-xs font-medium text-gray-500">
+                        Partisipasi Tracer: <span class="text-indigo-600">{{ $totalTracer }} Alumni</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">Statistik Tracer</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="text-center">
-                                    <h6 class="text-primary">Laki-laki</h6>
-                                    <p class="h4 text-primary">{{ $tracerMale }}</p>
-                                    <small class="text-muted">dari {{ $totalMale }} alumni</small>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="text-center">
-                                    <h6 class="text-danger">Perempuan</h6>
-                                    <p class="h4 text-danger">{{ $tracerFemale }}</p>
-                                    <small class="text-muted">dari {{ $totalFemale }} alumni</small>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="text-center">
-                            <h6>Total Alumni</h6>
-                            <p class="h3">{{ $totalAlumni }}</p>
-                            <small class="text-muted">dengan tracer: {{ $totalTracer }}</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
+
     </div>
+</div>
 
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
-        // Data untuk grafik
-        const ctx = document.getElementById('tracerGenderChart').getContext('2d');
-        const tracerGenderChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Laki-laki', 'Perempuan'],
-                datasets: [{
-                    label: 'Alumni dengan Tracer',
-                    data: [{{ $tracerMale }}, {{ $tracerFemale }}],
-                    backgroundColor: [
-                        'rgba(54, 162, 235, 0.8)', // Biru untuk laki-laki
-                        'rgba(255, 192, 203, 0.8)' // Pink untuk perempuan
-                    ],
-                    borderColor: [
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 192, 203, 1)'
-                    ],
-                    borderWidth: 2
-                }, {
-                    label: 'Total Alumni',
-                    data: [{{ $totalMale }}, {{ $totalFemale }}],
-                    backgroundColor: [
-                        'rgba(54, 162, 235, 0.3)',
-                        'rgba(255, 192, 203, 0.3)'
-                    ],
-                    borderColor: [
-                        'rgba(54, 162, 235, 0.5)',
-                        'rgba(255, 192, 203, 0.5)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, // Mencegah perubahan aspect ratio
-                animation: false, // Menonaktifkan animasi
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Jumlah Alumni'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Jenis Kelamin'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Perbandingan Alumni dengan Tracer Study'
+<script>
+    // Logic Chart tetap sama, hanya styling disesuaikan
+    const ctx = document.getElementById('tracerGenderChart').getContext('2d');
+    const tracerGenderChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Laki-laki', 'Perempuan'],
+            datasets: [{
+                label: 'Sudah Mengisi Tracer',
+                data: [{{ $tracerMale }}, {{ $tracerFemale }}],
+                backgroundColor: [
+                    'rgba(59, 130, 246, 0.8)', // Tailwind Blue-500
+                    'rgba(236, 72, 153, 0.8)'  // Tailwind Pink-500
+                ],
+                borderRadius: 6,
+                borderWidth: 0
+            }, {
+                label: 'Total Populasi',
+                data: [{{ $totalMale }}, {{ $totalFemale }}],
+                backgroundColor: [
+                    'rgba(59, 130, 246, 0.2)',
+                    'rgba(236, 72, 153, 0.2)'
+                ],
+                borderRadius: 6,
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20,
+                        font: { family: "'Inter', sans-serif" }
                     }
                 }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: '#f3f4f6' }, // Garis grid halus
+                    ticks: { font: { family: "'Inter', sans-serif" } }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { family: "'Inter', sans-serif" } }
+                }
             }
-        });
-    </script>
+        }
+    });
+</script>
 @endsection
