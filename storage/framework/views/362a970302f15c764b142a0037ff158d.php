@@ -24,8 +24,8 @@
             <p class="text-gray-500 text-sm">Lengkapi data diri untuk bergabung.</p>
         </div>
 
-        <form method="POST" action="{{ route('register') }}" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            @csrf
+        <form method="POST" action="<?php echo e(route('register')); ?>" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <?php echo csrf_field(); ?>
 
             <div class="col-span-1 md:col-span-2 mb-2">
                 <label class="block text-gray-700 text-xs font-bold mb-2 uppercase tracking-wide text-center">Status Anda Saat Ini</label>
@@ -47,35 +47,56 @@
 
             <div class="col-span-2 md:col-span-1">
                 <label class="text-xs font-bold text-gray-600 mb-1 block">Nama Lengkap</label>
-                <input type="text" name="name" value="{{ old('name') }}" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="Nama Anda">
-                @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                <input type="text" name="name" value="<?php echo e(old('name')); ?>" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="Nama Anda">
+                <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
 
             <div class="col-span-2 md:col-span-1">
                 <label class="text-xs font-bold text-gray-600 mb-1 block">Email</label>
-                <input type="email" name="email" value="{{ old('email') }}" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="email@contoh.com">
-                @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                <input type="email" name="email" value="<?php echo e(old('email')); ?>" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="email@contoh.com">
+                <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
 
             <div>
                 <label class="text-xs font-bold text-gray-600 mb-1 block">NIM</label>
-                <input type="text" name="nim" value="{{ old('nim') }}" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="NIM">
-                @error('nim') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                <input type="text" name="nim" value="<?php echo e(old('nim')); ?>" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="NIM">
+                <?php $__errorArgs = ['nim'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="text-red-500 text-xs mt-1"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
 
             <div>
                 <label class="text-xs font-bold text-gray-600 mb-1 block">No HP / WhatsApp</label>
-                <input type="number" name="no_hp" value="{{ old('no_hp') }}" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="08xxxxxxxxxx">
+                <input type="number" name="no_hp" value="<?php echo e(old('no_hp')); ?>" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="08xxxxxxxxxx">
             </div>
 
             <div>
                 <label class="text-xs font-bold text-gray-600 mb-1 block">Tahun Angkatan</label>
-                <input type="number" name="angkatan" value="{{ old('angkatan') }}" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="2020">
+                <input type="number" name="angkatan" value="<?php echo e(old('angkatan')); ?>" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="2020">
             </div>
 
             <div id="field-tahun-lulus" class="transition-all duration-300">
                 <label class="text-xs font-bold text-gray-600 mb-1 block">Tahun Lulus</label>
-                <input type="number" id="input-tahun-lulus" name="tahun_lulus" value="{{ old('tahun_lulus') }}" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="2024">
+                <input type="number" id="input-tahun-lulus" name="tahun_lulus" value="<?php echo e(old('tahun_lulus')); ?>" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="2024">
             </div>
 
             <div class="col-span-2">
@@ -96,7 +117,7 @@
 
             <div class="col-span-2">
                 <label class="text-xs font-bold text-gray-600 mb-1 block">Alamat Lengkap</label>
-                <textarea name="alamat" rows="2" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="Alamat lengkap...">{{ old('alamat') }}</textarea>
+                <textarea name="alamat" rows="2" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="Alamat lengkap..."><?php echo e(old('alamat')); ?></textarea>
             </div>
 
             <div class="col-span-2">
@@ -136,7 +157,7 @@
         </form>
 
         <div class="text-center mt-8 pt-6 border-t border-gray-100">
-            <p class="text-xs text-gray-500">Sudah punya akun? <a href="{{ route('login') }}" class="text-blue-600 font-bold hover:underline transition">Masuk Disini</a></p>
+            <p class="text-xs text-gray-500">Sudah punya akun? <a href="<?php echo e(route('login')); ?>" class="text-blue-600 font-bold hover:underline transition">Masuk Disini</a></p>
         </div>
     </div>
 
@@ -167,4 +188,4 @@
         });
     </script>
 </body>
-</html>
+</html><?php /**PATH C:\xampp\htdocs\Tracer-Study-UniTrack\resources\views/auth/register.blade.php ENDPATH**/ ?>

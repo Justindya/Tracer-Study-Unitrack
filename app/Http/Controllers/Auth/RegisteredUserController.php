@@ -14,33 +14,29 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
     public function create(): View
     {
         return view('auth.register');
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'nim' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8',],
+            'password' => ['required', 'string', 'min:8'],
             'angkatan' => ['required', 'string', 'max:255'],
             'program_studi' => ['required', 'string', 'max:255'],
             'no_hp' => ['required', 'string', 'max:15'],
             'jenis_kelamin' => ['required', 'string', 'in:laki-laki,perempuan'],
             'alamat' => ['required', 'string', 'max:500'],
-            'tahun_lulus' => ['required', 'string', 'max:255'],
+            'tahun_lulus' => ['nullable', 'string', 'max:255'], 
         ]);
+
+        // LOGIKA BARU: Pakai operator '??'
+        // Artinya: Jika tahun_lulus kosong, isi dengan tanda strip "-"
+        $tahunLulus = $request->tahun_lulus ?? '-';
 
         $alumni = \App\Models\Alumni::create([
             'nama' => $request->name,
@@ -52,7 +48,7 @@ class RegisteredUserController extends Controller
             'jenis_kelamin' => $request->jenis_kelamin,
             'alamat' => $request->alamat,
             'password' => Hash::make($request->password),
-            'tahun_lulus' => $request->tahun_lulus,
+            'tahun_lulus' => $tahunLulus, // Kirim "-" kalau kosong
         ]);
 
         $user = User::create([

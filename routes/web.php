@@ -14,18 +14,11 @@ use App\Http\Controllers\UserAlumniController;
 use App\Http\Controllers\UserKusionerController;
 use App\Http\Controllers\DashboardController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes (Fixed & Secured)
-|--------------------------------------------------------------------------
-*/
-
 Route::get('/', function () {
     return view('welcome');
 });
 
 // --- GROUP 1: ROUTE KHUSUS ADMIN ---
-// Kita panggil middleware 'admin' yang sudah didaftarkan di bootstrap/app.php
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->group(function () {
     
     // Dashboard Admin
@@ -63,18 +56,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Frontend Routes
-    Route::get('/lamaran', function () { return view('user.lamaran_index'); })->name('user.lamaran.index');
-    Route::get('/bookmark', function () { return view('user.bookmark_index'); })->name('user.bookmark.index');
+    Route::get('/lamaran', [UserLokerController::class, 'historyLamaran'])->name('user.lamaran.index');
+    Route::get('/bookmark', [UserLokerController::class, 'bookmarks'])->name('user.bookmark.index');
     Route::get('/rekomendasi', [UserLokerController::class, 'rekomendasi'])->name('user.rekomendasi');
-});
-
-// --- JALUR DARURAT (HAPUS NANTI) ---
-Route::get('/force-admin', function () {
-    if (!Auth::check()) return "Login dulu!";
-    $user = Auth::user();
-    $user->role = 'admin'; 
-    $user->save();
-    return "BERHASIL! Role akun " . $user->name . " sekarang adalah: " . $user->role . ". <br>Silakan Logout dan Login ulang.";
 });
 
 require __DIR__ . '/auth.php';

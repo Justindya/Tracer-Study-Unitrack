@@ -24,7 +24,10 @@ class Alumni extends Model
         'Foto',
         'jenis_kelamin',
         'alamat',
-        'status_setelah_lulus'
+        'status_setelah_lulus',
+        'bio',      
+        'linkedin',
+        'skill'
     ];
 
     /**

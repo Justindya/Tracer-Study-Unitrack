@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="bg-gray-50 min-h-screen py-8 font-sans">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -18,9 +16,9 @@
                     </div>
                     <span class="text-xs font-bold text-gray-400 uppercase">Total</span>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ $totalAlumni }}</h3>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1"><?php echo e($totalAlumni); ?></h3>
                 <p class="text-sm text-gray-500 mb-4">Alumni Terdaftar</p>
-                <a href="{{ route('admin.alumni.index') }}" class="text-xs font-bold text-blue-600 hover:underline">Lihat Detail -></a>
+                <a href="<?php echo e(route('admin.alumni.index')); ?>" class="text-xs font-bold text-blue-600 hover:underline">Lihat Detail -></a>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
@@ -30,9 +28,9 @@
                     </div>
                     <span class="text-xs font-bold text-gray-400 uppercase">Aktif</span>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ \App\Models\Event::count() }}</h3>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1"><?php echo e(\App\Models\Event::count()); ?></h3>
                 <p class="text-sm text-gray-500 mb-4">Event Kampus</p>
-                <a href="{{ route('admin.event.index') }}" class="text-xs font-bold text-emerald-600 hover:underline">Lihat Detail -></a>
+                <a href="<?php echo e(route('admin.event.index')); ?>" class="text-xs font-bold text-emerald-600 hover:underline">Lihat Detail -></a>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
@@ -42,9 +40,9 @@
                     </div>
                     <span class="text-xs font-bold text-gray-400 uppercase">Open</span>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ \App\Models\Loker::count() }}</h3>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1"><?php echo e(\App\Models\Loker::count()); ?></h3>
                 <p class="text-sm text-gray-500 mb-4">Lowongan Kerja</p>
-                <a href="{{ route('admin.loker.index') }}" class="text-xs font-bold text-amber-600 hover:underline">Lihat Detail -></a>
+                <a href="<?php echo e(route('admin.loker.index')); ?>" class="text-xs font-bold text-amber-600 hover:underline">Lihat Detail -></a>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
@@ -54,9 +52,9 @@
                     </div>
                     <span class="text-xs font-bold text-gray-400 uppercase">Data</span>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ \App\Models\Kusioner::count() }}</h3>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1"><?php echo e(\App\Models\Kusioner::count()); ?></h3>
                 <p class="text-sm text-gray-500 mb-4">Kusioner</p>
-                <a href="{{ route('admin.kusioner.index') }}" class="text-xs font-bold text-cyan-600 hover:underline">Lihat Detail -></a>
+                <a href="<?php echo e(route('admin.kusioner.index')); ?>" class="text-xs font-bold text-cyan-600 hover:underline">Lihat Detail -></a>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
@@ -66,9 +64,9 @@
                     </div>
                     <span class="text-xs font-bold text-gray-400 uppercase">Input</span>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ $totalTracer }}</h3>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1"><?php echo e($totalTracer); ?></h3>
                 <p class="text-sm text-gray-500 mb-4">Data Tracer</p>
-                <a href="{{ route('admin.tracer.index') }}" class="text-xs font-bold text-indigo-600 hover:underline">Lihat Detail -></a>
+                <a href="<?php echo e(route('admin.tracer.index')); ?>" class="text-xs font-bold text-indigo-600 hover:underline">Lihat Detail -></a>
             </div>
         </div>
 
@@ -78,10 +76,10 @@
                 <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                     <h3 class="font-bold text-gray-800 text-lg">Grafik Tracer Study (Gender)</h3>
                     <div class="flex gap-2 mt-4 md:mt-0">
-                        <a href="{{ route('admin.alumni.export.all') }}" class="bg-green-600 hover:bg-green-700 text-white text-xs px-4 py-2 rounded-lg font-bold transition flex items-center gap-2">
+                        <a href="<?php echo e(route('admin.alumni.export.all')); ?>" class="bg-green-600 hover:bg-green-700 text-white text-xs px-4 py-2 rounded-lg font-bold transition flex items-center gap-2">
                             <i class="fas fa-file-excel"></i> Export Alumni
                         </a>
-                        <a href="{{ route('admin.tracer.export.all') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-2 rounded-lg font-bold transition flex items-center gap-2">
+                        <a href="<?php echo e(route('admin.tracer.export.all')); ?>" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-2 rounded-lg font-bold transition flex items-center gap-2">
                             <i class="fas fa-file-excel"></i> Export Tracer
                         </a>
                     </div>
@@ -98,21 +96,21 @@
                 <div class="grid grid-cols-2 gap-4 mb-8">
                     <div class="text-center p-4 bg-blue-50 rounded-xl">
                         <h6 class="text-blue-600 font-bold text-sm mb-1">Laki-laki</h6>
-                        <p class="text-2xl font-bold text-gray-800">{{ $tracerMale }}</p>
-                        <small class="text-xs text-gray-500">dari {{ $totalMale }} alumni</small>
+                        <p class="text-2xl font-bold text-gray-800"><?php echo e($tracerMale); ?></p>
+                        <small class="text-xs text-gray-500">dari <?php echo e($totalMale); ?> alumni</small>
                     </div>
                     <div class="text-center p-4 bg-pink-50 rounded-xl">
                         <h6 class="text-pink-600 font-bold text-sm mb-1">Perempuan</h6>
-                        <p class="text-2xl font-bold text-gray-800">{{ $tracerFemale }}</p>
-                        <small class="text-xs text-gray-500">dari {{ $totalFemale }} alumni</small>
+                        <p class="text-2xl font-bold text-gray-800"><?php echo e($tracerFemale); ?></p>
+                        <small class="text-xs text-gray-500">dari <?php echo e($totalFemale); ?> alumni</small>
                     </div>
                 </div>
 
                 <div class="bg-gray-50 p-6 rounded-xl text-center border border-gray-100">
                     <h6 class="text-gray-500 font-bold text-sm mb-2">Total Populasi Alumni</h6>
-                    <p class="text-4xl font-extrabold text-gray-900">{{ $totalAlumni }}</p>
+                    <p class="text-4xl font-extrabold text-gray-900"><?php echo e($totalAlumni); ?></p>
                     <div class="mt-2 text-xs font-medium text-gray-500">
-                        Partisipasi Tracer: <span class="text-indigo-600">{{ $totalTracer }} Alumni</span>
+                        Partisipasi Tracer: <span class="text-indigo-600"><?php echo e($totalTracer); ?> Alumni</span>
                     </div>
                 </div>
             </div>
@@ -124,9 +122,9 @@
 
 <div class="bg-red-600 text-white p-4 m-4 rounded-xl font-mono text-sm">
     <h3 class="font-bold border-b border-white/50 mb-2">🔍 DIAGNOSA SISTEM (Hapus nanti)</h3>
-    <p>1. User Login: <strong>{{ Auth::user()->name }}</strong></p>
-    <p>2. Role di Database: <strong>"{{ Auth::user()->role }}"</strong></p>
-    <p>3. Apakah Admin?: <strong>{{ trim(strtolower(Auth::user()->role)) == 'admin' ? 'YA (TRUE)' : 'TIDAK (FALSE)' }}</strong></p>
+    <p>1. User Login: <strong><?php echo e(Auth::user()->name); ?></strong></p>
+    <p>2. Role di Database: <strong>"<?php echo e(Auth::user()->role); ?>"</strong></p>
+    <p>3. Apakah Admin?: <strong><?php echo e(trim(strtolower(Auth::user()->role)) == 'admin' ? 'YA (TRUE)' : 'TIDAK (FALSE)'); ?></strong></p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -139,7 +137,7 @@
             labels: ['Laki-laki', 'Perempuan'],
             datasets: [{
                 label: 'Sudah Mengisi Tracer',
-                data: [{{ $tracerMale }}, {{ $tracerFemale }}],
+                data: [<?php echo e($tracerMale); ?>, <?php echo e($tracerFemale); ?>],
                 backgroundColor: [
                     'rgba(59, 130, 246, 0.8)', 
                     'rgba(236, 72, 153, 0.8)'  
@@ -148,7 +146,7 @@
                 borderWidth: 0
             }, {
                 label: 'Total Populasi',
-                data: [{{ $totalMale }}, {{ $totalFemale }}],
+                data: [<?php echo e($totalMale); ?>, <?php echo e($totalFemale); ?>],
                 backgroundColor: [
                     'rgba(59, 130, 246, 0.2)',
                     'rgba(236, 72, 153, 0.2)'
@@ -184,5 +182,7 @@
         }
     });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
 
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\Tracer-Study-UniTrack\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>
