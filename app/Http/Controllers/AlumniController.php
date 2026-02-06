@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\alumni; 
 use Illuminate\Support\Facades\Hash;
 use App\Exports\AlumniExport;
 use App\Exports\SingleAlumniExport;
@@ -11,28 +12,17 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class AlumniController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $data['alumnis'] = \App\Models\alumni::latest()->paginate(10);
-        // layouts.app dan navigation otomatis dipakai di resources/views/admin/alumni_index.blade.php
+        $data['alumnis'] = \App\Models\alumni::with('user')->latest()->paginate(10);
         return view('admin.alumni_index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        // layouts.app dan navigation otomatis dipakai di resources/views/admin/alumni_register.blade.php
         return view('admin.alumni_register');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -55,45 +45,34 @@ class AlumniController extends Controller
             $validated['Foto'] = $request->file('Foto')->store('alumni', 'public');
         }
 
-        // Create alumni record
         $alumni = \App\Models\alumni::create($validated);
-
-        // Create user account for the alumni
+        
+        // Buat user langsung ACTIVE jika dibuat oleh Admin
         User::create([
             'name' => $validated['nama'],
             'email' => $validated['email'],
             'nim' => $validated['nim'],
             'password' => $validated['password'],
             'role' => 'alumni',
+            'status' => 'active', 
             'alumni_id' => $alumni->id
         ]);
 
         return redirect()->route('admin.alumni.index')->with('success', 'Alumni berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        $data['alumni'] = \App\Models\alumni::findOrFail($id);
-        // layouts.app dan navigation otomatis dipakai di resources/views/admin/alumni_show.blade.php
+        $data['alumni'] = \App\Models\alumni::with('user')->findOrFail($id);
         return view('admin.alumni_show', $data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $data['alumni'] = \App\Models\alumni::findOrFail($id);
-        // layouts.app dan navigation otomatis dipakai di resources/views/admin/alumni_edit.blade.php
         return view('admin.alumni_edit', $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $alumni = \App\Models\alumni::findOrFail($id);
@@ -114,75 +93,65 @@ class AlumniController extends Controller
 
         $validated = $request->validate($rules);
 
-        // Jika ada password baru
         if ($request->filled('password')) {
             $validated['password'] = Hash::make($request->password);
         } else {
             unset($validated['password']);
         }
 
-        // Jika ada foto baru
         if ($request->hasFile('Foto')) {
-            // Hapus foto lama jika ada
             if ($alumni->Foto && file_exists(storage_path('app/public/' . $alumni->Foto))) {
                 unlink(storage_path('app/public/' . $alumni->Foto));
             }
             $validated['Foto'] = $request->file('Foto')->store('alumni', 'public');
         }
 
-        // Update alumni record
         $alumni->update($validated);
 
-        // Update associated user account
         if ($user = User::where('alumni_id', $alumni->id)->first()) {
             $userData = [
                 'name' => $validated['nama'],
                 'email' => $validated['email'],
                 'nim' => $validated['nim']
             ];
-
             if (isset($validated['password'])) {
                 $userData['password'] = $validated['password'];
             }
-
             $user->update($userData);
         }
 
         return redirect()->route('admin.alumni.index')->with('success', 'Alumni berhasil diupdate!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $alumni = \App\Models\alumni::findOrFail($id);
-
-        // Delete associated user account
         if ($user = User::where('alumni_id', $alumni->id)->first()) {
             $user->delete();
         }
-
-        // Delete photo if exists
         if ($alumni->Foto && file_exists(storage_path('app/public/' . $alumni->Foto))) {
             unlink(storage_path('app/public/' . $alumni->Foto));
         }
-
         $alumni->delete();
         return redirect()->route('admin.alumni.index')->with('success', 'Alumni berhasil dihapus!');
     }
 
-    /**
-     * Export all alumni to Excel
-     */
+    public function verify($id)
+    {
+        // Cari user yang terhubung dengan alumni ini
+        $user = User::where('alumni_id', $id)->firstOrFail();
+        
+        // Update status menjadi active
+        $user->update(['status' => 'active']);
+
+        return redirect()->back()->with('success', 'Akun alumni berhasil diverifikasi/diaktifkan!');
+    }
+
     public function exportAll()
     {
         return Excel::download(new AlumniExport, 'semua_alumni_' . date('Y-m-d_H-i-s') . '.xlsx');
     }
 
-    /**
-     * Export single alumni to Excel
-     */
     public function exportSingle($id)
     {
         $alumni = \App\Models\alumni::findOrFail($id);

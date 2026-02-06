@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Admin Sistem',
             'nim' => '12345678',
-            'email' => 'admin@example.com',
+            'email' => 'admin@unitrack.com',
             'password' => Hash::make('12345678'),
             'role' => 'admin',
             'alumni_id' => $adminAlumni->id,

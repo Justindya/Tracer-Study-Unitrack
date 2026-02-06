@@ -7,7 +7,7 @@
             <p class="text-gray-500 mt-1">Selamat datang kembali, Administrator.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
                 <div class="flex items-center justify-between mb-4">
@@ -43,18 +43,6 @@
                 <h3 class="text-2xl font-bold text-gray-800 mb-1"><?php echo e(\App\Models\Loker::count()); ?></h3>
                 <p class="text-sm text-gray-500 mb-4">Lowongan Kerja</p>
                 <a href="<?php echo e(route('admin.loker.index')); ?>" class="text-xs font-bold text-amber-600 hover:underline">Lihat Detail -></a>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="p-3 bg-cyan-100 text-cyan-600 rounded-lg">
-                        <i class="fas fa-poll text-xl"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-400 uppercase">Data</span>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-1"><?php echo e(\App\Models\Kusioner::count()); ?></h3>
-                <p class="text-sm text-gray-500 mb-4">Kusioner</p>
-                <a href="<?php echo e(route('admin.kusioner.index')); ?>" class="text-xs font-bold text-cyan-600 hover:underline">Lihat Detail -></a>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
@@ -120,13 +108,6 @@
     </div>
 </div>
 
-<div class="bg-red-600 text-white p-4 m-4 rounded-xl font-mono text-sm">
-    <h3 class="font-bold border-b border-white/50 mb-2">🔍 DIAGNOSA SISTEM (Hapus nanti)</h3>
-    <p>1. User Login: <strong><?php echo e(Auth::user()->name); ?></strong></p>
-    <p>2. Role di Database: <strong>"<?php echo e(Auth::user()->role); ?>"</strong></p>
-    <p>3. Apakah Admin?: <strong><?php echo e(trim(strtolower(Auth::user()->role)) == 'admin' ? 'YA (TRUE)' : 'TIDAK (FALSE)'); ?></strong></p>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
@@ -183,6 +164,4 @@
     });
 </script>
 <?php $__env->stopSection(); ?>
-
-
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\Tracer-Study-UniTrack\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>

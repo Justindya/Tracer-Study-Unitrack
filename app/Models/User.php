@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'nim',
         'role',
+        'status',
         'alumni_id'
     ];
 

@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    /**
-     * DASHBOARD ADMIN
-     */
     public function index()
     {
         $totalAlumni = alumni::count();
@@ -40,12 +37,11 @@ class DashboardController extends Controller
         ));
     }
 
-    /**
-     * DASHBOARD USER
-     */
     public function userIndex()
     {
         $userId = Auth::id(); 
+        $user = Auth::user();
+        $alumni = $user->alumni; 
 
         $lamaranCount = user_loker::where('user_id', $userId)->count();
         $diterimaCount = user_loker::where('user_id', $userId)->where('status', 'diterima')->count();
@@ -59,12 +55,36 @@ class DashboardController extends Controller
 
         $lowongans = loker::latest()->limit(5)->get();
 
+        $progress = 30; 
+        
+        $bioComplete = false;
+        $tracerComplete = false;
+
+        // Cek Biodata (Bio, Foto, Skill)
+        if ($alumni && $alumni->bio && $alumni->Foto && $alumni->skill) {
+            $progress += 35;
+            $bioComplete = true;
+        } elseif ($alumni) {
+            $progress += 15; 
+        }
+        if ($alumni) {
+            $hasTracer = $alumni->tracers()->exists();
+            
+            if ($hasTracer) {
+                $progress += 35;
+                $tracerComplete = true;
+            }
+        }
+
         return view('dashboard', compact(
             'lamaranCount', 
             'diterimaCount', 
             'diprosesCount', 
             'activities',
-            'lowongans'
+            'lowongans',
+            'progress',      
+            'bioComplete',   
+            'tracerComplete' 
         ));
     }
 }

@@ -49,9 +49,13 @@
                                 {{-- === MENU KHUSUS USER === --}}
                                 <a href="{{ route('dashboard') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ request()->routeIs('dashboard') ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Dashboard</a>
                                 <a href="{{ route('user.lokers.index') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ request()->routeIs('user.lokers.*') ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Lowongan</a>
-                                <a href="{{ route('user.alumni.index') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ request()->routeIs('user.alumni.*') ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Network</a>
+                                
+                                {{-- Network hanya nyala di index/show, mati saat edit profile --}}
+                                <a href="{{ route('user.alumni.index') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ (request()->routeIs('user.alumni.index') || request()->routeIs('user.alumni.show')) ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Network</a>
+                                
                                 <a href="{{ route('user.events.index') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ request()->routeIs('user.events.*') ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Events</a>
-                                <a href="{{ route('user.tracer.create') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ request()->routeIs('user.tracer.*') ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Tracer</a>
+                                
+                                {{-- MENU TRACER SUDAH DIHAPUS DARI SINI --}}
                             @endif
 
                         </div>
@@ -59,22 +63,7 @@
 
                     <div class="hidden sm:flex sm:items-center sm:ml-6 gap-4">
                         
-                        @if(trim(strtolower(Auth::user()->role)) != 'admin')
-                        <div class="relative">
-                            <button onclick="toggleNotif()" class="text-gray-400 hover:text-blue-600 relative focus:outline-none transition mt-1">
-                                <i class="fas fa-bell text-2xl"></i>
-                                <span class="absolute -top-1 -right-1 block h-4 w-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center ring-2 ring-white">2</span>
-                            </button>
-                            <div id="notif-dropdown" class="absolute right-0 mt-4 w-80 bg-white rounded-xl shadow-xl border border-gray-100 hidden z-50 overflow-hidden transform origin-top-right transition-all">
-                                <div class="px-4 py-3 border-b border-gray-50 bg-gray-50 flex justify-between items-center">
-                                    <h3 class="font-bold text-gray-800 text-sm">Notifikasi</h3>
-                                </div>
-                                <div class="p-4 text-center text-sm text-gray-500">Belum ada notifikasi baru.</div>
-                            </div>
-                        </div>
-                        @endif
-
-                        <div class="h-8 w-px bg-gray-200 mx-2"></div>
+                        {{-- LONCENG NOTIFIKASI SUDAH DIHAPUS --}}
 
                         <div class="relative group">
                             <button class="flex items-center gap-3 focus:outline-none transition duration-150 ease-in-out">
@@ -90,7 +79,7 @@
                             </button>
                             
                             <div class="absolute right-0 w-48 bg-white rounded-xl shadow-xl py-2 mt-2 hidden group-hover:block hover:block border border-gray-100 origin-top-right z-50">
-                                <a href="{{ route('profile.edit') }}" class="block px-4 py-2.5 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition">
+                                <a href="{{ route('profile.edit') }}" class="block px-4 py-2.5 text-sm {{ request()->routeIs('profile.*') || request()->routeIs('user.alumni.edit') ? 'text-blue-600 bg-blue-50 font-semibold' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600' }} transition">
                                     <i class="fas fa-user-circle mr-2 w-5"></i> Profil Saya
                                 </a>
                                 <form method="POST" action="{{ route('logout') }}">
@@ -117,19 +106,5 @@
             @endif
         </main>
     </div>
-    
-    <script>
-        function toggleNotif() {
-            const dropdown = document.getElementById('notif-dropdown');
-            dropdown.classList.toggle('hidden');
-        }
-        document.addEventListener('click', function(event) {
-            const dropdown = document.getElementById('notif-dropdown');
-            const button = document.querySelector('button[onclick="toggleNotif()"]');
-            if (dropdown && button && !button.contains(event.target) && !dropdown.contains(event.target)) {
-                dropdown.classList.add('hidden');
-            }
-        });
-    </script>
 </body>
 </html>

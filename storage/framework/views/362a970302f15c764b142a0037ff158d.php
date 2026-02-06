@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title>Daftar Akun - UniTrack</title>
+    <title>Daftar Akun Alumni - UniTrack</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style> 
-        body { font-family: 'Poppins', sans-serif; } 
-        .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 300ms; }
-    </style>
+    <style> body { font-family: 'Poppins', sans-serif; } </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center min-h-screen p-4 py-8">
 
@@ -21,33 +18,17 @@
                 <i class="fas fa-graduation-cap text-3xl text-purple-600"></i>
                 <span class="text-2xl font-bold text-gray-800 tracking-tight">UniTrack</span>
             </div>
-            <p class="text-gray-500 text-sm">Lengkapi data diri untuk bergabung.</p>
+            <p class="text-gray-500 text-sm">Registrasi Khusus Alumni</p>
         </div>
 
         <form method="POST" action="<?php echo e(route('register')); ?>" class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <?php echo csrf_field(); ?>
 
-            <div class="col-span-1 md:col-span-2 mb-2">
-                <label class="block text-gray-700 text-xs font-bold mb-2 uppercase tracking-wide text-center">Status Anda Saat Ini</label>
-                <div class="flex p-1 bg-gray-100 rounded-xl relative max-w-sm mx-auto">
-                    <label class="flex-1 text-center cursor-pointer z-10">
-                        <input type="radio" name="status_user" value="alumni" class="hidden peer" checked onclick="toggleTahunLulus(true)">
-                        <span class="block py-2.5 rounded-lg text-xs font-bold text-gray-500 peer-checked:bg-white peer-checked:text-blue-600 peer-checked:shadow-sm transition-all flex items-center justify-center gap-2">
-                            <i class="fas fa-graduation-cap"></i> Alumni
-                        </span>
-                    </label>
-                    <label class="flex-1 text-center cursor-pointer z-10">
-                        <input type="radio" name="status_user" value="mahasiswa" class="hidden peer" onclick="toggleTahunLulus(false)">
-                        <span class="block py-2.5 rounded-lg text-xs font-bold text-gray-500 peer-checked:bg-white peer-checked:text-blue-600 peer-checked:shadow-sm transition-all flex items-center justify-center gap-2">
-                            <i class="fas fa-book-reader"></i> Mahasiswa
-                        </span>
-                    </label>
-                </div>
-            </div>
+            <input type="hidden" name="status_user" value="alumni">
 
             <div class="col-span-2 md:col-span-1">
                 <label class="text-xs font-bold text-gray-600 mb-1 block">Nama Lengkap</label>
-                <input type="text" name="name" value="<?php echo e(old('name')); ?>" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="Nama Anda">
+                <input type="text" name="name" value="<?php echo e(old('name')); ?>" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="Nama Sesuai Ijazah">
                 <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -73,7 +54,7 @@ unset($__errorArgs, $__bag); ?>
 
             <div>
                 <label class="text-xs font-bold text-gray-600 mb-1 block">NIM</label>
-                <input type="text" name="nim" value="<?php echo e(old('nim')); ?>" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="NIM">
+                <input type="text" name="nim" value="<?php echo e(old('nim')); ?>" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="Nomor Induk Mahasiswa">
                 <?php $__errorArgs = ['nim'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -90,13 +71,13 @@ unset($__errorArgs, $__bag); ?>
             </div>
 
             <div>
-                <label class="text-xs font-bold text-gray-600 mb-1 block">Tahun Angkatan</label>
-                <input type="number" name="angkatan" value="<?php echo e(old('angkatan')); ?>" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="2020">
+                <label class="text-xs font-bold text-gray-600 mb-1 block">Tahun Masuk (Angkatan)</label>
+                <input type="number" name="angkatan" value="<?php echo e(old('angkatan')); ?>" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="Contoh: 2020">
             </div>
 
-            <div id="field-tahun-lulus" class="transition-all duration-300">
+            <div>
                 <label class="text-xs font-bold text-gray-600 mb-1 block">Tahun Lulus</label>
-                <input type="number" id="input-tahun-lulus" name="tahun_lulus" value="<?php echo e(old('tahun_lulus')); ?>" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="2024">
+                <input type="number" name="tahun_lulus" value="<?php echo e(old('tahun_lulus')); ?>" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="Contoh: 2024">
             </div>
 
             <div class="col-span-2">
@@ -117,7 +98,7 @@ unset($__errorArgs, $__bag); ?>
 
             <div class="col-span-2">
                 <label class="text-xs font-bold text-gray-600 mb-1 block">Alamat Lengkap</label>
-                <textarea name="alamat" rows="2" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="Alamat lengkap..."><?php echo e(old('alamat')); ?></textarea>
+                <textarea name="alamat" rows="2" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 outline-none transition bg-gray-50 focus:bg-white text-sm" required placeholder="Alamat domisili saat ini..."><?php echo e(old('alamat')); ?></textarea>
             </div>
 
             <div class="col-span-2">
@@ -151,7 +132,7 @@ unset($__errorArgs, $__bag); ?>
 
             <div class="col-span-2 mt-4">
                 <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition duration-300 shadow-lg shadow-blue-200 transform hover:-translate-y-0.5 text-sm">
-                    BUAT AKUN
+                    DAFTAR SEBAGAI ALUMNI
                 </button>
             </div>
         </form>
@@ -161,31 +142,5 @@ unset($__errorArgs, $__bag); ?>
         </div>
     </div>
 
-    <script>
-        function toggleTahunLulus(isAlumni) {
-            const field = document.getElementById('field-tahun-lulus');
-            const input = document.getElementById('input-tahun-lulus');
-            
-            if (isAlumni) {
-                field.style.display = 'block';
-                field.style.opacity = '0';
-                setTimeout(() => field.style.opacity = '1', 50);
-                input.required = true;
-                input.value = ''; 
-            } else {
-                field.style.opacity = '0';
-                setTimeout(() => field.style.display = 'none', 300);
-                input.required = false;
-                input.value = ''; 
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const statusRadio = document.querySelector('input[name="status_user"]:checked');
-            if(statusRadio) {
-                toggleTahunLulus(statusRadio.value === 'alumni');
-            }
-        });
-    </script>
 </body>
 </html><?php /**PATH C:\xampp\htdocs\Tracer-Study-UniTrack\resources\views/auth/register.blade.php ENDPATH**/ ?>

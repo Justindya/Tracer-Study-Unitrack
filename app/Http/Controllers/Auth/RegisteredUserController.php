@@ -33,9 +33,6 @@ class RegisteredUserController extends Controller
             'alamat' => ['required', 'string', 'max:500'],
             'tahun_lulus' => ['nullable', 'string', 'max:255'], 
         ]);
-
-        // LOGIKA BARU: Pakai operator '??'
-        // Artinya: Jika tahun_lulus kosong, isi dengan tanda strip "-"
         $tahunLulus = $request->tahun_lulus ?? '-';
 
         $alumni = \App\Models\Alumni::create([
@@ -48,22 +45,19 @@ class RegisteredUserController extends Controller
             'jenis_kelamin' => $request->jenis_kelamin,
             'alamat' => $request->alamat,
             'password' => Hash::make($request->password),
-            'tahun_lulus' => $tahunLulus, // Kirim "-" kalau kosong
+            'tahun_lulus' => $tahunLulus, 
         ]);
-
         $user = User::create([
             'name' => $request->name,
             'nim' => $request->nim,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user',
+            'role' => 'user', 
+            'status' => 'pending', 
             'alumni_id' => $alumni->id,
         ]);
 
         event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(route('dashboard'));
+        return redirect()->route('login')->with('status', 'Registrasi berhasil! Akun Anda sedang menunggu verifikasi Admin.');
     }
 }

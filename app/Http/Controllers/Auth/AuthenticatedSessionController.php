@@ -27,9 +27,23 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        if (Auth::user()->status === 'pending') {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
 
+            return back()->withErrors([
+                'nim' => 'Akun Anda belum diverifikasi oleh Admin. Mohon tunggu.',
+            ]);
+        }
         if (Auth::user()->role === 'admin') {
-            return redirect()->intended(route('admin.dashboard'));
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return back()->withErrors([
+                'nim' => 'Akun Admin tidak boleh login di sini. Silakan gunakan Admin Portal.',
+            ]);
         }
 
         return redirect()->intended(route('dashboard'));

@@ -10,6 +10,7 @@ class tracer extends Model
     /** @use HasFactory<\Database\Factories\TracerFactory> */
     use HasFactory;
 
+    protected $table = 'tracers';
     protected $fillable = [
         'alumni_id',
         'status',
@@ -25,6 +26,6 @@ class tracer extends Model
      */
     public function alumni()
     {
-        return $this->belongsTo(Alumni::class);
+        return $this->belongsTo(Alumni::class, 'alumni_id');
     }
 }

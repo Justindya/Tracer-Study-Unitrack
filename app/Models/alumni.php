@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Alumni extends Model
 {
-    /** @use HasFactory<\Database\Factories\AlumniFactory> */
     use HasFactory;
 
     protected $table = 'alumnis';
@@ -30,9 +29,11 @@ class Alumni extends Model
         'skill'
     ];
 
-    /**
-     * Get the tracers for the alumni.
-     */
+    public function user()
+    {
+        return $this->hasOne(User::class, 'alumni_id');
+    }
+
     public function tracers()
     {
         return $this->hasMany(tracer::class);

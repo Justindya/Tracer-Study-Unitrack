@@ -10,14 +10,18 @@
                     <a class="btn btn-primary" href="<?php echo e(route('admin.alumni.create')); ?>">Tambah Alumni</a>
                 </div>
             </div>
-            <table class="table table-striped">
-                <thead>
+            
+            <?php if(session('success')): ?>
+                <div class="alert alert-success"><?php echo e(session('success')); ?></div>
+            <?php endif; ?>
+
+            <table class="table table-striped align-middle">
+                <thead class="table-dark">
                     <tr>
                         <th>NO</th>
-                        <th>NIM</th>
+                        <th>Status Akun</th> <th>NIM</th>
                         <th>Nama</th>
                         <th>Program Studi</th>
-                        <th>Jenis Kelamin</th>
                         <th>AKSI</th>
                     </tr>
                 </thead>
@@ -25,27 +29,63 @@
                     <?php $__currentLoopData = $alumnis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
                             <td><?php echo e($loop->iteration); ?></td>
+                            <td>
+                                <?php
+                                    // Ambil status dari tabel users via relasi
+                                    // Pastikan model Alumni punya: public function user() { return $this->hasOne(User::class); }
+                                    $status = $item->user->status ?? 'unknown'; 
+                                ?>
+
+                                <?php if($status == 'active'): ?>
+                                    <span class="badge bg-success">Aktif</span>
+                                <?php elseif($status == 'pending'): ?>
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                <?php else: ?>
+                                    <span class="badge bg-secondary"><?php echo e($status); ?></span>
+                                <?php endif; ?>
+                            </td>
                             <td><?php echo e($item->nim); ?></td>
                             <td><?php echo e($item->nama); ?></td>
                             <td><?php echo e($item->program_studi); ?></td>
-                            <td><?php echo e($item->jenis_kelamin); ?></td>
                             <td>
-                                <a href="<?php echo e(route('admin.alumni.show', $item->id)); ?>" class="btn btn-info btn-sm">Detail</a>
-                                <a href="<?php echo e(route('admin.alumni.edit', $item->id)); ?>"
-                                    class="btn btn-warning btn-sm">Edit</a>
-                                <form action="<?php echo e(route('admin.alumni.destroy', $item->id)); ?>" method="POST"
-                                    class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                                    <?php echo csrf_field(); ?>
-                                    <?php echo method_field('DELETE'); ?>
-                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                </form>
+                                <div class="btn-group" role="group">
+                                    
+                                    <?php if($status == 'pending'): ?>
+                                        
+                                        <form action="<?php echo e(route('admin.alumni.verify', $item->id)); ?>" method="POST" class="d-inline">
+                                            <?php echo csrf_field(); ?>
+                                            <button type="submit" class="btn btn-success btn-sm me-1" title="Verifikasi Akun" onclick="return confirm('Verifikasi akun ini agar bisa login?')">
+                                                <i class="fas fa-check"></i> Verif
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
+
+                                    <a href="<?php echo e(route('admin.alumni.show', $item->id)); ?>" class="btn btn-info btn-sm text-white" title="Detail">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="<?php echo e(route('admin.alumni.edit', $item->id)); ?>" class="btn btn-warning btn-sm" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="<?php echo e(route('admin.alumni.destroy', $item->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                        <?php echo csrf_field(); ?>
+                                        <?php echo method_field('DELETE'); ?>
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
+            
+            
+            <div class="mt-3">
+                <?php echo e($alumnis->links()); ?>
+
+            </div>
         </div>
     </div>
 <?php $__env->stopSection(); ?>
-
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\Tracer-Study-UniTrack\resources\views/admin/alumni_index.blade.php ENDPATH**/ ?>
