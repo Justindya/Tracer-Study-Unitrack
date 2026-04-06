@@ -11,6 +11,7 @@ use App\Models\tidak_bekerja;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf; 
 
 class TracerUserController extends Controller
 {
@@ -119,6 +120,28 @@ class TracerUserController extends Controller
             $data['alumni_id'] = $alumniId;
             \App\Models\tidak_bekerja::updateOrCreate(['alumni_id' => $alumniId], $data);
         }
+    }
+
+    // FITUR TAMBAHAN GENERATE CV ATS
+    public function generateCV()
+    {
+        $user = Auth::user();
+        $alumni = $user->alumni;
+        
+        if (!$alumni) {
+            return redirect()->back()->with('error', 'Silakan lengkapi profil Anda terlebih dahulu.');
+        }
+
+        // Ambil semua data tracer untuk dimasukkan ke PDF
+        $tracers = tracer::where('alumni_id', $alumni->id)
+                        ->orderBy('tanggal_mulai', 'desc')
+                        ->get();
+
+        // Load view khusus PDF
+        $pdf = Pdf::loadView('user.tracer.cv_pdf', compact('alumni', 'tracers', 'user'));
+        
+        // Return file PDF untuk didownload
+        return $pdf->download('CV_ATS_' . str_replace(' ', '_', $user->name) . '.pdf');
     }
 
     public function show(tracer $tracer) { return view('user.tracer.show', compact('tracer')); }

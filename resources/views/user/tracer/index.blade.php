@@ -38,9 +38,16 @@
                                 <h1 class="text-xl font-bold text-gray-900">Data Karir Alumni</h1>
                                 <p class="text-sm text-gray-500">Riwayat data tracer study yang telah Anda isi.</p>
                             </div>
-                            <a href="{{ route('user.tracer.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition shadow-sm flex items-center gap-2">
-                                <i class="fas fa-plus"></i> Tambah Data
-                            </a>
+                            
+                            {{-- INI TAMBAHAN TOMBOL DOWNLOAD CV --}}
+                            <div class="flex gap-2">
+                                <a href="{{ route('user.tracer.cv') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-700 transition shadow-sm flex items-center gap-2" title="Otomatis buat CV dari profilmu">
+                                    <i class="fas fa-file-pdf"></i> Download CV ATS
+                                </a>
+                                <a href="{{ route('user.tracer.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition shadow-sm flex items-center gap-2">
+                                    <i class="fas fa-plus"></i> Tambah Data
+                                </a>
+                            </div>
                         </div>
 
                         @if (session('success'))
@@ -88,6 +95,7 @@
                                                 <div class="flex flex-col items-center justify-center">
                                                     <i class="fas fa-folder-open text-3xl mb-2 text-gray-300"></i>
                                                     <p>Belum ada data tracer.</p>
+                                                    <p class="text-xs mt-1">Isi data Tracer untuk bisa mencetak CV ATS.</p>
                                                 </div>
                                             </td>
                                         </tr>
