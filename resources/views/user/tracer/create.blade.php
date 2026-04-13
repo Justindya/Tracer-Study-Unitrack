@@ -3,148 +3,94 @@
 @section('content')
 <div class="bg-gray-50 min-h-screen py-8 font-sans">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row gap-6">
+        <div class="flex flex-col lg:flex-row gap-6">
             
             {{-- SIDEBAR KIRI --}}
-            <div class="w-full md:w-1/4">
-                <div class="bg-white rounded-xl shadow-sm p-5 text-center sticky top-24 border border-gray-100">
-                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 text-blue-600 text-2xl font-bold border-4 border-blue-50 shadow-sm">
-                        {{ substr(Auth::user()->name, 0, 1) }} 
+            <div class="w-full lg:w-1/4">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center sticky top-24">
+                    <div class="relative w-20 h-20 mx-auto mb-4">
+                        <div class="w-full h-full bg-gradient-to-tr from-blue-500 to-indigo-500 rounded-full p-[2px] shadow-sm">
+                            <div class="w-full h-full bg-white rounded-full flex items-center justify-center overflow-hidden border-2 border-white">
+                                @if(Auth::user()->alumni && Auth::user()->alumni->Foto)
+                                    <img src="{{ asset('storage/' . Auth::user()->alumni->Foto) }}" class="w-full h-full object-cover">
+                                @else
+                                    <span class="text-2xl font-bold text-gray-700">{{ substr(Auth::user()->name, 0, 1) }}</span>
+                                @endif
+                            </div>
+                        </div>
                     </div>
-                    <h2 class="text-lg font-bold text-gray-900 truncate">{{ Auth::user()->name }}</h2>
-                    <p class="text-gray-500 text-xs mb-5">Mahasiswa / Alumni</p>
 
-                    <div class="space-y-1 text-left">
-                        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-th-large w-4 text-center"></i> Overview
+                    <h2 class="text-base font-bold text-gray-800 truncate px-2">{{ Auth::user()->name }}</h2>
+                    <p class="text-gray-500 text-xs mb-6 font-medium">Mahasiswa / Alumni</p>
+
+                    <nav class="space-y-1.5 text-left">
+                        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
+                            <i class="fas fa-home w-5 text-center"></i> Overview
                         </a>
-                        <a href="{{ route('user.tracer.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition bg-blue-600 text-white shadow-md shadow-blue-200">
-                            <i class="fas fa-edit w-4 text-center"></i> Data Tracer
+                        {{-- MENU AKTIF --}}
+                        <a href="{{ route('user.tracer.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-semibold transition bg-blue-50 text-blue-700">
+                            <i class="fas fa-clipboard-list w-5 text-center"></i> Data Tracer
                         </a>
-                        <a href="{{ route('user.lamaran.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-file-alt w-4 text-center"></i> Lamaran Saya
+                        <a href="{{ route('user.lamaran.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
+                            <i class="fas fa-briefcase w-5 text-center"></i> Lamaran Saya
                         </a>
-                        <a href="{{ route('user.bookmark.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-blue-50 hover:text-blue-600">
-                            <i class="fas fa-bookmark w-4 text-center"></i> Bookmark
+                        <a href="{{ route('user.bookmark.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
+                            <i class="fas fa-bookmark w-5 text-center"></i> Bookmark
                         </a>
-                    </div>
+                        <a href="{{ route('user.rekomendasi') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
+                            <i class="fas fa-star w-5 text-center"></i> Rekomendasi
+                        </a>
+                    </nav>
                 </div>
             </div>
 
             {{-- KONTEN KANAN --}}
-            <div class="w-full md:w-3/4">
+            <div class="w-full lg:w-3/4 space-y-6">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
                     
-                    <div class="mb-6 border-b border-gray-100 pb-4">
-                        <h1 class="text-2xl font-bold text-gray-900">Kuesioner Tracer Study</h1>
-                        <p class="text-sm text-gray-500 mt-1">Isi data sesuai dengan kondisi Anda saat ini.</p>
+                    {{-- HEADER TANPA TOMBOL BATAL --}}
+                    <div class="pb-4 mb-6 border-b border-gray-200/60">
+                        <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Tambah Data Tracer</h1>
+                        <p class="text-sm text-gray-500 mt-1 font-medium">Lengkapi data karir Anda untuk database alumni.</p>
                     </div>
 
                     <form action="{{ route('user.tracer.store') }}" method="POST">
                         @csrf
                         
-                        {{-- STEP 1: Status Utama --}}
                         <div class="mb-6">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Status Pekerjaan Saat Ini</label>
-                            <select id="status_selector" name="status" class="w-full border-gray-300 rounded-xl shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 transition" required onchange="toggleForm()">
-                                <option value="" disabled selected>-- Pilih Status --</option>
-                                <option value="bekerja">Bekerja (Full Time/Part Time)</option>
-                                <option value="wiraswasta">Wiraswasta / Memiliki Usaha</option>
-                                <option value="melanjutkan_pendidikan">Melanjutkan Pendidikan</option>
-                                <option value="tidak_bekerja">Sedang Mencari Pekerjaan</option>
-                            </select>
+                            <label for="status" class="block text-gray-700 text-sm font-bold mb-2">Status Saat Ini</label>
+                            <div class="relative">
+                                <select name="status" id="status" class="w-full px-4 py-2 text-sm rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none bg-white appearance-none transition cursor-pointer" required>
+                                    <option value="">-- Pilih Status --</option>
+                                    <option value="bekerja" {{ old('status') == 'bekerja' ? 'selected' : '' }}>Bekerja (Full Time/Part Time)</option>
+                                    <option value="wiraswasta" {{ old('status') == 'wiraswasta' ? 'selected' : '' }}>Wiraswasta / Memiliki Usaha</option>
+                                    <option value="melanjutkan_pendidikan" {{ old('status') == 'melanjutkan_pendidikan' ? 'selected' : '' }}>Melanjutkan Pendidikan</option>
+                                    <option value="tidak_bekerja" {{ old('status') == 'tidak_bekerja' ? 'selected' : '' }}>Sedang Mencari Pekerjaan</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="mb-6">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Tanggal Mulai (Status Ini)</label>
-                            <input type="date" name="tanggal_mulai" class="w-full border-gray-300 rounded-xl shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" required>
+                            <label for="tanggal_mulai" class="block text-gray-700 text-sm font-bold mb-2">Tanggal Mulai (Status Ini)</label>
+                            <input type="date" name="tanggal_mulai" id="tanggal_mulai" 
+                                   class="w-full px-4 py-2 text-sm rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
+                                   value="{{ old('tanggal_mulai') }}" required>
                         </div>
 
-                        {{-- STEP 2: Form Dinamis --}}
-                        <div id="dynamic_forms" class="p-6 bg-gray-50 rounded-xl border border-gray-100 hidden">
-                            
-                            {{-- FORM A: BEKERJA --}}
-                            <div id="form_bekerja" class="form-section hidden space-y-4">
-                                <h3 class="font-bold text-blue-600 border-b pb-2 mb-4">Detail Pekerjaan</h3>
-                                <div>
-                                    <label class="text-xs font-bold text-gray-500">Nama Perusahaan / Instansi</label>
-                                    <input type="text" name="soal_1" class="w-full rounded-lg border-gray-300 mt-1" placeholder="Contoh: PT. Tokopedia">
-                                </div>
-                                <div>
-                                    <label class="text-xs font-bold text-gray-500">Jabatan / Posisi</label>
-                                    <input type="text" name="soal_2" class="w-full rounded-lg border-gray-300 mt-1" placeholder="Contoh: Backend Developer">
-                                </div>
-                                <div>
-                                    <label class="text-xs font-bold text-gray-500">Pendapatan / Gaji Bulanan (Rupiah)</label>
-                                    <input type="number" name="soal_3" class="w-full rounded-lg border-gray-300 mt-1" placeholder="Contoh: 5000000">
-                                </div>
-                                <div>
-                                    <label class="text-xs font-bold text-gray-500">Kesesuaian Bidang Studi</label>
-                                    <select name="soal_4" class="w-full rounded-lg border-gray-300 mt-1">
-                                        <option value="Sangat Sesuai">Sangat Sesuai</option>
-                                        <option value="Sesuai">Sesuai</option>
-                                        <option value="Kurang Sesuai">Kurang Sesuai</option>
-                                        <option value="Tidak Sesuai">Tidak Sesuai</option>
-                                    </select>
-                                </div>
-                            </div>
+                        <div id="soal-form" class="space-y-4 mt-6"></div>
 
-                            {{-- FORM B: WIRASWASTA --}}
-                            <div id="form_wiraswasta" class="form-section hidden space-y-4">
-                                <h3 class="font-bold text-green-600 border-b pb-2 mb-4">Detail Usaha</h3>
-                                <div>
-                                    <label class="text-xs font-bold text-gray-500">Nama Usaha / Bisnis</label>
-                                    <input type="text" name="soal_1" class="w-full rounded-lg border-gray-300 mt-1" placeholder="Contoh: Kopi Senja">
-                                </div>
-                                <div>
-                                    <label class="text-xs font-bold text-gray-500">Bidang Usaha</label>
-                                    <input type="text" name="soal_2" class="w-full rounded-lg border-gray-300 mt-1" placeholder="Contoh: Kuliner / Fashion">
-                                </div>
-                                <div>
-                                    <label class="text-xs font-bold text-gray-500">Omset Rata-rata per Bulan</label>
-                                    <input type="number" name="soal_3" class="w-full rounded-lg border-gray-300 mt-1" placeholder="Nominal Rupiah">
-                                </div>
-                            </div>
-
-                            {{-- FORM C: PENDIDIKAN --}}
-                            <div id="form_pendidikan" class="form-section hidden space-y-4">
-                                <h3 class="font-bold text-purple-600 border-b pb-2 mb-4">Detail Studi Lanjut</h3>
-                                <div>
-                                    <label class="text-xs font-bold text-gray-500">Nama Universitas / Kampus</label>
-                                    <input type="text" name="soal_1" class="w-full rounded-lg border-gray-300 mt-1">
-                                </div>
-                                <div>
-                                    <label class="text-xs font-bold text-gray-500">Program Studi / Jurusan</label>
-                                    <input type="text" name="soal_2" class="w-full rounded-lg border-gray-300 mt-1">
-                                </div>
-                                <div>
-                                    <label class="text-xs font-bold text-gray-500">Jenjang</label>
-                                    <select name="soal_3" class="w-full rounded-lg border-gray-300 mt-1">
-                                        <option value="S2">S2 (Magister)</option>
-                                        <option value="S3">S3 (Doktor)</option>
-                                        <option value="Profesi">Pendidikan Profesi</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            {{-- FORM D: TIDAK BEKERJA --}}
-                            <div id="form_tidak_bekerja" class="form-section hidden space-y-4">
-                                <div class="p-4 bg-yellow-50 text-yellow-700 rounded-lg text-sm">
-                                    <i class="fas fa-info-circle mr-2"></i> Mohon tetap semangat! Kami akan memberikan rekomendasi lowongan kerja yang sesuai untuk Anda.
-                                </div>
-                                <input type="hidden" name="soal_1" value="-">
-                                <input type="hidden" name="soal_2" value="-">
-                                <input type="hidden" name="soal_3" value="-">
-                            </div>
-
-                        </div>
-
-                        <div class="mt-8 pt-4 border-t border-gray-50 text-right">
-                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold transition shadow-lg shadow-blue-200 transform hover:-translate-y-1">
-                                Simpan Data Tracer
+                        {{-- TOMBOL BATAL & SIMPAN PINDAH KE BAWAH --}}
+                        <div class="mt-8 flex items-center pt-5 border-t border-gray-100 gap-3">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition shadow-sm flex items-center gap-2">
+                                <i class="fas fa-save"></i> Simpan Data
                             </button>
+                            <a href="{{ route('user.tracer.index') }}" class="bg-white border border-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-gray-50 transition shadow-sm text-center">
+                                Batal
+                            </a>
                         </div>
-
                     </form>
                 </div>
             </div>
@@ -154,31 +100,101 @@
 </div>
 
 <script>
-    function toggleForm() {
-        const status = document.getElementById('status_selector').value;
-        const container = document.getElementById('dynamic_forms');
-        const sections = document.querySelectorAll('.form-section');
-        
-        sections.forEach(section => {
-            section.classList.add('hidden');
-            const inputs = section.querySelectorAll('input, select');
-            inputs.forEach(input => input.disabled = true);
+    const statusQuestions = {
+        'bekerja': [
+            'Berapa lama anda mendapatkan pekerjaan?',
+            'Berapa rata-rata pendapatan per bulan anda (Take Home Pay)?',
+            'Lokasi Tempat Anda Bekerja (Provinsi)',
+            'Lokasi Tempat Anda Bekerja (Kota / Kabupaten)',
+            'Jenis Perusahaan tempat anda bekerja',
+            'Nama Perusahaan tempat anda bekerja',
+            'Kategori perusahaan tempat anda bekerja',
+            'Informasi yang anda dapatkan untuk mencari pekerjaan'
+        ],
+        'wiraswasta': [
+            'Apakah jabatan/posisi anda ketika Berwirausaha?',
+            'Nama Usaha anda',
+            'Pendapatan per bulan anda',
+            'Bidang Usaha',
+            'Berapa lama anda memulai usaha?'
+        ],
+        'melanjutkan_pendidikan': [
+            'Jenjang melanjutkan',
+            'Nama Perguruan Tinggi',
+            'Nama Program Studi',
+            'Tanggal Bulan Tahun Masuk',
+            'Sumber Biaya'
+        ],
+        'tidak_bekerja': [
+            'Berapa perusahaan/instansi yang sudah anda lamar?',
+            'Berapa banyak respons lamaran anda?',
+            'Berapa banyak undangan wawancara?'
+        ]
+    };
+
+    function renderSoal(status, values = {}) {
+        const container = document.getElementById('soal-form');
+        container.innerHTML = '';
+
+        let normalizedStatus = status;
+        if(status === 'melanjutkan') normalizedStatus = 'melanjutkan_pendidikan';
+        if(status === 'tidak bekerja') normalizedStatus = 'tidak_bekerja';
+
+        if (!normalizedStatus || !statusQuestions[normalizedStatus]) return;
+
+        let headerText = '';
+        let headerColor = '';
+        if (normalizedStatus === 'bekerja') { headerText = 'Detail Pekerjaan'; headerColor = 'text-blue-600'; }
+        else if (normalizedStatus === 'wiraswasta') { headerText = 'Detail Usaha'; headerColor = 'text-green-600'; }
+        else if (normalizedStatus === 'melanjutkan_pendidikan') { headerText = 'Detail Pendidikan Lanjutan'; headerColor = 'text-purple-600'; }
+        else if (normalizedStatus === 'tidak_bekerja') { headerText = 'Informasi Pencarian Kerja'; headerColor = 'text-amber-600'; }
+
+        container.innerHTML = `
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 mt-2">
+                <h3 class="font-bold text-sm ${headerColor} border-b border-gray-200 pb-2 mb-4">${headerText}</h3>
+                <div id="questions-wrapper" class="space-y-4"></div>
+            </div>
+        `;
+
+        const wrapper = document.getElementById('questions-wrapper');
+
+        statusQuestions[normalizedStatus].forEach((question, index) => {
+            const questionNumber = index + 1;
+            const fieldName = `soal_${questionNumber}`;
+            const fieldValue = values[fieldName] || '';
+
+            const questionElement = document.createElement('div');
+            
+            questionElement.innerHTML = `
+                <label class="block text-gray-700 text-xs font-bold mb-1">${question}</label>
+                <input type="text"
+                       name="${fieldName}"
+                       placeholder="Ketik jawaban Anda..."
+                       class="w-full px-4 py-2 text-sm rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
+                       value="${fieldValue.replace(/"/g, '&quot;')}"
+                       required>
+            `;
+
+            wrapper.appendChild(questionElement);
         });
-
-        container.classList.remove('hidden');
-
-        let activeSectionId = '';
-        if (status === 'bekerja') activeSectionId = 'form_bekerja';
-        else if (status === 'wiraswasta') activeSectionId = 'form_wiraswasta';
-        else if (status === 'melanjutkan_pendidikan') activeSectionId = 'form_pendidikan';
-        else if (status === 'tidak_bekerja') activeSectionId = 'form_tidak_bekerja';
-
-        if (activeSectionId) {
-            const activeSection = document.getElementById(activeSectionId);
-            activeSection.classList.remove('hidden');
-            const activeInputs = activeSection.querySelectorAll('input, select');
-            activeInputs.forEach(input => input.disabled = false); 
-        }
     }
+
+    document.getElementById('status').addEventListener('change', function() {
+        renderSoal(this.value);
+    });
+
+    @php
+        $currentStatus = old('status', '');
+        $initialValues = [];
+        for ($i = 1; $i <= 8; $i++) {
+            $initialValues["soal_$i"] = old("soal_$i", '');
+        }
+    @endphp
+
+    window.addEventListener('DOMContentLoaded', function() {
+        const status = @json($currentStatus);
+        const initialValues = @json($initialValues);
+        if (status) renderSoal(status, initialValues);
+    });
 </script>
 @endsection

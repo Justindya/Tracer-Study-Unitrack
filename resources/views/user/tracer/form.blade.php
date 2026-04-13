@@ -1,5 +1,3 @@
-<script src="https://cdn.tailwindcss.com"></script>
-
 <div class="mb-6">
     <label for="status" class="block text-gray-700 text-sm font-bold mb-2">Status Saat Ini</label>
     <div class="relative">
@@ -21,13 +19,14 @@
     <label for="tanggal_mulai" class="block text-gray-700 text-sm font-bold mb-2">Tanggal Mulai</label>
     <input type="date" name="tanggal_mulai" id="tanggal_mulai" 
            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
-           value="{{ old('tanggal_mulai', $tracer->tanggal_mulai ?? '') }}" required>
+           value="{{ old('tanggal_mulai', isset($tracer) ? \Carbon\Carbon::parse($tracer->tanggal_mulai)->format('Y-m-d') : '') }}" required>
 </div>
 
-<div id="soal-form" class="space-y-6"></div>
+{{-- Container untuk Form Dinamis --}}
+<div id="soal-form" class="space-y-6 mt-8"></div>
 
 <script>
-    // Data Pertanyaan dari V3
+    // Data Pertanyaan Asli V3
     const statusQuestions = {
         'bekerja': [
             'Berapa lama anda mendapatkan pekerjaan?',
@@ -64,12 +63,28 @@
         const container = document.getElementById('soal-form');
         container.innerHTML = '';
 
-        // Mapping jika ada perbedaan value di DB vs JS (jaga-jaga)
         let normalizedStatus = status;
         if(status === 'melanjutkan') normalizedStatus = 'melanjutkan_pendidikan';
         if(status === 'tidak bekerja') normalizedStatus = 'tidak_bekerja';
 
         if (!normalizedStatus || !statusQuestions[normalizedStatus]) return;
+
+        // Tambahkan Header Judul Form secara dinamis
+        let headerText = '';
+        let headerColor = '';
+        if (normalizedStatus === 'bekerja') { headerText = 'Detail Pekerjaan'; headerColor = 'text-blue-600'; }
+        else if (normalizedStatus === 'wiraswasta') { headerText = 'Detail Usaha'; headerColor = 'text-green-600'; }
+        else if (normalizedStatus === 'melanjutkan_pendidikan') { headerText = 'Detail Pendidikan Lanjutan'; headerColor = 'text-purple-600'; }
+        else if (normalizedStatus === 'tidak_bekerja') { headerText = 'Informasi Pencarian Kerja'; headerColor = 'text-amber-600'; }
+
+        container.innerHTML = `
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 mt-4 mb-6">
+                <h3 class="font-bold ${headerColor} border-b pb-2 mb-6">${headerText}</h3>
+                <div id="questions-wrapper" class="space-y-6"></div>
+            </div>
+        `;
+
+        const wrapper = document.getElementById('questions-wrapper');
 
         statusQuestions[normalizedStatus].forEach((question, index) => {
             const questionNumber = index + 1;
@@ -77,9 +92,7 @@
             const fieldValue = values[fieldName] || '';
 
             const questionElement = document.createElement('div');
-            questionElement.className = 'mb-6'; // Styling margin antar pertanyaan
-
-            // Styling Input agar sesuai Figma (Tailwind)
+            
             questionElement.innerHTML = `
                 <label class="block text-gray-700 text-sm font-bold mb-2">${question}</label>
                 <input type="text"
@@ -90,7 +103,7 @@
                        required>
             `;
 
-            container.appendChild(questionElement);
+            wrapper.appendChild(questionElement);
         });
     }
 
@@ -98,20 +111,27 @@
         renderSoal(this.value);
     });
 
-    // Inisialisasi Form (Untuk Edit atau saat ada Error validasi)
+    // Logika Pengambilan Data Untuk Form Edit
     @php
         $currentStatus = old('status', $tracer->status ?? '');
         $initialValues = [];
         
-        if (isset($tracer) || old('status')) {
-            // Ambil data lama jika form gagal submit
-            for ($i = 1; $i <= 8; $i++) {
-                // Prioritas: Input Lama (old) -> Data DB -> Kosong
-                $dbValue = '';
-                // Logika pengambilan data DB disederhanakan karena view tidak akses model relasi langsung
-                // Data lama akan otomatis terisi oleh helper old() Laravel di blade input value
-                $initialValues["soal_$i"] = old("soal_$i", $dbValue);
+        if (isset($tracer)) {
+            // Jika Mode Edit, ambil dari relasi model
+            if ($tracer->status == 'bekerja' && $tracer->alumni->bekerja) {
+                $initialValues = $tracer->alumni->bekerja->toArray();
+            } elseif ($tracer->status == 'wiraswasta' && $tracer->alumni->wiraswasta) {
+                $initialValues = $tracer->alumni->wiraswasta->toArray();
+            } elseif ($tracer->status == 'melanjutkan_pendidikan' && $tracer->alumni->melanjutkanPendidikan) {
+                $initialValues = $tracer->alumni->melanjutkanPendidikan->toArray();
+            } elseif ($tracer->status == 'tidak_bekerja' && $tracer->alumni->tidakBekerja) {
+                $initialValues = $tracer->alumni->tidakBekerja->toArray();
             }
+        }
+
+        // Overwrite dengan data inputan (old) jika validasi gagal
+        for ($i = 1; $i <= 8; $i++) {
+            $initialValues["soal_$i"] = old("soal_$i", $initialValues["soal_$i"] ?? '');
         }
     @endphp
 

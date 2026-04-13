@@ -1,112 +1,132 @@
-<x-app-layout>
-    <div class="py-8 bg-gray-50 min-h-screen font-sans">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row gap-6">
-                
-                <div class="w-full md:w-1/4">
-                    <div class="bg-white rounded-xl shadow-sm p-5 text-center sticky top-24 border border-gray-100">
-                        <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 text-blue-600 text-2xl font-bold border-4 border-blue-50 shadow-sm">
-                            {{ substr(Auth::user()->name, 0, 1) }} 
-                        </div>
-                        <h2 class="text-lg font-bold text-gray-900 truncate">{{ Auth::user()->name }}</h2>
-                        <p class="text-gray-500 text-xs mb-5">Mahasiswa / Alumni</p>
+@extends('layouts.app')
 
-                        <div class="space-y-1 text-left">
-                            <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-blue-50 hover:text-blue-600">
-                                <i class="fas fa-th-large w-4 text-center"></i> Overview
-                            </a>
-                            <a href="{{ route('user.tracer.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition bg-blue-600 text-white shadow-md shadow-blue-200">
-                                <i class="fas fa-folder-open w-4 text-center"></i> Data Tracer
-                            </a>
-                            <a href="{{ route('user.lamaran.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-blue-50 hover:text-blue-600">
-                                <i class="fas fa-file-alt w-4 text-center"></i> Lamaran Saya
-                            </a>
-                            <a href="{{ route('user.bookmark.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-blue-50 hover:text-blue-600">
-                                <i class="fas fa-bookmark w-4 text-center"></i> Bookmark
-                            </a>
-                            <a href="{{ route('user.rekomendasi') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-blue-50 hover:text-blue-600">
-                                <i class="fas fa-magic w-4 text-center"></i> Rekomendasi
-                            </a>
+@section('content')
+<div class="bg-gray-50 min-h-screen py-8 font-sans">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row gap-6">
+            
+            {{-- SIDEBAR KIRI (DASHBOARD) --}}
+            <div class="w-full lg:w-1/4">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center sticky top-24">
+                    <div class="relative w-20 h-20 mx-auto mb-4">
+                        <div class="w-full h-full bg-gradient-to-tr from-blue-500 to-indigo-500 rounded-full p-[2px] shadow-sm">
+                            <div class="w-full h-full bg-white rounded-full flex items-center justify-center overflow-hidden border-2 border-white">
+                                @if(Auth::user()->alumni && Auth::user()->alumni->Foto)
+                                    <img src="{{ asset('storage/' . Auth::user()->alumni->Foto) }}" class="w-full h-full object-cover">
+                                @else
+                                    <span class="text-2xl font-bold text-gray-700">{{ substr(Auth::user()->name, 0, 1) }}</span>
+                                @endif
+                            </div>
                         </div>
+                    </div>
+
+                    <h2 class="text-base font-bold text-gray-800 truncate px-2">{{ Auth::user()->name }}</h2>
+                    <p class="text-gray-500 text-xs mb-6 font-medium">Mahasiswa / Alumni</p>
+
+                    <nav class="space-y-1.5 text-left">
+                        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
+                            <i class="fas fa-home w-5 text-center"></i> Overview
+                        </a>
+                        {{-- MENU AKTIF --}}
+                        <a href="{{ route('user.tracer.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-semibold transition bg-blue-50 text-blue-700">
+                            <i class="fas fa-clipboard-list w-5 text-center"></i> Data Tracer
+                        </a>
+                        <a href="{{ route('user.lamaran.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
+                            <i class="fas fa-briefcase w-5 text-center"></i> Lamaran Saya
+                        </a>
+                        <a href="{{ route('user.bookmark.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
+                            <i class="fas fa-bookmark w-5 text-center"></i> Bookmark
+                        </a>
+                        <a href="{{ route('user.rekomendasi') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
+                            <i class="fas fa-star w-5 text-center"></i> Rekomendasi
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            {{-- KONTEN KANAN --}}
+            <div class="w-full lg:w-3/4 space-y-6">
+                
+                {{-- HEADER DIRAPIKAN --}}
+                <div class="pb-1 border-b border-gray-200/60 mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Data Karir Alumni</h1>
+                        <p class="text-sm text-gray-500 mt-1 font-medium">Riwayat data tracer study yang telah Anda isi.</p>
+                    </div>
+                    <div class="flex gap-2 pb-1">
+                        <a href="{{ route('user.tracer.cv') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-indigo-700 transition shadow-sm flex items-center gap-2">
+                            <i class="fas fa-file-pdf"></i> Download CV ATS
+                        </a>
+                        <a href="{{ route('user.tracer.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-blue-700 transition shadow-sm flex items-center gap-2">
+                            <i class="fas fa-plus"></i> Tambah Data
+                        </a>
                     </div>
                 </div>
 
-                <div class="w-full md:w-3/4">
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <div>
-                                <h1 class="text-xl font-bold text-gray-900">Data Karir Alumni</h1>
-                                <p class="text-sm text-gray-500">Riwayat data tracer study yang telah Anda isi.</p>
-                            </div>
-                            
-                            {{-- INI TAMBAHAN TOMBOL DOWNLOAD CV --}}
-                            <div class="flex gap-2">
-                                <a href="{{ route('user.tracer.cv') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-700 transition shadow-sm flex items-center gap-2" title="Otomatis buat CV dari profilmu">
-                                    <i class="fas fa-file-pdf"></i> Download CV ATS
-                                </a>
-                                <a href="{{ route('user.tracer.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition shadow-sm flex items-center gap-2">
-                                    <i class="fas fa-plus"></i> Tambah Data
-                                </a>
-                            </div>
-                        </div>
+                @if (session('success'))
+                    <div class="p-3.5 bg-green-50 border border-green-200 text-green-700 text-sm font-semibold rounded-xl shadow-sm flex items-center gap-2">
+                        <i class="fas fa-check-circle text-green-500"></i> {{ session('success') }}
+                    </div>
+                @endif
 
-                        @if (session('success'))
-                            <div class="mb-4 p-4 bg-green-50 border-l-4 border-green-500 text-green-700 text-sm rounded-r-lg shadow-sm">
-                                <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
-                            </div>
-                        @endif
-
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left text-gray-500 border border-gray-100 rounded-lg overflow-hidden">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-3">No</th>
-                                        <th class="px-6 py-3">Status Karir</th>
-                                        <th class="px-6 py-3">Tanggal Mulai</th>
-                                        <th class="px-6 py-3 text-center">Aksi</th>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600">
+                            <thead class="text-xs text-gray-500 uppercase bg-gray-50/50 border-b border-gray-100">
+                                <tr>
+                                    <th class="px-6 py-4 font-bold tracking-wider">No</th>
+                                    <th class="px-6 py-4 font-bold tracking-wider">Status Karir</th>
+                                    <th class="px-6 py-4 font-bold tracking-wider">Tanggal Mulai</th>
+                                    <th class="px-6 py-4 font-bold tracking-wider text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                @forelse ($tracers as $tracer)
+                                    <tr class="hover:bg-blue-50/30 transition">
+                                        <td class="px-6 py-4 font-medium text-gray-900">{{ $loop->iteration }}</td>
+                                        <td class="px-6 py-4">
+                                            <span class="bg-blue-50 text-blue-700 text-[10px] font-semibold px-2 py-1 rounded border border-blue-100 uppercase tracking-wider">
+                                                {{ str_replace('_', ' ', $tracer->status) }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 font-medium text-gray-900">
+                                            {{ \Carbon\Carbon::parse($tracer->tanggal_mulai)->format('d M Y') }}
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            <div class="flex justify-center items-center gap-2">
+                                                <a href="{{ route('user.tracer.show', $tracer->id) }}" class="text-gray-400 hover:text-blue-600 bg-gray-50 hover:bg-blue-50 border border-gray-200 hover:border-blue-200 w-8 h-8 rounded-lg flex items-center justify-center transition shadow-sm" title="Lihat Detail">
+                                                    <i class="fas fa-eye text-xs"></i>
+                                                </a>
+                                                <a href="{{ route('user.tracer.edit', $tracer->id) }}" class="text-gray-400 hover:text-yellow-600 bg-gray-50 hover:bg-yellow-50 border border-gray-200 hover:border-yellow-200 w-8 h-8 rounded-lg flex items-center justify-center transition shadow-sm" title="Edit Data">
+                                                    <i class="fas fa-edit text-xs"></i>
+                                                </a>
+                                                <form action="{{ route('user.tracer.destroy', $tracer->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus data ini secara permanen?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-gray-400 hover:text-red-600 bg-gray-50 hover:bg-red-50 border border-gray-200 hover:border-red-200 w-8 h-8 rounded-lg flex items-center justify-center transition shadow-sm" title="Hapus Data">
+                                                        <i class="fas fa-trash-alt text-xs"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($tracers as $tracer)
-                                        <tr class="bg-white border-b hover:bg-gray-50 transition">
-                                            <td class="px-6 py-4">{{ $loop->iteration }}</td>
-                                            <td class="px-6 py-4">
-                                                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                                                    {{ ucwords(str_replace('_', ' ', $tracer->status)) }}
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 font-medium text-gray-900">
-                                                {{ \Carbon\Carbon::parse($tracer->tanggal_mulai)->format('d M Y') }}
-                                            </td>
-                                            <td class="px-6 py-4 text-center">
-                                                <div class="flex justify-center gap-2">
-                                                    <a href="{{ route('user.tracer.show', $tracer->id) }}" class="text-blue-500 hover:text-blue-700 border border-blue-200 hover:bg-blue-50 p-1.5 rounded transition" title="Lihat Detail">
-                                                        <i class="fas fa-eye"></i>
-                                                    </a>
-                                                    <a href="{{ route('user.tracer.edit', $tracer->id) }}" class="text-yellow-500 hover:text-yellow-700 border border-yellow-200 hover:bg-yellow-50 p-1.5 rounded transition" title="Edit Data">
-                                                        <i class="fas fa-edit"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="4" class="px-6 py-8 text-center text-gray-400">
-                                                <div class="flex flex-col items-center justify-center">
-                                                    <i class="fas fa-folder-open text-3xl mb-2 text-gray-300"></i>
-                                                    <p>Belum ada data tracer.</p>
-                                                    <p class="text-xs mt-1">Isi data Tracer untuk bisa mencetak CV ATS.</p>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="px-6 py-12 text-center">
+                                            <div class="w-14 h-14 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-3 border border-gray-100">
+                                                <i class="fas fa-folder-open text-xl text-gray-400"></i>
+                                            </div>
+                                            <h3 class="text-sm font-bold text-gray-800 mb-1">Belum ada data tracer</h3>
+                                            <p class="text-gray-500 text-xs">Isi data Tracer untuk bisa mencetak CV ATS.</p>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

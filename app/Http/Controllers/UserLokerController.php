@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UserLokerController extends Controller
 {
-    /**
-     * MENAMPILKAN DAFTAR LOWONGAN (LOKER)
-     */
     public function index(Request $request)
     {
         $query = Loker::latest();
@@ -36,27 +33,39 @@ class UserLokerController extends Controller
     }
 
     /**
-     * PROSES MELAMAR PEKERJAAN
-     * Disimpan ke tabel 'user_lokers'
+     * PROSES MELAMAR & UPDATE STATUS (BUG FIXED)
      */
     public function store(Request $request)
     {
         $userId = Auth::id();
         $lokerId = $request->loker_id;
-        $exists = user_loker::where('user_id', $userId)
-                            ->where('loker_id', $lokerId)
-                            ->exists();
+        $status = $request->status ?? 'terkirim'; 
 
-        if (!$exists) {
+        // Cari apakah lamaran sudah ada
+        $lamaran = user_loker::where('user_id', $userId)
+                             ->where('loker_id', $lokerId)
+                             ->first();
+
+        // Jika BELUM PERNAH melamar -> Buat Baru
+        if (!$lamaran) {
             user_loker::create([
                 'user_id' => $userId,
                 'loker_id' => $lokerId,
-                'status' => 'terkirim' 
+                'status' => $status 
             ]);
             
             return response()->json([
                 'status' => 'success', 
                 'message' => 'Lamaran berhasil dicatat di sistem.'
+            ]);
+        }
+
+        // Jika SUDAH PERNAH melamar DAN ada request perubahan status (Dari fitur Lamaran Saya) -> UPDATE
+        if ($request->has('status')) {
+            $lamaran->update(['status' => $status]);
+            return response()->json([
+                'status' => 'success', 
+                'message' => 'Status berhasil diperbarui.'
             ]);
         }
 
@@ -66,9 +75,6 @@ class UserLokerController extends Controller
         ]);
     }
 
-    /**
-     * HALAMAN DETAIL LOKER
-     */
     public function show($id)
     {
         $loker = \App\Models\Loker::findOrFail($id);
@@ -93,17 +99,11 @@ class UserLokerController extends Controller
         return view('user.lamaran_index', compact('lamarans'));
     }
 
-    /**
-     * HALAMAN BOOKMARK
-     */
     public function bookmarks()
     {
         return view('user.bookmark_index'); 
     }
 
-    /**
-     * HALAMAN REKOMENDASI LOKER
-     */
     public function rekomendasi()
     {
         $lokers = Loker::latest()->get(); 
