@@ -5,7 +5,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row gap-6">
             
-            {{-- SIDEBAR KIRI (DASHBOARD) --}}
+            {{-- SIDEBAR KIRI - TETAP SAMA (DILARANG UBAH) --}}
             <div class="w-full lg:w-1/4">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center sticky top-24">
                     <div class="relative w-20 h-20 mx-auto mb-4">
@@ -33,7 +33,6 @@
                         <a href="{{ route('user.lamaran.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
                             <i class="fas fa-briefcase w-5 text-center"></i> Lamaran Saya
                         </a>
-                        {{-- MENU AKTIF --}}
                         <a href="{{ route('user.bookmark.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-semibold transition bg-blue-50 text-blue-700">
                             <i class="fas fa-bookmark w-5 text-center"></i> Bookmark
                         </a>
@@ -47,21 +46,22 @@
             {{-- KONTEN KANAN --}}
             <div class="w-full lg:w-3/4 space-y-6">
                 
-                {{-- HEADER DIRAPIKAN --}}
+                {{-- HEADER TETAP text-2xl --}}
                 <div class="pb-1 border-b border-gray-200/60 mb-4 flex justify-between items-end gap-4">
                     <div>
                         <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Bookmark Saya</h1>
                         <p class="text-sm text-gray-500 mt-1 font-medium">Lowongan yang Anda simpan.</p>
                     </div>
-                    <button id="btn-clear" onclick="clearBookmarks()" class="hidden text-red-500 text-xs font-bold hover:bg-red-50 px-3 py-1.5 rounded-lg transition border border-red-100 mb-1">
-                        <i class="fas fa-trash-alt mr-1"></i> Hapus Semua
+                    <button id="btn-clear" onclick="clearBookmarks()" class="hidden text-red-600 text-xs font-bold hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg transition border border-red-200 flex items-center gap-2 mb-1 shadow-sm">
+                        <i class="fas fa-trash-alt"></i> Hapus Semua
                     </button>
                 </div>
 
-                <div id="bookmark-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                {{-- GRID COLS 1 (LIST VERTIKAL) --}}
+                <div id="bookmark-container" class="grid grid-cols-1 gap-3"></div>
 
-                <div id="empty-state" class="hidden bg-white rounded-xl shadow-sm border border-gray-100 p-10 text-center">
-                    <div class="w-14 h-14 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100">
+                <div id="empty-state" class="hidden bg-white rounded-xl shadow-sm border border-gray-100 p-10 text-center flex flex-col items-center">
+                    <div class="w-14 h-14 bg-gray-50 rounded-full flex items-center justify-center mb-4 border border-gray-100">
                         <i class="far fa-bookmark text-xl text-gray-400"></i>
                     </div>
                     <h3 class="text-base font-bold text-gray-800 mb-1">Belum ada bookmark</h3>
@@ -92,23 +92,35 @@
             btnClear.classList.remove('hidden');
             bookmarks.forEach(job => {
                 const card = `
-                    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow transition duration-200 flex flex-col items-start gap-3 h-full">
-                        <div class="flex items-center gap-4 w-full">
-                            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-lg font-bold flex-shrink-0 border border-blue-100">
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:border-blue-200 transition duration-300 flex items-center justify-between gap-4">
+                        
+                        <div class="flex items-center gap-4 min-w-0 flex-1">
+                            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-lg font-black flex-shrink-0 border border-blue-100">
                                 ${job.company.substring(0, 2).toUpperCase()}
                             </div>
-                            <div class="flex-1 min-w-0">
-                                <h3 class="text-sm font-bold text-gray-800 truncate transition hover:text-blue-600">${job.title}</h3>
-                                <p class="text-xs text-gray-500 font-medium truncate mt-0.5">${job.company}</p>
+                            
+                            <div class="min-w-0 text-left">
+                                <h3 class="text-sm font-bold text-gray-800 truncate group-hover:text-blue-600 transition">
+                                    ${job.title}
+                                </h3>
+                                <p class="text-[11px] text-gray-500 font-medium truncate mt-0.5">
+                                    ${job.company}
+                                </p>
                             </div>
                         </div>
                         
-                        <div class="w-full pt-3 mt-auto border-t border-gray-50 flex justify-between items-center">
-                            <button onclick="removeOne('${job.id}')" class="text-xs text-red-500 hover:text-red-700 font-medium flex items-center gap-1 transition">
-                                <i class="fas fa-trash-alt"></i> Hapus
+                        <div class="flex items-center gap-3 flex-shrink-0">
+                            <button onclick="removeOne('${job.id}')" 
+                                    class="w-9 h-9 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition flex items-center justify-center" 
+                                    title="Hapus dari Bookmark">
+                                <i class="fas fa-trash-alt text-sm"></i>
                             </button>
-                            <a href="${job.url}" class="text-xs font-semibold text-blue-600 hover:underline">Lihat Detail</a>
+
+                            <a href="${job.url}" class="w-9 h-9 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-500 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 transition shadow-sm" title="Lihat Lowongan">
+                                <i class="fas fa-chevron-right text-xs"></i>
+                            </a>
                         </div>
+
                     </div>
                 `;
                 container.innerHTML += card;
@@ -117,14 +129,16 @@
     }
 
     function removeOne(id) {
-        let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
-        bookmarks = bookmarks.filter(job => job.id != id);
-        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-        renderBookmarks();
+        if(confirm('Hapus lowongan ini dari bookmark?')) {
+            let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+            bookmarks = bookmarks.filter(job => job.id != id);
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+            renderBookmarks();
+        }
     }
 
     function clearBookmarks() {
-        if(confirm('Hapus semua bookmark?')) {
+        if(confirm('Hapus SEMUA bookmark Anda?')) {
             localStorage.removeItem('bookmarks');
             renderBookmarks();
         }

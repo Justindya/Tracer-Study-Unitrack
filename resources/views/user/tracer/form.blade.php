@@ -26,7 +26,6 @@
 <div id="soal-form" class="space-y-6 mt-8"></div>
 
 <script>
-    // Data Pertanyaan Asli V3
     const statusQuestions = {
         'bekerja': [
             'Berapa lama anda mendapatkan pekerjaan?',
@@ -69,7 +68,6 @@
 
         if (!normalizedStatus || !statusQuestions[normalizedStatus]) return;
 
-        // Tambahkan Header Judul Form secara dinamis
         let headerText = '';
         let headerColor = '';
         if (normalizedStatus === 'bekerja') { headerText = 'Detail Pekerjaan'; headerColor = 'text-blue-600'; }
@@ -111,13 +109,11 @@
         renderSoal(this.value);
     });
 
-    // Logika Pengambilan Data Untuk Form Edit
     @php
         $currentStatus = old('status', $tracer->status ?? '');
         $initialValues = [];
         
         if (isset($tracer)) {
-            // Jika Mode Edit, ambil dari relasi model
             if ($tracer->status == 'bekerja' && $tracer->alumni->bekerja) {
                 $initialValues = $tracer->alumni->bekerja->toArray();
             } elseif ($tracer->status == 'wiraswasta' && $tracer->alumni->wiraswasta) {
@@ -129,7 +125,6 @@
             }
         }
 
-        // Overwrite dengan data inputan (old) jika validasi gagal
         for ($i = 1; $i <= 8; $i++) {
             $initialValues["soal_$i"] = old("soal_$i", $initialValues["soal_$i"] ?? '');
         }

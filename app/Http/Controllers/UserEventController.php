@@ -42,6 +42,7 @@ class UserEventController extends Controller
         if ($exists) {
             return redirect()->back()->with('error', 'Anda sudah terdaftar di event ini!');
         }
+        
         user_event::create([
             'user_id' => $userId,
             'event_id' => $eventId
@@ -65,5 +66,20 @@ class UserEventController extends Controller
     public function create() {}
     public function edit(user_event $user_event) {}
     public function update(Request $request, user_event $user_event) {}
-    public function destroy(user_event $user_event) {}
+    
+    public function destroy($id) 
+    {
+        $userId = Auth::id();
+        
+        $registration = user_event::where('user_id', $userId)
+                                  ->where('event_id', $id)
+                                  ->first();
+
+        if ($registration) {
+            $registration->delete(); 
+            return redirect()->back()->with('success', 'Berhasil membatalkan pendaftaran event.');
+        }
+
+        return redirect()->back()->with('error', 'Data pendaftaran tidak ditemukan.');
+    }
 }

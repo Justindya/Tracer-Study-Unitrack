@@ -17,6 +17,21 @@
     <style>
         body { font-family: 'Poppins', sans-serif; }
         a { text-decoration: none; } 
+
+        input[type="text"], 
+        input[type="search"], 
+        select, 
+        .search-container {
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            background-color: transparent !important;
+        }
+
+        .flex.items-center.border.rounded-xl {
+            border: none !important;
+            box-shadow: none !important;
+        }
     </style>
 </head>
 
@@ -39,31 +54,23 @@
                             
                             @if(trim(strtolower(Auth::user()->role)) == 'admin')
                                 {{-- === MENU KHUSUS ADMIN === --}}
-                                <a href="{{ route('admin.dashboard') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ request()->routeIs('admin.dashboard') ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Dashboard</a>
-                                <a href="{{ route('admin.alumni.index') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ request()->routeIs('admin.alumni.*') ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Kelola Alumni</a>
-                                <a href="{{ route('admin.event.index') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ request()->routeIs('admin.event.*') ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Kelola Event</a>
-                                <a href="{{ route('admin.loker.index') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ request()->routeIs('admin.loker.*') ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Kelola Loker</a>
-                                <a href="{{ route('admin.tracer.index') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ request()->routeIs('admin.tracer.*') ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Data Tracer</a>
+                                <a href="{{ route('admin.dashboard') }}" class="transition h-full flex items-center {{ request()->routeIs('admin.dashboard') ? 'text-blue-600 font-bold' : 'text-gray-500 hover:text-blue-600 font-medium' }}">Dashboard</a>
+                                <a href="{{ route('admin.alumni.index') }}" class="transition h-full flex items-center {{ request()->routeIs('admin.alumni.*') ? 'text-blue-600 font-bold' : 'text-gray-500 hover:text-blue-600 font-medium' }}">Kelola Alumni</a>
+                                <a href="{{ route('admin.event.index') }}" class="transition h-full flex items-center {{ request()->routeIs('admin.event.*') ? 'text-blue-600 font-bold' : 'text-gray-500 hover:text-blue-600 font-medium' }}">Kelola Event</a>
+                                <a href="{{ route('admin.loker.index') }}" class="transition h-full flex items-center {{ request()->routeIs('admin.loker.*') ? 'text-blue-600 font-bold' : 'text-gray-500 hover:text-blue-600 font-medium' }}">Kelola Loker</a>
+                                <a href="{{ route('admin.tracer.index') }}" class="transition h-full flex items-center {{ request()->routeIs('admin.tracer.*') ? 'text-blue-600 font-bold' : 'text-gray-500 hover:text-blue-600 font-medium' }}">Data Tracer</a>
                             @else
                                 {{-- === MENU KHUSUS USER === --}}
-                                <a href="{{ route('dashboard') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ request()->routeIs('dashboard') ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Dashboard</a>
-                                <a href="{{ route('user.lokers.index') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ request()->routeIs('user.lokers.*') ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Lowongan</a>
-                                
-                                {{-- Network hanya nyala di index/show, mati saat edit profile --}}
-                                <a href="{{ route('user.alumni.index') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ (request()->routeIs('user.alumni.index') || request()->routeIs('user.alumni.show')) ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Network</a>
-                                
-                                <a href="{{ route('user.events.index') }}" class="text-gray-500 hover:text-blue-600 font-medium text-[15px] transition h-full flex items-center {{ request()->routeIs('user.events.*') ? 'border-b-2 border-blue-600 text-blue-600 font-semibold' : '' }}">Events</a>
-                                
-                                {{-- MENU TRACER SUDAH DIHAPUS DARI SINI --}}
+                                <a href="{{ route('dashboard') }}" class="transition h-full flex items-center {{ request()->routeIs('dashboard') ? 'text-blue-600 font-bold' : 'text-gray-500 hover:text-blue-600 font-medium' }}">Dashboard</a>
+                                <a href="{{ route('user.lokers.index') }}" class="transition h-full flex items-center {{ request()->routeIs('user.lokers.*') ? 'text-blue-600 font-bold' : 'text-gray-500 hover:text-blue-600 font-medium' }}">Lowongan</a>
+                                <a href="{{ route('user.alumni.index') }}" class="transition h-full flex items-center {{ (request()->routeIs('user.alumni.index') || request()->routeIs('user.alumni.show')) ? 'text-blue-600 font-bold' : 'text-gray-500 hover:text-blue-600 font-medium' }}">Network</a>
+                                <a href="{{ route('user.events.index') }}" class="transition h-full flex items-center {{ request()->routeIs('user.events.*') ? 'text-blue-600 font-bold' : 'text-gray-500 hover:text-blue-600 font-medium' }}">Events</a>
                             @endif
 
                         </div>
                     </div>
 
                     <div class="hidden sm:flex sm:items-center sm:ml-6 gap-4">
-                        
-                        {{-- LONCENG NOTIFIKASI SUDAH DIHAPUS --}}
-
                         <div class="relative group">
                             <button class="flex items-center gap-3 focus:outline-none transition duration-150 ease-in-out">
                                 <div class="text-right hidden md:block">

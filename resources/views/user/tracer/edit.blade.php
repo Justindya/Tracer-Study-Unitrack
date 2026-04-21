@@ -5,7 +5,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row gap-8">
             
-            {{-- SIDEBAR KIRI (IDENTIK DENGAN DASHBOARD) --}}
+            {{-- SIDEBAR KIRI --}}
             <div class="w-full lg:w-1/4">
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center sticky top-24">
                     <div class="relative w-24 h-24 mx-auto mb-4">
@@ -48,17 +48,16 @@
             <div class="w-full lg:w-3/4 space-y-6">
                 <div class="bg-white rounded-2xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-gray-100 p-8">
                     
-                    {{-- HEADER DIRAPIKAN --}}
-                    <div class="pb-2 border-b border-gray-200 mb-8">
-                        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Edit Data Tracer</h1>
-                        <p class="text-sm text-gray-500 mt-1.5 font-medium">Perbarui data karir Anda yang telah lalu.</p>
+                    {{-- HEADER  --}}
+                    <div class="pb-3 border-b border-gray-200 mb-6">
+                        <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Edit Data Tracer</h1>
+                        <p class="text-sm text-gray-500 mt-1 font-medium">Perbarui data karir Anda yang telah lalu.</p>
                     </div>
 
-                    {{-- LOGIKA TARIK DATA (AUTO-NORMALIZATION) --}}
+                    {{-- LOGIKA TARIK DATA --}}
                     @php
                         $rawStatus = $tracer->status;
                         $normStatus = $rawStatus;
-                        // Koreksi perbedaan kata dari DB lama
                         if($rawStatus == 'melanjutkan') $normStatus = 'melanjutkan_pendidikan';
                         if($rawStatus == 'tidak bekerja') $normStatus = 'tidak_bekerja';
                     @endphp
@@ -67,10 +66,11 @@
                         @csrf
                         @method('PUT')
                         
-                        <div class="mb-6">
-                            <label for="status" class="block text-gray-700 text-xs font-bold mb-2 uppercase tracking-wide">Status Saat Ini</label>
+                        {{-- LABEL --}}
+                        <div class="mb-5">
+                            <label for="status" class="block text-gray-800 text-sm font-bold mb-2">Status Saat Ini</label>
                             <div class="relative">
-                                <select name="status" id="status" class="w-full px-4 py-3 text-sm font-semibold rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none bg-white appearance-none transition cursor-pointer" required>
+                                <select name="status" id="status" class="w-full px-4 py-2.5 text-sm font-medium rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none bg-white appearance-none transition cursor-pointer" required>
                                     <option value="">-- Pilih Status --</option>
                                     <option value="bekerja" {{ old('status', $normStatus) == 'bekerja' ? 'selected' : '' }}>Bekerja (Full Time/Part Time)</option>
                                     <option value="wiraswasta" {{ old('status', $normStatus) == 'wiraswasta' ? 'selected' : '' }}>Wiraswasta / Memiliki Usaha</option>
@@ -83,21 +83,21 @@
                             </div>
                         </div>
 
-                        <div class="mb-6">
-                            <label for="tanggal_mulai" class="block text-gray-700 text-xs font-bold mb-2 uppercase tracking-wide">Tanggal Mulai</label>
+                        <div class="mb-5">
+                            <label for="tanggal_mulai" class="block text-gray-800 text-sm font-bold mb-2">Tanggal Mulai</label>
                             <input type="date" name="tanggal_mulai" id="tanggal_mulai" 
-                                   class="w-full px-4 py-3 text-sm font-semibold rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
+                                   class="w-full px-4 py-2.5 text-sm font-medium rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
                                    value="{{ old('tanggal_mulai', \Carbon\Carbon::parse($tracer->tanggal_mulai)->format('Y-m-d')) }}" required>
                         </div>
 
-                        <div id="soal-form" class="space-y-5 mt-8"></div>
+                        <div id="soal-form" class="space-y-4 mt-6"></div>
 
                         {{-- TOMBOL AKSI BAWAH --}}
-                        <div class="mt-10 flex flex-col sm:flex-row items-center pt-6 border-t border-gray-100 gap-3 justify-end">
-                            <a href="{{ route('user.tracer.index') }}" class="w-full sm:w-auto bg-white border border-gray-200 text-gray-700 px-8 py-3 rounded-xl font-bold text-sm hover:bg-gray-50 transition shadow-sm text-center">
+                        <div class="mt-8 flex flex-col sm:flex-row items-center pt-5 border-t border-gray-100 gap-3 justify-end">
+                            <a href="{{ route('user.tracer.index') }}" class="w-full sm:w-auto bg-white border border-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-bold text-sm hover:bg-gray-50 transition shadow-sm text-center">
                                 Batal
                             </a>
-                            <button type="submit" class="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-3 rounded-xl font-bold text-sm transition shadow-sm flex items-center justify-center gap-2">
+                            <button type="submit" class="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition shadow-sm flex items-center justify-center gap-2">
                                 <i class="fas fa-save"></i> Update Data
                             </button>
                         </div>
@@ -150,15 +150,15 @@
 
         let headerText = '';
         let headerColor = '';
-        if (status === 'bekerja') { headerText = 'Detail Pekerjaan'; headerColor = 'text-blue-600'; }
-        else if (status === 'wiraswasta') { headerText = 'Detail Usaha'; headerColor = 'text-green-600'; }
-        else if (status === 'melanjutkan_pendidikan') { headerText = 'Detail Pendidikan Lanjutan'; headerColor = 'text-purple-600'; }
-        else if (status === 'tidak_bekerja') { headerText = 'Informasi Pencarian Kerja'; headerColor = 'text-amber-600'; }
+        if (status === 'bekerja') { headerText = 'Detail Pekerjaan'; headerColor = 'text-blue-700'; }
+        else if (status === 'wiraswasta') { headerText = 'Detail Usaha'; headerColor = 'text-green-700'; }
+        else if (status === 'melanjutkan_pendidikan') { headerText = 'Detail Pendidikan Lanjutan'; headerColor = 'text-blue-700'; }
+        else if (status === 'tidak_bekerja') { headerText = 'Informasi Pencarian Kerja'; headerColor = 'text-yellow-700'; }
 
         container.innerHTML = `
-            <div class="bg-gray-50/80 p-6 sm:p-8 rounded-2xl border border-gray-100 mt-2 shadow-sm">
-                <h3 class="font-black text-sm ${headerColor} border-b border-gray-200 pb-3 mb-6 uppercase tracking-wider">${headerText}</h3>
-                <div id="questions-wrapper" class="space-y-5"></div>
+            <div class="bg-gray-50/80 p-5 rounded-lg border border-gray-200 mt-2 shadow-sm">
+                <h3 class="font-bold text-base ${headerColor} border-b border-gray-200 pb-2 mb-4">${headerText}</h3>
+                <div id="questions-wrapper" class="space-y-4"></div>
             </div>
         `;
 
@@ -172,11 +172,11 @@
             const questionElement = document.createElement('div');
             
             questionElement.innerHTML = `
-                <label class="block text-gray-700 text-xs font-bold mb-1.5">${question}</label>
+                <label class="block text-gray-800 text-sm font-bold mb-1.5">${question}</label>
                 <input type="text"
                        name="${fieldName}"
-                       placeholder="Ketik jawaban Anda..."
-                       class="w-full px-4 py-3 text-sm font-semibold rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition shadow-sm"
+                       placeholder="Jawaban Anda..."
+                       class="w-full px-4 py-2.5 text-sm font-medium rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition shadow-sm"
                        value="${fieldValue.replace(/"/g, '&quot;')}"
                        required>
             `;
@@ -189,7 +189,6 @@
         renderSoal(this.value);
     });
 
-    {{-- Penarikan Data menggunakan Normalized Status --}}
     @php
         $initialValues = [];
         $alumniId = Auth::user()->alumni->id ?? $tracer->alumni_id;

@@ -48,7 +48,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('user')->group(function () {
         Route::resource('alumni', UserAlumniController::class, ['as' => 'user'])->only(['index', 'show', 'edit', 'update']);
-        Route::resource('events', UserEventController::class, ['as' => 'user'])->only(['index', 'show', 'store']);
+        
+        Route::resource('events', UserEventController::class, ['as' => 'user'])->only(['index', 'show', 'store', 'destroy']);
+        
         Route::resource('lokers', UserLokerController::class, ['as' => 'user'])->only(['index', 'show', 'store']);
     
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

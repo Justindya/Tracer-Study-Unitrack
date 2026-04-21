@@ -47,7 +47,7 @@
             {{-- KONTEN KANAN --}}
             <div class="w-full lg:w-3/4 space-y-6">
                 
-                {{-- HEADER DIRAPIKAN --}}
+                {{-- HEADER --}}
                 <div class="pb-1 border-b border-gray-200/60 mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
                     <div>
                         <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Data Karir Alumni</h1>
