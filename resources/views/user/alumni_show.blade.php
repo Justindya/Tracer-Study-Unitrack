@@ -68,13 +68,13 @@
                             </div>
                             <div>
                                 <span class="text-[10px] text-gray-400 uppercase tracking-wider block mb-1">Status</span>
-                                @if($alumni->tahun_lulus)
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-green-50 text-green-700">
-                                        Lulus {{ $alumni->tahun_lulus }}
-                                    </span>
-                                @else
+                                @if($alumni->tahun_lulus == '-' || !$alumni->tahun_lulus)
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-blue-50 text-blue-700">
                                         Mahasiswa Aktif
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-green-50 text-green-700">
+                                        Alumni
                                     </span>
                                 @endif
                             </div>

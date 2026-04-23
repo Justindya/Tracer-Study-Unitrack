@@ -11,7 +11,7 @@ class UserLokerController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Loker::latest();
+        $query = Loker::where('status', 'approved')->latest();
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -26,6 +26,9 @@ class UserLokerController extends Controller
                 $q->where('judul', 'like', "%{$tipe}%")
                   ->orWhere('deskripsi', 'like', "%{$tipe}%");
             });
+        }
+        if ($request->has('jenis') && $request->jenis != '') {
+            $query->where('jenis_perusahaan', $request->jenis);
         }
 
         $lokers = $query->paginate(9);
@@ -106,7 +109,47 @@ class UserLokerController extends Controller
 
     public function rekomendasi()
     {
-        $lokers = Loker::latest()->get(); 
-        return view('user.rekomendasi', compact('lokers'));
+        $user = Auth::user();
+        $skills = [];
+        
+        if ($user->alumni && $user->alumni->skill) {
+            // Bersihkan skill dari spasi dan pisahkan koma
+            $skills = array_map('trim', explode(',', $user->alumni->skill));
+            $skills = array_filter($skills); // Hilangkan yang kosong
+        }
+
+        $lokers = Loker::where('status', 'approved')->latest()->get(); 
+        return view('user.rekomendasi', compact('lokers', 'skills'));
+    }
+    public function propose()
+    {
+        return view('user.loker_propose');
+    }
+
+    public function storePropose(Request $request)
+    {
+        $validated = $request->validate([
+            'judul' => 'required|string|max:255',
+            'posisi' => 'required|string|max:255',
+            'perusahaan' => 'required|string|max:255',
+            'jenis_perusahaan' => 'required|string|max:255',
+            'email_perusahaan' => 'required|email',
+            'jumlah_dibutuhkan' => 'required|integer|min:1',
+            'lokasi' => 'required|string|max:255',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'deskripsi' => 'required|string',
+            'kontak' => 'required|string',
+            'poster' => 'nullable|image|max:2048',
+        ]);
+
+        $validated['status'] = 'pending';
+        if ($request->hasFile('poster')) {
+            $validated['poster'] = $request->file('poster')->store('lokers/posters', 'public');
+        }
+
+        Loker::create($validated);
+
+        return redirect()->route('user.lokers.index')->with('success', 'Usulan lowongan berhasil dikirim! Menunggu persetujuan admin.');
     }
 }

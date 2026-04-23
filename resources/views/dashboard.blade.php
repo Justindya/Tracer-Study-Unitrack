@@ -28,16 +28,18 @@
                         </div>
 
                         <h2 class="text-base font-bold text-gray-800 truncate px-2">{{ Auth::user()->name }}</h2>
-                        <p class="text-gray-500 text-xs mb-6 font-medium">Mahasiswa / Alumni</p>
+                        <p class="text-gray-500 text-xs mb-6 font-medium">{{ Auth::user()->isAlumni() ? 'Alumni' : 'Mahasiswa' }}</p>
 
                         <nav class="space-y-1.5 text-left">
                             <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-600 hover:bg-gray-50' }}">
                                 <i class="fas fa-home w-5 text-center"></i> Overview
                             </a>
+                            @if(Auth::user()->isAlumni())
                             <a href="{{ $tracerComplete ? route('user.tracer.index') : route('user.tracer.create') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
                                 <i class="fas {{ $tracerComplete ? 'fa-check-circle text-green-500' : 'fa-clipboard-list' }} w-5 text-center"></i> 
                                 {{ $tracerComplete ? 'Data Tracer' : 'Isi Tracer Study' }}
                             </a>
+                            @endif
                             <a href="{{ route('user.lamaran.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
                                 <i class="fas fa-briefcase w-5 text-center"></i> Lamaran Saya
                             </a>
@@ -138,12 +140,13 @@
                                                 <p class="text-[11px] text-gray-400 mt-0.5">{{ $bioComplete ? 'Data diri sudah diperbarui.' : 'Data diri dan kontak belum lengkap.' }}</p>
                                             </div>
                                             @if(!$bioComplete && Auth::user()->alumni)
-                                                <a href="{{ route('user.alumni.edit', Auth::user()->alumni->id) }}" class="text-blue-600 hover:underline text-[11px] font-semibold">Lengkapi</a>
+                                                <a href="{{ route('user.alumni.edit', Auth::user()->alumni) }}" class="text-blue-600 hover:underline text-[11px] font-semibold">Lengkapi</a>
                                             @endif
                                         </div>
                                     </li>
 
-                                    {{-- STEP 3: Tracer Study --}}
+                                    {{-- STEP 3: Tracer Study (Hanya Alumni) --}}
+                                    @if(Auth::user()->isAlumni())
                                     <li class="relative pl-5">
                                         <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full flex items-center justify-center ring-4 ring-white {{ $tracerComplete ? 'bg-green-500' : 'bg-gray-200' }}">
                                             @if($tracerComplete)
@@ -160,6 +163,7 @@
                                             @endif
                                         </div>
                                     </li>
+                                    @endif
 
                                 </ul>
                             </div>

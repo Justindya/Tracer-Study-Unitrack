@@ -29,13 +29,19 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->group(functio
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::resource('alumni', AlumniController::class, ['as' => 'admin']);
+    Route::resource('mahasiswa', \App\Http\Controllers\MahasiswaController::class, ['as' => 'admin']);
     Route::get('alumni/export/all', [AlumniController::class, 'exportAll'])->name('admin.alumni.export.all');
     Route::get('alumni/export/{id}', [AlumniController::class, 'exportSingle'])->name('admin.alumni.export.single');
     
     Route::post('alumni/{id}/verify', [AlumniController::class, 'verify'])->name('admin.alumni.verify');
 
     Route::resource('event', EventController::class, ['as' => 'admin']);
+    Route::post('event/{id}/approve', [EventController::class, 'approve'])->name('admin.event.approve');
+    Route::post('event/{id}/reject', [EventController::class, 'reject'])->name('admin.event.reject');
+
     Route::resource('loker', LokerController::class, ['as' => 'admin']);
+    Route::post('loker/{id}/approve', [LokerController::class, 'approve'])->name('admin.loker.approve');
+    Route::post('loker/{id}/reject', [LokerController::class, 'reject'])->name('admin.loker.reject');
     
     Route::resource('tracer', TracerController::class, ['as' => 'admin']);
     Route::get('tracer/export/all', [TracerController::class, 'exportAll'])->name('admin.tracer.export.all');
@@ -49,8 +55,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('user')->group(function () {
         Route::resource('alumni', UserAlumniController::class, ['as' => 'user'])->only(['index', 'show', 'edit', 'update']);
         
+        Route::get('events/propose', [UserEventController::class, 'propose'])->name('user.events.propose');
+        Route::post('events/propose', [UserEventController::class, 'storePropose'])->name('user.events.propose.store');
         Route::resource('events', UserEventController::class, ['as' => 'user'])->only(['index', 'show', 'store', 'destroy']);
         
+        Route::get('lokers/propose', [UserLokerController::class, 'propose'])->name('user.lokers.propose');
+        Route::post('lokers/propose', [UserLokerController::class, 'storePropose'])->name('user.lokers.propose.store');
         Route::resource('lokers', UserLokerController::class, ['as' => 'user'])->only(['index', 'show', 'store']);
     
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

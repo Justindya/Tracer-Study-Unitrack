@@ -18,6 +18,9 @@
                 <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
                     <span class="flex items-center gap-2"><i class="fas fa-building text-blue-500"></i> {{ $loker->perusahaan }}</span>
                     <span class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-red-500"></i> {{ $loker->lokasi }}</span>
+                    @if($loker->jumlah_dibutuhkan)
+                    <span class="flex items-center gap-2"><i class="fas fa-users text-ush-blue"></i> {{ $loker->jumlah_dibutuhkan }} Orang Dibutuhkan</span>
+                    @endif
                 </div>
             </div>
             

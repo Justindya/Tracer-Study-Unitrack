@@ -6,7 +6,13 @@
         
         <div class="mb-10 text-center">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Event Kampus</h1>
-            <p class="text-gray-500">Ikuti kegiatan seru untuk pengembangan karirmu</p>
+            <p class="text-gray-500 mb-6">Ikuti kegiatan seru untuk pengembangan karirmu</p>
+            
+            @if(Auth::user()->isAlumni())
+            <a href="{{ route('user.events.propose') }}" class="inline-flex items-center gap-2 px-8 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg shadow-indigo-900/20">
+                <i class="fas fa-calendar-plus"></i> Usulkan Event Baru
+            </a>
+            @endif
         </div>
 
         <form action="{{ route('user.events.index') }}" method="GET" class="mb-10 w-full">

@@ -14,7 +14,11 @@ class AlumniController extends Controller
 {
     public function index()
     {
-        $data['alumnis'] = \App\Models\alumni::with('user')->latest()->paginate(10);
+        // Hanya tampilkan yang sudah lulus (tahun_lulus bukan '-')
+        $data['alumnis'] = \App\Models\alumni::where('tahun_lulus', '!=', '-')
+            ->with('user')
+            ->latest()
+            ->paginate(10);
         return view('admin.alumni_index', $data);
     }
 
@@ -27,8 +31,8 @@ class AlumniController extends Controller
     {
         $validated = $request->validate([
             'nama' => 'required',
-            'nim' => 'required|unique:alumnis',
-            'email' => 'required|email|unique:alumnis',
+            'nim' => 'required|unique:alumnis,nim|unique:users,nim',
+            'email' => 'required|email|unique:alumnis,email|unique:users,email',
             'no_hp' => 'required',
             'angkatan' => 'required',
             'tahun_lulus' => 'required',
@@ -77,10 +81,20 @@ class AlumniController extends Controller
     {
         $alumni = \App\Models\alumni::findOrFail($id);
 
+        $user = User::where('alumni_id', $id)->first();
         $rules = [
             'nama' => 'required',
-            'nim' => 'required|unique:alumnis,nim,' . $id,
-            'email' => 'required|email|unique:alumnis,email,' . $id,
+            'nim' => [
+                'required',
+                'unique:alumnis,nim,' . $id,
+                $user ? 'unique:users,nim,' . $user->id : 'unique:users,nim'
+            ],
+            'email' => [
+                'required',
+                'email',
+                'unique:alumnis,email,' . $id,
+                $user ? 'unique:users,email,' . $user->id : 'unique:users,email'
+            ],
             'no_hp' => 'required',
             'angkatan' => 'required',
             'tahun_lulus' => 'required',
