@@ -10,10 +10,10 @@
 
     <div class="py-8 bg-gray-50 min-h-screen font-sans">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col lg:flex-row gap-6">
+            <div class="flex flex-col lg:flex-row gap-6 items-start">
                 
-                {{-- SIDEBAR KIRI --}}
-                <div class="w-full lg:w-1/4">
+                {{-- SIDEBAR KIRI (Ditambahkan self-start agar tidak gantung) --}}
+                <div class="w-full lg:w-1/4 self-start">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center sticky top-24">
                         <div class="relative w-20 h-20 mx-auto mb-4">
                             <div class="w-full h-full bg-gradient-to-tr from-blue-500 to-indigo-500 rounded-full p-[2px] shadow-sm">
@@ -54,13 +54,13 @@
                 {{-- KONTEN KANAN UTAMA --}}
                 <div class="w-full lg:w-3/4 space-y-6">
                     
-                    {{-- HEADER (Teks dilunakkan) --}}
+                    {{-- HEADER --}}
                     <div class="pb-1 border-b border-gray-200/60 mb-4">
                         <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Halo, {{ explode(' ', Auth::user()->name)[0] }}! 👋</h1>
                         <p class="text-sm text-gray-500 mt-1 font-medium">Pantau progres karir dan status lamaranmu.</p>
                     </div>
 
-                    {{-- KPI CARDS (Ukuran angka distandarkan, shadow dilunakkan) --}}
+                    {{-- KPI CARDS --}}
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between h-28 hover:shadow transition duration-200">
                             <div class="flex items-start justify-between w-full">
