@@ -70,7 +70,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const userSkills = JSON.parse(localStorage.getItem('user_skills') || '[]');
+        const userSkills = {!! json_encode($skills) !!};
         
         let allJobs = [];
         try {

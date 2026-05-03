@@ -58,7 +58,7 @@
                     <h3 class="text-lg font-bold text-gray-900 mb-1 truncate w-full group-hover:text-blue-600 transition">{{ $a->nama }}</h3>
                     <p class="text-sm text-blue-600 font-medium mb-1 truncate w-full">{{ $a->program_studi }}</p>
                     <p class="text-xs text-gray-500 mb-4 bg-gray-50 px-2 py-1 rounded-full border border-gray-100">
-                        Angkatan {{ $a->angkatan }} • Lulus {{ $a->tahun_lulus }}
+                        Angkatan {{ $a->angkatan }} • {{ ($a->tahun_lulus == '-' || !$a->tahun_lulus) ? 'Mahasiswa' : 'Alumni' }}
                     </p>
                 </a>
 

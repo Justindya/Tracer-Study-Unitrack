@@ -25,9 +25,11 @@
                             <button onclick="switchTab('info', this)" class="tab-btn w-full flex items-center px-3 py-2 text-blue-600 font-bold text-xs bg-blue-50 rounded-lg transition">
                                 <i class="fas fa-user-cog w-5 text-center"></i> Akun Login
                             </button>
-                            <a href="{{ route('user.alumni.edit', Auth::user()->alumni->id ?? 0) }}" class="w-full flex items-center px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-lg text-xs transition">
+                            @if(Auth::user()->alumni)
+                            <a href="{{ route('user.alumni.edit', Auth::user()->alumni) }}" class="w-full flex items-center px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-lg text-xs transition">
                                 <i class="fas fa-id-card w-5 text-center"></i> Biodata & Bio
                             </a>
+                            @endif
                             <button onclick="switchTab('password', this)" class="tab-btn w-full flex items-center px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-lg text-xs transition">
                                 <i class="fas fa-lock w-5 text-center"></i> Ganti Password
                             </button>

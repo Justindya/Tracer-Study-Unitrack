@@ -34,20 +34,14 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         a { text-decoration: none; } 
-
-        input[type="text"], 
-        input[type="search"], 
-        select, 
-        .search-container {
-            border: none !important;
-            box-shadow: none !important;
-            outline: none !important;
-            background-color: transparent !important;
+        .form-control {
+            border: 1px solid #ced4da !important;
+            border-radius: 0.5rem !important;
+            background-color: #fff !important;
         }
-
-        .flex.items-center.border.rounded-xl {
-            border: none !important;
-            box-shadow: none !important;
+        .form-control:focus {
+            border-color: #0F2C59 !important;
+            box-shadow: 0 0 0 0.25rem rgba(15, 44, 89, 0.1) !important;
         }
     </style>
 </head>
@@ -72,6 +66,7 @@
                         <div class="hidden sm:flex items-center space-x-2">
                             @if(trim(strtolower(Auth::user()->role)) == 'admin')
                                 <a href="{{ route('admin.dashboard') }}" class="px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('admin.dashboard') ? 'text-ush-blue font-bold' : 'text-slate-500 hover:text-ush-blue font-medium' }}">Dashboard</a>
+                                <a href="{{ route('admin.mahasiswa.index') }}" class="px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('admin.mahasiswa.*') ? 'text-ush-blue font-bold' : 'text-slate-500 hover:text-ush-blue font-medium' }}">Kelola Mahasiswa</a>
                                 <a href="{{ route('admin.alumni.index') }}" class="px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('admin.alumni.*') ? 'text-ush-blue font-bold' : 'text-slate-500 hover:text-ush-blue font-medium' }}">Kelola Alumni</a>
                                 <a href="{{ route('admin.event.index') }}" class="px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('admin.event.*') ? 'text-ush-blue font-bold' : 'text-slate-500 hover:text-ush-blue font-medium' }}">Kelola Event</a>
                                 <a href="{{ route('admin.loker.index') }}" class="px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('admin.loker.*') ? 'text-ush-blue font-bold' : 'text-slate-500 hover:text-ush-blue font-medium' }}">Kelola Loker</a>
@@ -91,7 +86,7 @@
                                 <div class="text-right hidden md:block">
                                     <span class="block font-bold text-slate-900 text-sm leading-tight">{{ Auth::user()->name }}</span>
                                     <span class="block text-[11px] text-slate-500 font-medium">
-                                        {{ trim(strtolower(Auth::user()->role)) == 'admin' ? 'Administrator' : 'Mahasiswa / Alumni' }}
+                                        {{ Auth::user()->isAdmin() ? 'Administrator' : (Auth::user()->isAlumni() ? 'Alumni' : 'Mahasiswa') }}
                                     </span>
                                 </div>
                                 <div class="h-10 w-10 rounded-full bg-blue-50 text-ush-blue font-bold border border-blue-100 flex items-center justify-center transition group-hover:bg-ush-blue group-hover:text-white">

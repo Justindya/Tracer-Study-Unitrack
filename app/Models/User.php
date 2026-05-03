@@ -73,4 +73,20 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+
+    /**
+     * Check if the user is an alumni.
+     */
+    public function isAlumni(): bool
+    {
+        return $this->role === 'alumni';
+    }
+
+    /**
+     * Check if the user is a mahasiswa.
+     */
+    public function isMahasiswa(): bool
+    {
+        return $this->role === 'mahasiswa';
+    }
 }

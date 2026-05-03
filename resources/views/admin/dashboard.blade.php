@@ -28,11 +28,15 @@
                     <div class="p-3 bg-emerald-100 text-emerald-600 rounded-lg">
                         <i class="fas fa-calendar-alt text-xl"></i>
                     </div>
-                    <span class="text-xs font-bold text-gray-400 uppercase">Aktif</span>
+                    @if($pendingEvent > 0)
+                        <span class="px-2 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold rounded-full">{{ $pendingEvent }} PENDING</span>
+                    @else
+                        <span class="text-xs font-bold text-gray-400 uppercase">Aktif</span>
+                    @endif
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ \App\Models\Event::count() }}</h3>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ \App\Models\Event::where('status', 'approved')->count() }}</h3>
                 <p class="text-sm text-gray-500 mb-4">Event Kampus</p>
-                <a href="{{ route('admin.event.index') }}" class="text-xs font-bold text-emerald-600 hover:underline">Lihat Detail -></a>
+                <a href="{{ route('admin.event.index', ['status' => 'pending']) }}" class="text-xs font-bold text-emerald-600 hover:underline">Lihat Detail -></a>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
@@ -40,11 +44,15 @@
                     <div class="p-3 bg-amber-100 text-amber-600 rounded-lg">
                         <i class="fas fa-briefcase text-xl"></i>
                     </div>
-                    <span class="text-xs font-bold text-gray-400 uppercase">Open</span>
+                    @if($pendingLoker > 0)
+                        <span class="px-2 py-1 bg-red-100 text-red-700 text-[10px] font-bold rounded-full">{{ $pendingLoker }} PENDING</span>
+                    @else
+                        <span class="text-xs font-bold text-gray-400 uppercase">Open</span>
+                    @endif
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ \App\Models\Loker::count() }}</h3>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ \App\Models\Loker::where('status', 'approved')->count() }}</h3>
                 <p class="text-sm text-gray-500 mb-4">Lowongan Kerja</p>
-                <a href="{{ route('admin.loker.index') }}" class="text-xs font-bold text-amber-600 hover:underline">Lihat Detail -></a>
+                <a href="{{ route('admin.loker.index', ['status' => 'pending']) }}" class="text-xs font-bold text-amber-600 hover:underline">Lihat Detail -></a>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">

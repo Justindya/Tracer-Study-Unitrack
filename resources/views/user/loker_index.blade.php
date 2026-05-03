@@ -6,7 +6,13 @@
         
         <div class="mb-8 text-center">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Lowongan Kerja & Magang</h1>
-            <p class="text-gray-500">Temukan karir impianmu dari mitra perusahaan kami</p>
+            <p class="text-gray-500 mb-6">Temukan karir dream-mu dari mitra perusahaan kami</p>
+            
+            @if(Auth::user()->isAlumni())
+            <a href="{{ route('user.lokers.propose') }}" class="inline-flex items-center gap-2 px-8 py-3 bg-ush-blue text-white rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-900/20">
+                <i class="fas fa-plus-circle"></i> Usulkan Lowongan Baru
+            </a>
+            @endif
         </div>
             
         <form action="{{ route('user.lokers.index') }}" method="GET" class="mb-8 w-full">
@@ -27,6 +33,18 @@
                         <option value="Part Time" {{ request('tipe') == 'Part Time' ? 'selected' : '' }}>Part Time</option>
                         <option value="Internship" {{ request('tipe') == 'Internship' ? 'selected' : '' }}>Internship / Magang</option>
                         <option value="Remote" {{ request('tipe') == 'Remote' ? 'selected' : '' }}>Remote</option>
+                    </select>
+                    <i class="fas fa-chevron-down text-gray-400 ml-2 text-xs"></i>
+                </div>
+
+                <div class="w-full md:w-1/5 flex items-center px-3 py-2 bg-gray-50 rounded-xl border border-transparent focus-within:bg-white focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-100 transition">
+                    <i class="fas fa-building text-gray-400 mr-3 text-lg"></i>
+                    <select name="jenis" class="w-full bg-transparent outline-none text-gray-700 cursor-pointer appearance-none">
+                        <option value="">Semua Perusahaan</option>
+                        <option value="PT" {{ request('jenis') == 'PT' ? 'selected' : '' }}>PT</option>
+                        <option value="CV" {{ request('jenis') == 'CV' ? 'selected' : '' }}>CV</option>
+                        <option value="Startup" {{ request('jenis') == 'Startup' ? 'selected' : '' }}>Startup</option>
+                        <option value="BUMN" {{ request('jenis') == 'BUMN' ? 'selected' : '' }}>BUMN</option>
                     </select>
                     <i class="fas fa-chevron-down text-gray-400 ml-2 text-xs"></i>
                 </div>
@@ -64,6 +82,11 @@
                         <span class="inline-flex items-center gap-1 bg-gray-50 text-gray-600 px-3 py-1.5 rounded-lg text-xs font-semibold border border-gray-100">
                             <i class="fas fa-map-marker-alt text-gray-400"></i> {{ $loker->lokasi }}
                         </span>
+                        @if($loker->jumlah_dibutuhkan)
+                        <span class="inline-flex items-center gap-1 bg-gray-50 text-gray-600 px-3 py-1.5 rounded-lg text-xs font-semibold border border-gray-100">
+                            <i class="fas fa-users text-gray-400"></i> {{ $loker->jumlah_dibutuhkan }} Orang
+                        </span>
+                        @endif
                         @if(stripos($loker->judul, 'Intern') !== false || stripos($loker->deskripsi, 'Magang') !== false)
                             <span class="inline-flex items-center gap-1 bg-purple-50 text-purple-600 px-3 py-1.5 rounded-lg text-xs font-semibold border border-purple-100">Internship</span>
                         @else
