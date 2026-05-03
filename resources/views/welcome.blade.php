@@ -73,7 +73,6 @@
          class="fixed w-full top-0 z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             
-            {{-- Brand Ala UPI --}}
             <div class="flex items-center space-x-3">
                 <img src="{{ asset('images/logo-ush.png') }}" alt="Logo USH" class="h-10 w-auto drop-shadow-sm">
                 <div class="flex flex-col justify-center">
@@ -101,9 +100,9 @@
         </div>
     </nav>
 
-    {{-- HERO SECTION (Background Transparan Penuh) --}}
-    <header class="relative pt-40 pb-32 bg-pastel-gradient flex items-center justify-center min-h-[90vh] overflow-hidden">
-        {{-- Watermark Gedung Transparan Full --}}
+    {{-- HERO SECTION --}}
+    <header class="relative pt-32 pb-32 bg-pastel-gradient flex items-center justify-center min-h-[90vh] overflow-hidden">
+  
         <div class="absolute inset-0 opacity-10 mix-blend-multiply flex items-center justify-center pointer-events-none">
              <img src="{{ asset('images/hero-bg.jpg') }}" alt="Background Gedung" class="w-full h-full object-cover">
         </div>
@@ -124,7 +123,7 @@
                     Panduan Pengisian
                 </a>
                 <a href="{{ route('login') }}" class="w-full sm:w-auto px-10 py-3.5 bg-ush-blue text-white rounded-full font-extrabold text-sm shadow-lg shadow-ush-blue/20 hover:bg-slate-800 transition-transform transform hover:-translate-y-0.5">
-                    Isi Survey
+                    Isi Tracer Study
                 </a>
             </div>
         </div>
@@ -147,7 +146,7 @@
                     </p>
                 </div>
 
-                {{-- Gambar Animasi Float --}}
+                {{-- Gambar --}}
                 <div class="w-full lg:w-1/2 flex justify-center">
                     <img src="{{ asset('images/canva.png') }}" alt="Ilustrasi Tracer" class="max-w-md w-full h-auto rounded-2xl shadow-halus border-slate-100">
                 </div>
@@ -157,9 +156,9 @@
     </section>
 
     {{-- PANDUAN PENGISIAN --}}
-    <section id="panduan" class="py-24 bg-ush-blue text-white overflow-hidden relative" 
+    <section id="panduan" class="py-16 bg-ush-blue text-white overflow-hidden relative" 
              x-data="{ activeStep: 1 }">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-7xl mx-auto px-8 sm:px-6 lg:px-8 relative z-10">
             
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-extrabold mb-4">Panduan Pengisian</h2>
@@ -168,27 +167,27 @@
 
             <div class="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20">
                 
-                {{-- Kiri: Langkah --}}
-                <div class="w-full lg:w-1/2 space-y-4 flex flex-col justify-between">
+                {{-- Langkah --}}
+                <div class="w-full lg:w-1/2 space-y-2 flex flex-col justify-between">
                     
-                    <div @click="activeStep = 1" class="p-6 rounded-2xl cursor-pointer transition duration-300" :class="activeStep === 1 ? 'bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg' : 'hover:bg-white/5'">
-                        <h3 class="text-xl font-bold mb-2">Klik Isi Survey</h3>
-                        <p class="text-blue-100/80 text-sm">Pada halaman utama, klik tombol Isi Survey yang tersedia.</p>
+                    <div @click="activeStep = 1" class="p-4 rounded-2xl cursor-pointer transition duration-300" :class="activeStep === 1 ? 'bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg' : 'hover:bg-white/5'">
+                        <h3 class="text-xl font-bold mb-2">Masuk ke Portal</h3>
+                        <p class="text-blue-100/80 text-sm">Gunakan NIM dan Kata Sandi Anda untuk login ke dashboard alumni.</p>
                     </div>
 
-                    <div @click="activeStep = 2" class="p-6 rounded-2xl cursor-pointer transition duration-300" :class="activeStep === 2 ? 'bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg' : 'hover:bg-white/5'">
-                        <h3 class="text-xl font-bold mb-2">Cek Akun</h3>
-                        <p class="text-blue-100/80 text-sm">Akses masuk sistem dengan cara login menggunakan Nomor Induk Mahasiswa (NIM) Anda.</p>
+                    <div @click="activeStep = 2" class="p-4 rounded-2xl cursor-pointer transition duration-300" :class="activeStep === 2 ? 'bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg' : 'hover:bg-white/5'">
+                        <h3 class="text-xl font-bold mb-2">Pilih Menu Tracer Study</h3>
+                        <p class="text-blue-100/80 text-sm">Di dashboard utama, lihat sidebar kiri dan klik menu Tracer Study.</p>
                     </div>
 
-                    <div @click="activeStep = 3" class="p-6 rounded-2xl cursor-pointer transition duration-300" :class="activeStep === 3 ? 'bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg' : 'hover:bg-white/5'">
-                        <h3 class="text-xl font-bold mb-2">Isi Semua Instrumen</h3>
-                        <p class="text-blue-100/80 text-sm">Lengkapi semua isian instrumen kuesioner, pastikan data dimasukkan akurat dan lengkap.</p>
+                    <div @click="activeStep = 3" class="p-4 rounded-2xl cursor-pointer transition duration-300" :class="activeStep === 3 ? 'bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg' : 'hover:bg-white/5'">
+                        <h3 class="text-xl font-bold mb-2">Isi Kuisioner Lengkap</h3>
+                        <p class="text-blue-100/80 text-sm">Lengkapi seluruh instrumen kuisioner mulai dari Biodata hingga Riwayat Pekerjaan.</p>
                     </div>
 
-                    <div @click="activeStep = 4" class="p-6 rounded-2xl cursor-pointer transition duration-300" :class="activeStep === 4 ? 'bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg' : 'hover:bg-white/5'">
+                    <div @click="activeStep = 4" class="p-4 rounded-2xl cursor-pointer transition duration-300" :class="activeStep === 4 ? 'bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg' : 'hover:bg-white/5'">
                         <h3 class="text-xl font-bold mb-2">Selesai</h3>
-                        <p class="text-blue-100/80 text-sm">Klik submit untuk menyelesaikannya. Terimakasih telah ikut berpartisipasi.</p>
+                        <p class="text-blue-100/80 text-sm">Pastikan semua data benar, lalu klik tombol Kirim di bagian bawah form.</p>
                     </div>
 
                 </div>
@@ -204,16 +203,16 @@
                         
                         <div class="relative w-full flex-grow bg-slate-100 flex items-center justify-center">
                             <template x-if="activeStep === 1">
-                                <img src="{{ asset('images/ush-satu.jpg') }}" alt="Panduan 1" class="absolute inset-0 w-full h-full object-cover animate-fade-in">
+                                <img src="{{ asset('images/login.png') }}" alt="Panduan 1" class="absolute inset-0 w-full h-full object-cover animate-fade-in">
                             </template>
                             <template x-if="activeStep === 2">
-                                <img src="{{ asset('images/aset satu.png') }}" alt="Panduan 2" class="absolute inset-0 w-full h-full object-cover animate-fade-in">
+                                <img src="{{ asset('images/dashboard-sidebar.png') }}" alt="Panduan 2" class="absolute inset-0 w-full h-full object-cover animate-fade-in">
                             </template>
                             <template x-if="activeStep === 3">
-                                <img src="{{ asset('images/aset dua.png') }}" alt="Panduan 3" class="absolute inset-0 w-full h-full object-cover animate-fade-in">
+                                <img src="{{ asset('images/tracer-study.png') }}" alt="Panduan 3" class="absolute inset-0 w-full h-full object-cover animate-fade-in">
                             </template>
                             <template x-if="activeStep === 4">
-                                <img src="{{ asset('images/fasilitas-dua.png') }}" alt="Panduan 4" class="absolute inset-0 w-full h-full object-cover animate-fade-in">
+                                <img src="{{ asset('images/selesai.png') }}" alt="Panduan 4" class="absolute inset-0 w-full h-full object-cover animate-fade-in">
                             </template>
                         </div>
                     </div>
@@ -224,7 +223,7 @@
     </section>
 
     {{-- LAYANAN UTAMA --}}
-    <section id="layanan" class="py-24 bg-white">
+    <section id="layanan" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <div class="text-center mb-16">
@@ -285,15 +284,15 @@
             </div>
 
             <div class="text-center mt-12">
-                <a href="{{ route('dashboard') }}" class="inline-block px-8 py-2.5 bg-slate-100 text-slate-600 font-bold text-sm rounded-full hover:bg-slate-200 transition">
+                <a href="{{ route('dashboard') }}" class="inline-block px-8 py-1.5 bg-slate-100 text-slate-600 font-bold text-sm rounded-full hover:bg-slate-200 transition">
                     Tampilkan Semua di Dashboard
                 </a>
             </div>
         </div>
     </section>
 
-    {{-- CTA (Rata Kiri ala UPI) --}}
-    <section class="py-20 bg-white border-t border-slate-100">
+    {{-- CTA --}}
+    <section class="py-16 bg-white border-t border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center justify-between gap-8">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight text-left">
@@ -308,7 +307,7 @@
     </section>
 
     {{-- FOOTER --}}
-    <footer class="bg-ush-blue pt-16 pb-8 border-t border-ush-blue">
+    <footer class="bg-ush-blue pt-12 pb-8 border-t border-ush-blue">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
             
             {{-- Info Kampus --}}
@@ -323,7 +322,8 @@
                 <h4 class="font-bold text-white mb-2">CDC USH</h4>
                 <p class="text-sm text-blue-100/70 leading-relaxed font-medium">
                     Universitas Sugeng Hartono<br>
-                    Jl. Ir. Soekarno No. 69, Solo Baru, Sukoharjo, Central Java<br>
+                    Jl. Ir. Soekarno No. 69, Solo Baru, Sukoharjo<br>
+                    Central Java<br>
                     Indonesia<br>
                     57552
                 </p>
