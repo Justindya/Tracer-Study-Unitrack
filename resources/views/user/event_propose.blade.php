@@ -14,6 +14,20 @@
             <form action="{{ route('user.events.propose.store') }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-8">
                 @csrf
                 
+                @if ($errors->any())
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-circle text-red-500 mr-3"></i>
+                            <h3 class="text-red-800 font-bold text-sm">Gagal Mengirim Usulan:</h3>
+                        </div>
+                        <ul class="mt-2 list-disc list-inside text-sm text-red-700">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="col-span-1">
                         <label class="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Judul Event</label>

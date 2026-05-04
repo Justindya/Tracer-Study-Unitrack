@@ -98,7 +98,7 @@ class UserEventController extends Controller
             'jam' => 'required',
             'deskripsi' => 'required|string',
             'is_paid' => 'required|boolean',
-            'harga' => 'required_if:is_paid,1|numeric|min:0',
+            'harga' => 'nullable|required_if:is_paid,1|numeric|min:0',
             'pembicara' => 'nullable|string|max:255',
             'poster' => 'nullable|image|max:2048',
         ]);
