@@ -29,9 +29,11 @@
                         <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
                             <i class="fas fa-home w-5 text-center"></i> Overview
                         </a>
+                        @if(Auth::user()->isAlumni())
                         <a href="{{ route('user.tracer.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
                             <i class="fas fa-clipboard-list w-5 text-center"></i> Data Tracer
                         </a>
+                        @endif
                         <a href="{{ route('user.lamaran.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
                             <i class="fas fa-briefcase w-5 text-center"></i> Lamaran Saya
                         </a>

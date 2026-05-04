@@ -22,12 +22,12 @@
                     <i class="fas fa-search text-gray-400 mr-3 text-lg"></i>
                     <input type="text" name="search" value="{{ request('search') }}" 
                            placeholder="Cari posisi, perusahaan, atau lokasi..." 
-                           class="w-full bg-transparent outline-none text-gray-700 placeholder-gray-400">
+                           class="w-full bg-transparent border-none focus:ring-0 outline-none text-gray-700 placeholder-gray-400">
                 </div>
 
                 <div class="w-full md:w-1/4 flex items-center px-3 py-2 bg-gray-50 rounded-xl border border-transparent focus-within:bg-white focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-100 transition">
                     <i class="fas fa-briefcase text-gray-400 mr-3 text-lg"></i>
-                    <select name="tipe" class="w-full bg-transparent outline-none text-gray-700 cursor-pointer appearance-none">
+                    <select name="tipe" class="w-full bg-transparent border-none focus:ring-0 outline-none text-gray-700 cursor-pointer appearance-none">
                         <option value="">Semua Tipe</option>
                         <option value="Full Time" {{ request('tipe') == 'Full Time' ? 'selected' : '' }}>Full Time</option>
                         <option value="Part Time" {{ request('tipe') == 'Part Time' ? 'selected' : '' }}>Part Time</option>
@@ -39,7 +39,7 @@
 
                 <div class="w-full md:w-1/5 flex items-center px-3 py-2 bg-gray-50 rounded-xl border border-transparent focus-within:bg-white focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-100 transition">
                     <i class="fas fa-building text-gray-400 mr-3 text-lg"></i>
-                    <select name="jenis" class="w-full bg-transparent outline-none text-gray-700 cursor-pointer appearance-none">
+                    <select name="jenis" class="w-full bg-transparent border-none focus:ring-0 outline-none text-gray-700 cursor-pointer appearance-none">
                         <option value="">Semua Perusahaan</option>
                         <option value="PT" {{ request('jenis') == 'PT' ? 'selected' : '' }}>PT</option>
                         <option value="CV" {{ request('jenis') == 'CV' ? 'selected' : '' }}>CV</option>

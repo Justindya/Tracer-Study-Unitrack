@@ -40,7 +40,7 @@ class AlumniController extends Controller
             'password' => 'required|min:6|confirmed',
             'Foto' => 'nullable|image',
             'jenis_kelamin' => 'required',
-            'alamat' => 'required',
+            'alamat' => 'nullable',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
@@ -100,7 +100,7 @@ class AlumniController extends Controller
             'tahun_lulus' => 'required',
             'program_studi' => 'required',
             'jenis_kelamin' => 'required',
-            'alamat' => 'required',
+            'alamat' => 'nullable',
             'Foto' => 'nullable|image',
             'password' => 'nullable|min:6|confirmed'
         ];

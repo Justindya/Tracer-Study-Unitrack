@@ -134,6 +134,12 @@ class MahasiswaController extends Controller
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
+        
+        // Hapus profil alumni yang terkait agar nim dan email tidak terpakai
+        if ($user->alumni) {
+            $user->alumni->delete();
+        }
+        
         $user->delete();
         return redirect()->route('admin.mahasiswa.index')->with('success', 'Data Mahasiswa berhasil dihapus!');
     }

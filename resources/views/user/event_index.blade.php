@@ -21,11 +21,11 @@
                     <i class="fas fa-search text-gray-400 mr-3 text-lg"></i>
                     <input type="text" name="search" value="{{ request('search') }}" 
                            placeholder="Cari nama event atau lokasi..." 
-                           class="w-full bg-transparent outline-none text-gray-700 placeholder-gray-400">
+                           class="w-full bg-transparent border-none focus:ring-0 outline-none text-gray-700 placeholder-gray-400">
                 </div>
                 <div class="w-full md:w-1/4 flex items-center px-4 py-3 bg-gray-50 rounded-xl border border-transparent focus-within:bg-white focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-100 transition">
                     <i class="fas fa-filter text-gray-400 mr-3 text-lg"></i>
-                    <select name="kategori" class="w-full bg-transparent outline-none text-gray-700 cursor-pointer appearance-none">
+                    <select name="kategori" class="w-full bg-transparent border-none focus:ring-0 outline-none text-gray-700 cursor-pointer appearance-none">
                         <option value="">Semua Kategori</option>
                         <option value="Job Fair" {{ request('kategori') == 'Job Fair' ? 'selected' : '' }}>Job Fair</option>
                         <option value="Webinar" {{ request('kategori') == 'Webinar' ? 'selected' : '' }}>Webinar</option>
