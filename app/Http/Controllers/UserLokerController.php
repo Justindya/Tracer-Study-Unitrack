@@ -136,6 +136,14 @@ class UserLokerController extends Controller
     public function rekomendasi()
     {
         $lokers = Loker::where('status', 'approved')->latest()->get(); 
-        return view('user.rekomendasi', compact('lokers'));
+        
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $skills = [];
+        
+        if ($user && $user->alumni && $user->alumni->skill) {
+            $skills = array_map('trim', explode(',', $user->alumni->skill)); 
+        }
+
+        return view('user.rekomendasi', compact('lokers', 'skills'));
     }
 }

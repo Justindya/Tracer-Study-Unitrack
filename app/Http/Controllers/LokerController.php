@@ -8,10 +8,19 @@ use Illuminate\Support\Facades\Auth;
 
 class LokerController extends Controller
 {
-    public function index()
+public function index(\Illuminate\Http\Request $request)
     {
-        $lokers = loker::latest()->paginate(10);
-        return view('admin.loker_index', compact('lokers'));
+        $status = $request->input('status', 'all');
+        
+        $query = loker::latest();
+        
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        $lokers = $query->paginate(10);
+        
+        return view('admin.loker_index', compact('lokers', 'status'));
     }
 
     public function create()

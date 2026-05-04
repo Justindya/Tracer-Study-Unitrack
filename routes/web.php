@@ -64,13 +64,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
         // KHUSUS ALUMNI (Upload Loker, Event & Tracer)
         Route::middleware(['alumni'])->group(function () {
-            // Route Upload Loker oleh Alumni
-            Route::get('lokers/create/baru', [UserLokerController::class, 'createLoker'])->name('user.lokers.create');
-            Route::post('lokers/upload/baru', [UserLokerController::class, 'storeLoker'])->name('user.lokers.storeLoker');
+           // Route Upload Loker oleh Alumni
+            Route::get('lokers/propose', [UserLokerController::class, 'createLoker'])->name('user.lokers.propose'); 
+            Route::post('lokers/propose', [UserLokerController::class, 'storeLoker'])->name('user.lokers.storePropose');
 
             // Route Upload Event oleh Alumni
-            Route::get('events/create/baru', [UserEventController::class, 'createEvent'])->name('user.events.create');
-            Route::post('events/upload/baru', [UserEventController::class, 'storeEvent'])->name('user.events.storeEvent');
+            Route::get('events/propose', [UserEventController::class, 'createEvent'])->name('user.events.propose'); 
+            Route::post('events/propose', [UserEventController::class, 'storeEvent'])->name('user.events.storePropose');
 
             // Route Tracer Study & CV
             Route::get('tracer/cv/download', [\App\Http\Controllers\User\TracerUserController::class, 'generateCV'])->name('user.tracer.cv');
