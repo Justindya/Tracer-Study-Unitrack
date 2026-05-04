@@ -11,7 +11,8 @@ class UserLokerController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Loker::latest();
+        $query = Loker::where('status', 'approved')->latest();
+
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -20,20 +21,52 @@ class UserLokerController extends Controller
                   ->orWhere('lokasi', 'like', "%{$search}%");
             });
         }
-        if ($request->has('tipe') && $request->tipe != '') {
-            $tipe = $request->tipe;
-            $query->where(function($q) use ($tipe) {
-                $q->where('judul', 'like', "%{$tipe}%")
-                  ->orWhere('deskripsi', 'like', "%{$tipe}%");
-            });
-        }
-
+        
         $lokers = $query->paginate(9);
         return view('user.loker_index', compact('lokers'));
     }
 
     /**
-     * PROSES MELAMAR & UPDATE STATUS (BUG FIXED)
+     * FORM UNTUK ALUMNI UNGGAH LOKER BARU
+     */
+    public function createLoker()
+    {
+        if (Auth::user()->role !== 'alumni') {
+            abort(403, 'Hanya Alumni yang dapat mengunggah lowongan kerja.');
+        }
+        return view('user.loker_create');
+    }
+
+    /**
+     * SSTATUS PENDING
+     */
+    public function storeLoker(Request $request)
+    {
+        if (Auth::user()->role !== 'alumni') {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'judul' => 'required|string',
+            'perusahaan' => 'required|string',
+            'lokasi' => 'required|string',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'deskripsi' => 'required|string',
+            'kontak' => 'required|string',
+        ]);
+
+        $validated['user_id'] = Auth::id();
+        $validated['status'] = 'pending'; 
+
+        Loker::create($validated);
+
+        return redirect()->route('user.lokers.index')
+            ->with('success', 'Lowongan berhasil dikirim dan menunggu persetujuan Admin.');
+    }
+
+    /**
+     * PROSES MELAMAR 
      */
     public function store(Request $request)
     {
@@ -41,12 +74,10 @@ class UserLokerController extends Controller
         $lokerId = $request->loker_id;
         $status = $request->status ?? 'terkirim'; 
 
-        // Cari apakah lamaran sudah ada
         $lamaran = user_loker::where('user_id', $userId)
                              ->where('loker_id', $lokerId)
                              ->first();
 
-        // Jika BELUM PERNAH melamar -> Buat Baru
         if (!$lamaran) {
             user_loker::create([
                 'user_id' => $userId,
@@ -56,11 +87,10 @@ class UserLokerController extends Controller
             
             return response()->json([
                 'status' => 'success', 
-                'message' => 'Lamaran berhasil dicatat di sistem.'
+                'message' => 'Lamaran berhasil dicatat.'
             ]);
         }
 
-        // Jika SUDAH PERNAH melamar DAN ada request perubahan status (Dari fitur Lamaran Saya) -> UPDATE
         if ($request->has('status')) {
             $lamaran->update(['status' => $status]);
             return response()->json([
@@ -71,13 +101,13 @@ class UserLokerController extends Controller
 
         return response()->json([
             'status' => 'info', 
-            'message' => 'Anda sudah melamar pekerjaan ini sebelumnya.'
+            'message' => 'Anda sudah melamar sebelumnya.'
         ]);
     }
 
     public function show($id)
     {
-        $loker = \App\Models\Loker::findOrFail($id);
+        $loker = Loker::findOrFail($id);
         $hasApplied = false;
         if(Auth::check()){
             $hasApplied = user_loker::where('user_id', Auth::id())
@@ -106,7 +136,7 @@ class UserLokerController extends Controller
 
     public function rekomendasi()
     {
-        $lokers = Loker::latest()->get(); 
+        $lokers = Loker::where('status', 'approved')->latest()->get(); 
         return view('user.rekomendasi', compact('lokers'));
     }
 }

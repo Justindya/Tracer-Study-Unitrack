@@ -4,29 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\loker;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LokerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $data['lokers'] = \App\Models\loker::latest()->paginate(10);
-        return view('admin.loker_index', $data);
+        $lokers = loker::latest()->paginate(10);
+        return view('admin.loker_index', compact('lokers'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.loker_create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -39,6 +31,9 @@ class LokerController extends Controller
             'kontak' => 'required|string',
         ]);
 
+        $validated['user_id'] = Auth::id();
+        $validated['status'] = 'approved'; 
+
         loker::create($validated);
 
         return redirect()->route('admin.loker.index')
@@ -46,24 +41,37 @@ class LokerController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * APPROVE LOKER DARI ALUMNI
      */
+    public function approve($id)
+    {
+        $loker = loker::findOrFail($id);
+        $loker->update(['status' => 'approved']);
+
+        return back()->with('success', 'Lowongan kerja disetujui dan dipublikasikan.');
+    }
+
+    /**
+     * REJECT LOKER DARI ALUMNI
+     */
+    public function reject($id)
+    {
+        $loker = loker::findOrFail($id);
+        $loker->update(['status' => 'rejected']);
+
+        return back()->with('success', 'Lowongan kerja telah ditolak.');
+    }
+
     public function show(loker $loker)
     {
         return view('admin.loker_show', compact('loker'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(loker $loker)
     {
         return view('admin.loker_edit', compact('loker'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, loker $loker)
     {
         $validated = $request->validate([
@@ -81,13 +89,9 @@ class LokerController extends Controller
             ->with('success', 'Lowongan kerja berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(loker $loker)
     {
         $loker->delete();
-
         return redirect()->route('admin.loker.index')
             ->with('success', 'Lowongan kerja berhasil dihapus!');
     }

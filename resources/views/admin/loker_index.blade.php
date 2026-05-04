@@ -17,14 +17,14 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="table-light">
                         <tr>
                             <th>Judul</th>
                             <th>Perusahaan</th>
                             <th>Lokasi</th>
-                            <th>Tanggal Mulai</th>
                             <th>Tanggal Selesai</th>
+                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -34,20 +34,48 @@
                             <td>{{ $loker->judul }}</td>
                             <td>{{ $loker->perusahaan }}</td>
                             <td>{{ $loker->lokasi }}</td>
-                            <td>{{ $loker->tanggal_mulai->format('d/m/Y') }}</td>
-                            <td>{{ $loker->tanggal_selesai->format('d/m/Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($loker->tanggal_selesai)->format('d/m/Y') }}</td>
+                            
+                            {{-- KOLOM STATUS BARU --}}
+                            <td class="text-center">
+                                @if($loker->status == 'approved')
+                                    <span class="badge bg-success">Disetujui</span>
+                                @elseif($loker->status == 'pending')
+                                    <span class="badge bg-warning text-dark">Menunggu</span>
+                                @else
+                                    <span class="badge bg-danger">Ditolak</span>
+                                @endif
+                            </td>
+                            
                             <td>
-                                <a href="{{ route('admin.loker.show', $loker) }}" class="btn btn-info btn-sm">
-                                    Lihat
+                                {{-- TOMBOL APPROVAL KHUSUS STATUS PENDING --}}
+                                @if($loker->status == 'pending')
+                                    <form action="{{ route('admin.loker.approve', $loker->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm mb-1" onclick="return confirm('Apakah Anda yakin ingin menyetujui lowongan ini?')">
+                                            <i class="fas fa-check"></i> Setujui
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('admin.loker.reject', $loker->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-secondary btn-sm mb-1" onclick="return confirm('Tolak lowongan ini?')">
+                                            <i class="fas fa-times"></i> Tolak
+                                        </button>
+                                    </form>
+                                @endif
+
+                                {{-- TOMBOL AKSI STANDAR --}}
+                                <a href="{{ route('admin.loker.show', $loker) }}" class="btn btn-info btn-sm mb-1 text-white">
+                                    <i class="fas fa-eye"></i> Lihat
                                 </a>
-                                <a href="{{ route('admin.loker.edit', $loker) }}" class="btn btn-warning btn-sm">
-                                    Edit
+                                <a href="{{ route('admin.loker.edit', $loker) }}" class="btn btn-warning btn-sm mb-1 text-white">
+                                    <i class="fas fa-edit"></i> Edit
                                 </a>
                                 <form action="{{ route('admin.loker.destroy', $loker) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-                                        Hapus
+                                    <button type="submit" class="btn btn-danger btn-sm mb-1" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                        <i class="fas fa-trash"></i> Hapus
                                     </button>
                                 </form>
                             </td>
@@ -56,7 +84,9 @@
                     </tbody>
                 </table>
             </div>
-            {{ $lokers->links() }}
+            <div class="mt-3">
+                {{ $lokers->links() }}
+            </div>
         </div>
     </div>
 </div>

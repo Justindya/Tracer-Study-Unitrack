@@ -19,12 +19,18 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
-        'password',
         'nim',
+        'email',
+        'no_hp',
+        'angkatan',
+        'tahun_lulus',
+        'program_studi',
+        'jenis_kelamin',
+        'alamat',
+        'password',
         'role',
-        'status',
         'alumni_id'
+        // 'status' dihapus karena status ada di tabel lokers & events, bukan di users
     ];
 
     /**
@@ -51,7 +57,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the alumni associated with the user.
+     * Get the alumni/profil associated with the user.
      */
     public function alumni()
     {
@@ -59,11 +65,27 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the events associated with the user.
+     * Get the events associated with the user (Partisipasi/Pendaftaran Event - Bawaan V3).
      */
     public function events()
     {
         return $this->belongsToMany(Event::class, 'user_events');
+    }
+
+    /**
+     * Get the events created/diajukan oleh user (Fitur baru untuk Alumni).
+     */
+    public function createdEvents()
+    {
+        return $this->hasMany(Event::class, 'user_id');
+    }
+
+    /**
+     * Get the lokers created/diajukan oleh user (Fitur baru untuk Alumni).
+     */
+    public function createdLokers()
+    {
+        return $this->hasMany(Loker::class, 'user_id');
     }
 
     /**

@@ -9,10 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class UserEventController extends Controller
 {
-    
     public function index(Request $request)
     {
-        $query = Event::latest();
+        $query = Event::where('status', 'approved')->latest();
 
         if ($request->has('kategori')) {
             $kategori = $request->kategori;
@@ -26,6 +25,46 @@ class UserEventController extends Controller
         return view('user.event_index', compact('events'));
     }
 
+    /**
+     * TAMPILKAN FORM UNGGAH EVENT KHUSUS ALUMNI
+     */
+    public function createEvent()
+    {
+        if (Auth::user()->role !== 'alumni') {
+            abort(403, 'Hanya Alumni yang dapat membuat Event.');
+        }
+        return view('user.event_create');
+    }
+
+    /**
+     * SIMPAN EVENT DARI ALUMNI (STATUS PENDING)
+     */
+    public function storeEvent(Request $request)
+    {
+        if (Auth::user()->role !== 'alumni') {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'judul' => 'required',
+            'tempat' => 'required',
+            'tanggal' => 'required|date',
+            'jam' => 'required',
+            'deskripsi' => 'required',
+        ]);
+
+        $validated['user_id'] = Auth::id();
+        $validated['status'] = 'pending';
+
+        Event::create($validated);
+
+        return redirect()->route('user.events.index')
+            ->with('success', 'Event berhasil diajukan dan menunggu persetujuan Admin.');
+    }
+
+    /**
+     * PROSES PENDAFTARAN/JOIN EVENT OLEH USER
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -67,6 +106,9 @@ class UserEventController extends Controller
     public function edit(user_event $user_event) {}
     public function update(Request $request, user_event $user_event) {}
     
+    /**
+     * MEMBATALKAN PENDAFTARAN EVENT
+     */
     public function destroy($id) 
     {
         $userId = Auth::id();

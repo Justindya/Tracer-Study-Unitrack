@@ -27,10 +27,10 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
 
-
             $table->foreignId('alumni_id')->nullable(); 
         
-            $table->string('role')->default('user');
+            // PERUBAHAN: Role dipatenkan menggunakan ENUM sesuai kesepakatan bisnis
+            $table->enum('role', ['admin', 'alumni', 'mahasiswa'])->default('mahasiswa');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

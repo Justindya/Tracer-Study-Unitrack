@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('lokers', function (Blueprint $table) {
             $table->id();
+            
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            
             $table->string('judul');
             $table->string('perusahaan');
             $table->string('lokasi');
@@ -20,6 +23,9 @@ return new class extends Migration
             $table->date('tanggal_selesai');
             $table->text('deskripsi');
             $table->string('kontak');
+            
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            
             $table->timestamps();
         });
     }

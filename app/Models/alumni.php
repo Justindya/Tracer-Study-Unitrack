@@ -19,7 +19,6 @@ class Alumni extends Model
         'angkatan',
         'tahun_lulus',
         'program_studi',
-        'password',
         'Foto',
         'jenis_kelamin',
         'alamat',

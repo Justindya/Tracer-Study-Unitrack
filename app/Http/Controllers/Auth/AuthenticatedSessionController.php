@@ -27,25 +27,16 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        if (Auth::user()->status === 'pending') {
-            Auth::guard('web')->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
 
-            return back()->withErrors([
-                'nim' => 'Akun Anda belum diverifikasi oleh Admin. Mohon tunggu.',
-            ]);
-        }
+        // BLOK HAPUS: Pengecekan status 'pending' dihapus karena kolom status 
+        // pada tabel users sudah dihilangkan di tahap migrasi sebelumnya.
+
+        // PERBAIKAN: Jika role admin, arahkan ke dashboard admin, JANGAN di-logout.
         if (Auth::user()->role === 'admin') {
-            Auth::guard('web')->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return back()->withErrors([
-                'nim' => 'Akun Admin tidak boleh login di sini. Silakan gunakan Admin Portal.',
-            ]);
+            return redirect()->intended(route('admin.dashboard'));
         }
 
+        // Jika role mahasiswa atau alumni, arahkan ke dashboard standar
         return redirect()->intended(route('dashboard'));
     }
 

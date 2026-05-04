@@ -27,6 +27,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
+            // Validasi sudah benar, meminta NIM dan password
             'nim' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
@@ -41,6 +42,7 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
+        // Logika attempt sudah benar menggunakan 'nim' sesuai input form
         if (! Auth::attempt(['nim' => $this->input('nim'), 'password' => $this->input('password')], $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
