@@ -7,17 +7,19 @@ use App\Models\alumni;
 use App\Models\loker;
 use App\Models\tracer;
 use App\Models\user_loker;
+use App\Models\event;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $totalAlumni = alumni::count();
+        // Hanya hitung yang sudah lulus sebagai Alumni
+        $totalAlumni = alumni::where('tahun_lulus', '!=', '-')->count();
         $totalTracer = tracer::count();
 
-        $totalMale = alumni::where('jenis_kelamin', 'laki-laki')->count();
-        $totalFemale = alumni::where('jenis_kelamin', 'perempuan')->count();
+        $totalMale = alumni::where('tahun_lulus', '!=', '-')->where('jenis_kelamin', 'laki-laki')->count();
+        $totalFemale = alumni::where('tahun_lulus', '!=', '-')->where('jenis_kelamin', 'perempuan')->count();
 
         $tracerMale = tracer::whereHas('alumni', function($query) {
             $query->where('jenis_kelamin', 'laki-laki');
@@ -27,13 +29,18 @@ class DashboardController extends Controller
             $query->where('jenis_kelamin', 'perempuan');
         })->count();
 
+        $pendingLoker = loker::where('status', 'pending')->count();
+        $pendingEvent = event::where('status', 'pending')->count();
+
         return view('admin.dashboard', compact(
             'totalAlumni', 
             'totalTracer', 
             'totalMale', 
             'totalFemale', 
             'tracerMale', 
-            'tracerFemale'
+            'tracerFemale',
+            'pendingLoker',
+            'pendingEvent'
         ));
     }
 

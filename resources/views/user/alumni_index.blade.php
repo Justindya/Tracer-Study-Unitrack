@@ -16,12 +16,12 @@
                     <i class="fas fa-search text-gray-400 mr-3 text-lg"></i>
                     <input type="text" name="search" value="{{ request('search') }}" 
                            placeholder="Cari nama alumni atau angkatan..." 
-                           class="w-full bg-transparent outline-none text-gray-700 placeholder-gray-400">
+                           class="w-full bg-transparent border-none focus:ring-0 outline-none text-gray-700 placeholder-gray-400">
                 </div>
 
                 <div class="w-full md:w-1/3 flex items-center px-4 py-2 bg-gray-50 rounded-xl border border-transparent focus-within:bg-white focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-100 transition">
                     <i class="fas fa-graduation-cap text-gray-400 mr-3 text-lg"></i>
-                    <select name="jurusan" class="w-full bg-transparent outline-none text-gray-700 cursor-pointer appearance-none">
+                    <select name="jurusan" class="w-full bg-transparent border-none focus:ring-0 outline-none text-gray-700 cursor-pointer appearance-none">
                         <option value="">Semua Jurusan</option>
                         @php
                             $jurusans = ['Informatika', 'Sistem Informasi', 'Bisnis Digital', 'Akuntansi'];
@@ -58,7 +58,7 @@
                     <h3 class="text-lg font-bold text-gray-900 mb-1 truncate w-full group-hover:text-blue-600 transition">{{ $a->nama }}</h3>
                     <p class="text-sm text-blue-600 font-medium mb-1 truncate w-full">{{ $a->program_studi }}</p>
                     <p class="text-xs text-gray-500 mb-4 bg-gray-50 px-2 py-1 rounded-full border border-gray-100">
-                        Angkatan {{ $a->angkatan }} • Lulus {{ $a->tahun_lulus }}
+                        Angkatan {{ $a->angkatan }} • {{ ($a->tahun_lulus == '-' || !$a->tahun_lulus) ? 'Mahasiswa' : 'Alumni' }}
                     </p>
                 </a>
 

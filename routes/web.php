@@ -22,6 +22,7 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->group(functio
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::resource('alumni', AlumniController::class, ['as' => 'admin']);
+    Route::resource('mahasiswa', \App\Http\Controllers\MahasiswaController::class, ['as' => 'admin']);
     Route::get('alumni/export/all', [AlumniController::class, 'exportAll'])->name('admin.alumni.export.all');
     Route::get('alumni/export/{id}', [AlumniController::class, 'exportSingle'])->name('admin.alumni.export.single');
     

@@ -6,7 +6,13 @@
         
         <div class="mb-10 text-center">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Event Kampus</h1>
-            <p class="text-gray-500">Ikuti kegiatan seru untuk pengembangan karirmu</p>
+            <p class="text-gray-500 mb-6">Ikuti kegiatan seru untuk pengembangan karirmu</p>
+            
+            @if(Auth::user()->isAlumni())
+            <a href="{{ route('user.events.propose') }}" class="inline-flex items-center gap-2 px-8 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg shadow-indigo-900/20">
+                <i class="fas fa-calendar-plus"></i> Usulkan Event Baru
+            </a>
+            @endif
         </div>
 
         <form action="{{ route('user.events.index') }}" method="GET" class="mb-10 w-full">
@@ -15,11 +21,11 @@
                     <i class="fas fa-search text-gray-400 mr-3 text-lg"></i>
                     <input type="text" name="search" value="{{ request('search') }}" 
                            placeholder="Cari nama event atau lokasi..." 
-                           class="w-full bg-transparent outline-none text-gray-700 placeholder-gray-400">
+                           class="w-full bg-transparent border-none focus:ring-0 outline-none text-gray-700 placeholder-gray-400">
                 </div>
                 <div class="w-full md:w-1/4 flex items-center px-4 py-3 bg-gray-50 rounded-xl border border-transparent focus-within:bg-white focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-100 transition">
                     <i class="fas fa-filter text-gray-400 mr-3 text-lg"></i>
-                    <select name="kategori" class="w-full bg-transparent outline-none text-gray-700 cursor-pointer appearance-none">
+                    <select name="kategori" class="w-full bg-transparent border-none focus:ring-0 outline-none text-gray-700 cursor-pointer appearance-none">
                         <option value="">Semua Kategori</option>
                         <option value="Job Fair" {{ request('kategori') == 'Job Fair' ? 'selected' : '' }}>Job Fair</option>
                         <option value="Webinar" {{ request('kategori') == 'Webinar' ? 'selected' : '' }}>Webinar</option>

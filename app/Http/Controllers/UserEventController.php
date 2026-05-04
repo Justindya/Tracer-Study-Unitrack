@@ -124,4 +124,35 @@ class UserEventController extends Controller
 
         return redirect()->back()->with('error', 'Data pendaftaran tidak ditemukan.');
     }
+
+    public function propose()
+    {
+        return view('user.event_propose');
+    }
+
+    public function storePropose(Request $request)
+    {
+        $validated = $request->validate([
+            'judul' => 'required|string|max:255',
+            'tema' => 'nullable|string|max:255',
+            'tempat' => 'required|string|max:255',
+            'tanggal' => 'required|date',
+            'jam' => 'required',
+            'deskripsi' => 'required|string',
+            'is_paid' => 'required|boolean',
+            'harga' => 'nullable|required_if:is_paid,1|numeric|min:0',
+            'pembicara' => 'nullable|string|max:255',
+            'poster' => 'nullable|image|max:2048',
+        ]);
+
+        $validated['status'] = 'pending';
+        // Simpan poster jika ada
+        if ($request->hasFile('poster')) {
+            $validated['poster'] = $request->file('poster')->store('events/posters', 'public');
+        }
+
+        Event::create($validated);
+
+        return redirect()->route('user.events.index')->with('success', 'Usulan event berhasil dikirim! Menunggu persetujuan admin.');
+    }
 }

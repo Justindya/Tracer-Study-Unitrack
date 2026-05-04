@@ -13,16 +13,13 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(\Illuminate\Http\Request $request)
     {
         return view('admin.event_index', [
             'events' => Event::latest()->paginate(10)
         ]); 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.event_create');
@@ -34,11 +31,16 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'judul' => 'required',
-            'tempat' => 'required',
+            'judul' => 'required|string',
+            'tema' => 'nullable|string',
+            'tempat' => 'required|string',
             'tanggal' => 'required|date',
             'jam' => 'required',
-            'deskripsi' => 'required',
+            'deskripsi' => 'required|string',
+            'is_paid' => 'required|boolean',
+            'harga' => 'required_if:is_paid,1|numeric|min:0',
+            'pembicara' => 'nullable|string',
+            'poster' => 'nullable|image|max:2048',
         ]);
 
         $validated['user_id'] = Auth::id();
@@ -93,11 +95,16 @@ class EventController extends Controller
     public function update(Request $request, Event $event)
     {
         $validated = $request->validate([
-            'judul' => 'required',
-            'tempat' => 'required',
+            'judul' => 'required|string',
+            'tema' => 'nullable|string',
+            'tempat' => 'required|string',
             'tanggal' => 'required|date',
             'jam' => 'required',
-            'deskripsi' => 'required',
+            'deskripsi' => 'required|string',
+            'is_paid' => 'required|boolean',
+            'harga' => 'required_if:is_paid,1|numeric|min:0',
+            'pembicara' => 'nullable|string',
+            'poster' => 'nullable|image|max:2048',
         ]);
         
         $event->update($validated);
@@ -110,6 +117,9 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
+        if ($event->poster && \Illuminate\Support\Facades\Storage::disk('public')->exists($event->poster)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($event->poster);
+        }
         $event->delete();
         return redirect()->route('admin.event.index')->with('success', 'Event berhasil dihapus!');
     }

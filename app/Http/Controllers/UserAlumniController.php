@@ -26,6 +26,12 @@ class UserAlumniController extends Controller
         if ($request->has('jurusan')) {
             $query->where('program_studi', 'like', "%{$request->jurusan}%");
         }
+
+        // Jangan tampilkan profil diri sendiri
+        if (Auth::user()->alumni_id) {
+            $query->where('id', '!=', Auth::user()->alumni_id);
+        }
+
         $alumni = $query->latest()->paginate(9);
         return view('user.alumni_index', compact('alumni'));
     }
@@ -47,7 +53,11 @@ class UserAlumniController extends Controller
     public function edit(string $id)
     {
         $user = Auth::user();
-        $alumni = alumni::where('nim', $user->nim)->firstOrFail();
+        $alumni = $user->alumni;
+
+        if (!$alumni) {
+            abort(404, 'Profil tidak ditemukan.');
+        }
 
         if ($alumni->id != $id) {
             abort(403, 'Unauthorized action.');
@@ -58,7 +68,11 @@ class UserAlumniController extends Controller
     public function update(Request $request, string $id)
     {
         $user = Auth::user();
-        $alumni = alumni::where('nim', $user->nim)->firstOrFail();
+        $alumni = $user->alumni;
+
+        if (!$alumni) {
+            abort(404, 'Profil tidak ditemukan.');
+        }
 
         if ($alumni->id != $id) {
             abort(403, 'Unauthorized action.');
@@ -66,17 +80,23 @@ class UserAlumniController extends Controller
 
         $validated = $request->validate([
             'nama' => 'required',
-            'nim' => 'required|unique:alumnis,nim,' . $id,
-            'email' => 'required|email|unique:alumnis,email,' . $id,
+            'nim' => [
+                'required',
+                'unique:alumnis,nim,' . $id,
+                'unique:users,nim,' . $user->id
+            ],
+            'email' => [
+                'required',
+                'email',
+                'unique:alumnis,email,' . $id,
+                'unique:users,email,' . $user->id
+            ],
             'no_hp' => 'required',
             'angkatan' => 'required',
             'tahun_lulus' => 'required',
             'program_studi' => 'required',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'alamat' => 'required',
-            'bio' => 'nullable|string|max:500', 
-            'linkedin' => 'nullable|url|max:255',
-            'Foto' => 'nullable|image|max:2048',
             'bio' => 'nullable|string|max:500', 
             'linkedin' => 'nullable|url|max:255',
             'skill' => 'nullable|string|max:500', 

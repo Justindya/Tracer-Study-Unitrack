@@ -23,12 +23,17 @@ class LokerController extends Controller
     {
         $validated = $request->validate([
             'judul' => 'required|string',
+            'posisi' => 'required|string',
             'perusahaan' => 'required|string',
+            'jenis_perusahaan' => 'required|string',
+            'email_perusahaan' => 'required|email',
+            'jumlah_dibutuhkan' => 'required|integer',
             'lokasi' => 'required|string',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'deskripsi' => 'required|string',
             'kontak' => 'required|string',
+            'poster' => 'nullable|image|max:2048',
         ]);
 
         $validated['user_id'] = Auth::id();
@@ -76,13 +81,26 @@ class LokerController extends Controller
     {
         $validated = $request->validate([
             'judul' => 'required|string',
+            'posisi' => 'required|string',
             'perusahaan' => 'required|string',
+            'jenis_perusahaan' => 'required|string',
+            'email_perusahaan' => 'required|email',
+            'jumlah_dibutuhkan' => 'required|integer',
             'lokasi' => 'required|string',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'deskripsi' => 'required|string',
             'kontak' => 'required|string',
+            'poster' => 'nullable|image|max:2048',
         ]);
+
+        if ($request->hasFile('poster')) {
+            // Delete old poster
+            if ($loker->poster && \Illuminate\Support\Facades\Storage::disk('public')->exists($loker->poster)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($loker->poster);
+            }
+            $validated['poster'] = $request->file('poster')->store('lokers/posters', 'public');
+        }
 
         $loker->update($validated);
         return redirect()->route('admin.loker.index')
@@ -91,6 +109,9 @@ class LokerController extends Controller
 
     public function destroy(loker $loker)
     {
+        if ($loker->poster && \Illuminate\Support\Facades\Storage::disk('public')->exists($loker->poster)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($loker->poster);
+        }
         $loker->delete();
         return redirect()->route('admin.loker.index')
             ->with('success', 'Lowongan kerja berhasil dihapus!');

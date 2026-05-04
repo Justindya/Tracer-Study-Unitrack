@@ -12,7 +12,6 @@ class UserLokerController extends Controller
     public function index(Request $request)
     {
         $query = Loker::where('status', 'approved')->latest();
-
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->where(function($q) use ($search) {

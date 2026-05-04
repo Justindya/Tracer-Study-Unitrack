@@ -58,7 +58,7 @@
                 </div>
                 <div class="mb-3">
                     <label>Alamat</label>
-                    <textarea name="alamat" class="form-control" required></textarea>
+                    <textarea name="alamat" class="form-control"></textarea>
                 </div>
                 <div class="mb-3">
                     <label>Foto</label>

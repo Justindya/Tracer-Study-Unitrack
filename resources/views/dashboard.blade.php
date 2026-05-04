@@ -42,7 +42,6 @@
                                 {{ $tracerComplete ? 'Data Tracer' : 'Isi Tracer Study' }}
                             </a>
                             @endif
-
                             <a href="{{ route('user.lamaran.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
                                 <i class="fas fa-briefcase w-5 text-center"></i> Lamaran Saya
                             </a>
@@ -143,7 +142,7 @@
                                                 <p class="text-[11px] text-gray-400 mt-0.5">{{ $bioComplete ? 'Data diri sudah diperbarui.' : 'Data diri dan kontak belum lengkap.' }}</p>
                                             </div>
                                             @if(!$bioComplete && Auth::user()->alumni)
-                                                <a href="{{ route('user.alumni.edit', Auth::user()->alumni->id) }}" class="text-blue-600 hover:underline text-[11px] font-semibold">Lengkapi</a>
+                                                <a href="{{ route('user.alumni.edit', Auth::user()->alumni) }}" class="text-blue-600 hover:underline text-[11px] font-semibold">Lengkapi</a>
                                             @endif
                                         </div>
                                     </li>
