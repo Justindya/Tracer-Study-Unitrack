@@ -45,21 +45,26 @@
             <div class="md:col-span-2 bg-white rounded-xl p-6 shadow-sm border border-gray-100 h-fit">
                 <h3 class="text-base font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">Deskripsi Pekerjaan</h3>
                 <div class="text-gray-600 text-sm leading-relaxed space-y-4 text-justify [&>ul]:list-disc [&>ul]:pl-5 [&>ol]:list-decimal [&>ol]:pl-5">
-                    {!! $loker->deskripsi !!}
+                    {!! nl2br(e($loker->deskripsi)) !!}
                 </div>
             </div>
 
             <div class="space-y-6">
+                @if($loker->poster)
+                <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                    <img src="{{ asset('storage/' . $loker->poster) }}" alt="{{ $loker->judul }}" class="w-full h-auto rounded-lg shadow-sm">
+                </div>
+                @endif
                 <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                     <h4 class="font-bold text-gray-900 mb-4 text-sm">Jadwal</h4>
                     <div class="space-y-4">
                         <div class="flex items-center gap-3">
                             <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600"><i class="fas fa-calendar-check text-xs"></i></div>
-                            <div><p class="text-[10px] text-gray-400 uppercase font-bold">Mulai</p><p class="text-gray-900 font-semibold text-sm">{{ $loker->tanggal_mulai->format('d M Y') }}</p></div>
+                            <div><p class="text-[10px] text-gray-400 uppercase font-bold">Mulai</p><p class="text-gray-900 font-semibold text-sm">{{ $loker->tanggal_mulai ? $loker->tanggal_mulai->format('d M Y') : 'Segera' }}</p></div>
                         </div>
                         <div class="flex items-center gap-3">
                             <div class="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center text-red-500"><i class="fas fa-calendar-times text-xs"></i></div>
-                            <div><p class="text-[10px] text-gray-400 uppercase font-bold">Deadline</p><p class="text-gray-900 font-semibold text-sm">{{ $loker->tanggal_selesai->format('d M Y') }}</p></div>
+                            <div><p class="text-[10px] text-gray-400 uppercase font-bold">Deadline</p><p class="text-gray-900 font-semibold text-sm">{{ $loker->tanggal_selesai ? $loker->tanggal_selesai->format('d M Y') : 'Hingga Terpenuhi' }}</p></div>
                         </div>
                     </div>
                 </div>

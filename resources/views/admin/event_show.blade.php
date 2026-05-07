@@ -10,45 +10,82 @@
         </a>
     </div>
 
-    <div class="card mb-4 shadow-sm border-0">
-        <div class="card-header bg-white font-bold text-primary">
-            <i class="fas fa-info-circle me-1"></i> Informasi Event
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4 shadow-sm border-0">
+                <div class="card-header bg-white font-bold text-primary">
+                    <i class="fas fa-info-circle me-1"></i> Informasi Event
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h2 class="h4 fw-bold text-dark">{{ $event->judul }}</h2>
+                        <p class="text-muted">{{ $event->tema }}</p>
+                        <span class="badge bg-info text-dark"><i class="fas fa-map-marker-alt"></i> {{ $event->tempat }}</span>
+                        @if($event->is_paid)
+                            <span class="badge bg-warning text-dark"><i class="fas fa-ticket-alt"></i> Berbayar: Rp {{ number_format($event->harga, 0, ',', '.') }}</span>
+                        @else
+                            <span class="badge bg-success"><i class="fas fa-gift"></i> Gratis</span>
+                        @endif
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong class="text-muted small">TANGGAL</strong>
+                            <p class="fw-bold">
+                                {{ $event->tanggal->format('d F Y') }}
+                                @if($event->tanggal_selesai)
+                                    s/d {{ $event->tanggal_selesai->format('d F Y') }}
+                                @endif
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong class="text-muted small">WAKTU</strong>
+                            <p class="fw-bold">{{ $event->jam ? \Carbon\Carbon::parse($event->jam)->format('H:i') . ' WIB' : 'Waktu menyusul' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong class="text-muted small">PEMBICARA</strong>
+                        <p class="fw-bold">{{ $event->pembicara ?? '-' }}</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <strong class="text-muted small">DESKRIPSI</strong>
+                        <div class="p-3 bg-light rounded mt-1 border">
+                            {!! nl2br(e($event->deskripsi)) !!}
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('admin.event.edit', $event) }}" class="btn btn-warning text-white">
+                            <i class="fas fa-edit"></i> Edit Event
+                        </a>
+                        <form action="{{ route('admin.event.destroy', $event) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="mb-3">
-                <h2 class="h4 fw-bold text-dark">{{ $event->judul }}</h2>
-                <span class="badge bg-info text-dark"><i class="fas fa-map-marker-alt"></i> {{ $event->tempat }}</span>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <strong class="text-muted small">TANGGAL</strong>
-                    <p class="fw-bold">{{ $event->tanggal->format('d F Y') }}</p>
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm border-0">
+                <div class="card-header bg-white font-bold text-primary">
+                    <i class="fas fa-image me-1"></i> Poster Event
                 </div>
-                <div class="col-md-6">
-                    <strong class="text-muted small">WAKTU</strong>
-                    <p class="fw-bold">{{ $event->jam }} WIB</p>
+                <div class="card-body text-center">
+                    @if($event->poster)
+                        <img src="{{ asset('storage/' . $event->poster) }}" alt="Poster" class="img-fluid rounded border shadow-sm">
+                    @else
+                        <div class="py-5 bg-light text-muted rounded border">
+                            <i class="fas fa-image fa-3x mb-2"></i>
+                            <p>Tidak ada poster</p>
+                        </div>
+                    @endif
                 </div>
-            </div>
-
-            <div class="mb-4">
-                <strong class="text-muted small">DESKRIPSI</strong>
-                <div class="p-3 bg-light rounded mt-1 border">
-                    {!! nl2br(e($event->deskripsi)) !!}
-                </div>
-            </div>
-
-            <div class="d-flex gap-2">
-                <a href="{{ route('admin.event.edit', $event) }}" class="btn btn-warning text-white">
-                    <i class="fas fa-edit"></i> Edit Event
-                </a>
-                <form action="{{ route('admin.event.destroy', $event) }}" method="POST" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-                        <i class="fas fa-trash"></i> Hapus
-                    </button>
-                </form>
             </div>
         </div>
     </div>

@@ -50,13 +50,18 @@
                     </div>
 
                     <div class="col-span-1">
-                        <label class="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Tanggal</label>
+                        <label class="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Tanggal Mulai</label>
                         <input type="date" name="tanggal" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white transition duration-200" required>
                     </div>
 
                     <div class="col-span-1">
-                        <label class="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Jam Mulai</label>
-                        <input type="time" name="jam" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white transition duration-200" required>
+                        <label class="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Tanggal Selesai (Opsional)</label>
+                        <input type="date" name="tanggal_selesai" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white transition duration-200">
+                    </div>
+
+                    <div class="col-span-1">
+                        <label class="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Jam Mulai (Opsional)</label>
+                        <input type="time" name="jam" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white transition duration-200">
                     </div>
 
                     <div class="col-span-1" x-data="{ isPaid: false }">

@@ -16,14 +16,23 @@
                 </p>
             </div>
 
+            @if($loker->poster)
+            <div class="mb-3">
+                <strong>Poster:</strong>
+                <div class="mt-2">
+                    <img src="{{ asset('storage/' . $loker->poster) }}" alt="Poster" style="max-width: 300px;" class="img-thumbnail">
+                </div>
+            </div>
+            @endif
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <strong>Tanggal Mulai:</strong>
-                    <p>{{ $loker->tanggal_mulai->format('d/m/Y') }}</p>
+                    <p>{{ $loker->tanggal_mulai ? $loker->tanggal_mulai->format('d/m/Y') : 'Segera' }}</p>
                 </div>
                 <div class="col-md-6">
                     <strong>Tanggal Selesai:</strong>
-                    <p>{{ $loker->tanggal_selesai->format('d/m/Y') }}</p>
+                    <p>{{ $loker->tanggal_selesai ? $loker->tanggal_selesai->format('d/m/Y') : 'Hingga Terpenuhi' }}</p>
                 </div>
             </div>
 
