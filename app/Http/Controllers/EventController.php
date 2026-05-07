@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(\Illuminate\Http\Request $request)
     {
         return view('admin.event_index', [

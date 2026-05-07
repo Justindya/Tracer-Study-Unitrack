@@ -146,7 +146,6 @@
                     </p>
                 </div>
 
-                {{-- Gambar --}}
                 <div class="w-full lg:w-1/2 flex justify-center">
                     <img src="{{ asset('images/canva.png') }}" alt="Ilustrasi Tracer" class="max-w-md w-full h-auto rounded-2xl shadow-halus border-slate-100">
                 </div>
@@ -300,7 +299,7 @@
                 </h2>
                 
                 <a href="{{ route('login') }}" class="px-10 py-3.5 bg-ush-blue text-white rounded-full font-bold hover:bg-slate-800 transition shadow-lg shadow-ush-blue/20 whitespace-nowrap">
-                    Isi Survey
+                    Isi Tracer Study
                 </a>
             </div>
         </div>
@@ -342,7 +341,7 @@
             <div>
                 <h4 class="text-white font-bold mb-6">Tautan Penting</h4>
                 <ul class="space-y-4 text-sm text-blue-100/70 font-medium">
-                    <li><a href="{{ route('login') }}" class="hover:text-ush-gold transition">Isi Survey</a></li>
+                    <li><a href="{{ route('login') }}" class="hover:text-ush-gold transition">Isi Tracer Study</a></li>
                     <li><a href="#" class="hover:text-ush-gold transition">CDC USH</a></li>
                     <li><a href="#" class="hover:text-ush-gold transition">Universitas Sugeng Hartono</a></li>
                 </ul>

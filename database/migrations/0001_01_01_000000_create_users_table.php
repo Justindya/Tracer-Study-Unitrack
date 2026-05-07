@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name'); 
-            $table->string('nim')->unique()->nullable(); // NIM boleh kosong buat admin murni
+            $table->string('nim')->unique()->nullable();
             $table->string('email')->unique();
             $table->string('no_hp')->nullable();        
             $table->string('angkatan')->nullable();     
@@ -29,7 +29,6 @@ return new class extends Migration
 
             $table->foreignId('alumni_id')->nullable(); 
         
-            // PERUBAHAN: Role dipatenkan menggunakan ENUM sesuai kesepakatan bisnis
             $table->enum('role', ['admin', 'alumni', 'mahasiswa'])->default('mahasiswa');
         });
 

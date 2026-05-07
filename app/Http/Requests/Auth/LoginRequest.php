@@ -42,7 +42,6 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        // Logika attempt sudah benar menggunakan 'nim' sesuai input form
         if (! Auth::attempt(['nim' => $this->input('nim'), 'password' => $this->input('password')], $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 

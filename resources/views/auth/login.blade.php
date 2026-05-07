@@ -81,7 +81,6 @@
                     <span class="ml-2 text-xs text-slate-500 font-semibold group-hover:text-ush-blue transition">Ingat Saya</span>
                 </label>
                 
-                {{-- Lupa Password diarahkan ke WhatsApp Admin --}}
                 <a href="https://wa.me/628982188488?text=Halo%20Admin%20CDC%20USH,%20saya%20lupa%20kata%20sandi%20portal%20Tracer%20Study%20dan%20membutuhkan%20bantuan%20reset." target="_blank" class="text-xs text-ush-blue hover:text-ush-gold font-bold hover:underline transition">
                     Lupa Kata Sandi?
                 </a>
@@ -93,7 +92,7 @@
         </form>
 
         <div class="text-center mt-10 pt-6 border-t border-slate-100">
-            <p class="text-[11px] text-slate-400 font-medium">Akun otomatis terdaftar untuk alumni.<br>Hubungi <a href="https://wa.me/6281234567890" target="_blank" class="font-bold text-slate-600 hover:text-ush-blue transition">Admin CDC</a> jika data Anda tidak ditemukan.</p>
+            <p class="text-[11px] text-slate-400 font-medium">Akun otomatis terdaftar untuk alumni dam mahasiswa aktif.<br>Hubungi <a href="https://wa.me/6281234567890" target="_blank" class="font-bold text-slate-600 hover:text-ush-blue transition">Admin CDC</a> jika data Anda tidak ditemukan.</p>
         </div>
     </div>
 

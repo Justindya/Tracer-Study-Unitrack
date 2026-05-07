@@ -30,7 +30,6 @@ class User extends Authenticatable
         'password',
         'role',
         'alumni_id'
-        // 'status' dihapus karena status ada di tabel lokers & events, bukan di users
     ];
 
     /**
@@ -65,7 +64,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the events associated with the user (Partisipasi/Pendaftaran Event - Bawaan V3).
+     * Get the events associated with the user
      */
     public function events()
     {
@@ -73,7 +72,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the events created/diajukan oleh user (Fitur baru untuk Alumni).
+     * Get the events created
      */
     public function createdEvents()
     {
@@ -81,7 +80,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the lokers created/diajukan oleh user (Fitur baru untuk Alumni).
+     * Get the lokers created
      */
     public function createdLokers()
     {

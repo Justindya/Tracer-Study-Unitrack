@@ -12,7 +12,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col lg:flex-row gap-6 items-start">
                 
-                {{-- SIDEBAR KIRI (Ditambahkan self-start agar tidak gantung) --}}
+                {{-- SIDEBAR KIRI --}}
                 <div class="w-full lg:w-1/4 self-start">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center sticky top-24">
                         <div class="relative w-20 h-20 mx-auto mb-4">
@@ -35,7 +35,6 @@
                                 <i class="fas fa-home w-5 text-center"></i> Overview
                             </a>
                             
-                            {{-- PROTEKSI 1: Hanya tampilkan menu Tracer untuk Alumni --}}
                             @if(Auth::user()->role === 'alumni')
                             <a href="{{ $tracerComplete ? route('user.tracer.index') : route('user.tracer.create') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition text-gray-600 hover:bg-gray-50">
                                 <i class="fas {{ $tracerComplete ? 'fa-check-circle text-green-500' : 'fa-clipboard-list' }} w-5 text-center"></i> 
@@ -147,7 +146,6 @@
                                         </div>
                                     </li>
 
-                                    {{-- PROTEKSI 2: Hanya tampilkan step Tracer Study jika user adalah alumni --}}
                                     @if(Auth::user()->role === 'alumni')
                                     {{-- STEP 3: Tracer Study --}}
                                     <li class="relative pl-5">

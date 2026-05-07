@@ -28,22 +28,20 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        // ==========================================
         // 2. MAHASISWA AKTIF 
-        // ==========================================
         $mahasiswaData = [
             ['nim' => '062301004', 'name' => 'AMRI KHOIRUDIN IRFANDI WITJAKSONO', 'hp' => '0895800129924', 'jk' => 'laki-laki'],
             ['nim' => '062301006', 'name' => 'GABRIEL', 'hp' => '087851940753', 'jk' => 'laki-laki'],
             ['nim' => '062301012', 'name' => 'TROY EGBERT EVERS', 'hp' => '081328972073', 'jk' => 'laki-laki'],
             ['nim' => '062301013', 'name' => 'INDY NINDA', 'hp' => '088983628978', 'jk' => 'perempuan'],
-            ['nim' => '062301031', 'name' => 'CINDY NINDA RIYADI KHASANAH', 'hp' => '08982188488', 'jk' => 'perempuan'], // Disamakan dengan data asli pengguna
+            ['nim' => '062301031', 'name' => 'CINDY NINDA ', 'hp' => '08982188488', 'jk' => 'perempuan'], 
         ];
 
         foreach ($mahasiswaData as $mhs) {
             $profilMhs = Alumni::create([
                 'nama' => $mhs['name'],
                 'nim' => $mhs['nim'],
-                'email' => strtolower(str_replace(' ', '', explode(' ', $mhs['name'])[0])) . $mhs['nim'] . '@mahasiswa.ush.ac.id', // Generate email unik
+                'email' => strtolower(str_replace(' ', '', explode(' ', $mhs['name'])[0])) . $mhs['nim'] . '@mahasiswa.ush.ac.id', 
                 'angkatan' => '2023',
                 'tahun_lulus' => null, 
                 'program_studi' => 'Ilmu Komputer',
@@ -67,9 +65,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // ==========================================
         // 3. ALUMNI RESMI 
-        // ==========================================
         $alumniData = [
             ['nim' => '062101001', 'name' => 'OSVALDO FERNANDY WIJAYA', 'email' => 'osvaldoofw@gmail.com', 'hp' => '+6282134949311', 'jk' => 'laki-laki'],
             ['nim' => '062101002', 'name' => 'AHMAD DAVID WAHYUDI', 'email' => 'davidcreativeat93@gmail.com', 'hp' => '+6281390807565', 'jk' => 'laki-laki'],
@@ -100,16 +96,14 @@ class DatabaseSeeder extends Seeder
                 'tahun_lulus' => '2025',
                 'program_studi' => 'Ilmu Komputer',
                 'jenis_kelamin' => $profilAlumni->jenis_kelamin,
-                'password' => Hash::make('ush' . $alm['nim']), // ush + NIM
+                'password' => Hash::make('ush' . $alm['nim']), 
                 'role' => 'alumni', 
                 'alumni_id' => $profilAlumni->id,
                 'email_verified_at' => now(),
             ]);
         }
 
-        // ==========================================
         // 4. LOKER (Approved)
-        // ==========================================
         loker::create([
             'user_id' => $admin->id,
             'judul' => 'Computer User Support',
@@ -122,9 +116,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'approved'
         ]);
 
-        // ==========================================
         // 5. EVENT (Approved)
-        // ==========================================
         Event::create([
             'user_id' => $admin->id,
             'judul' => 'Joint Semiconductor Training: Danantara x Arm',

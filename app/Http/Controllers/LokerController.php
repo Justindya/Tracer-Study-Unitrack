@@ -104,7 +104,6 @@ public function index(\Illuminate\Http\Request $request)
         ]);
 
         if ($request->hasFile('poster')) {
-            // Delete old poster
             if ($loker->poster && \Illuminate\Support\Facades\Storage::disk('public')->exists($loker->poster)) {
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($loker->poster);
             }
