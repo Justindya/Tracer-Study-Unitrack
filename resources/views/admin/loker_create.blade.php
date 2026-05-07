@@ -9,7 +9,17 @@
                 Form Tambah Lowongan
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.loker.store') }}" method="POST">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('admin.loker.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-3">
@@ -44,7 +54,7 @@
                             <div class="mb-3">
                                 <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
                                 <input type="date" class="form-control @error('tanggal_mulai') is-invalid @enderror"
-                                    id="tanggal_mulai" name="tanggal_mulai" value="{{ old('tanggal_mulai') }}" required>
+                                    id="tanggal_mulai" name="tanggal_mulai" value="{{ old('tanggal_mulai') }}">
                                 @error('tanggal_mulai')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -54,8 +64,7 @@
                             <div class="mb-3">
                                 <label for="tanggal_selesai" class="form-label">Tanggal Selesai</label>
                                 <input type="date" class="form-control @error('tanggal_selesai') is-invalid @enderror"
-                                    id="tanggal_selesai" name="tanggal_selesai" value="{{ old('tanggal_selesai') }}"
-                                    required>
+                                    id="tanggal_selesai" name="tanggal_selesai" value="{{ old('tanggal_selesai') }}">
                                 @error('tanggal_selesai')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -77,6 +86,14 @@
                         <input type="text" class="form-control @error('kontak') is-invalid @enderror" id="kontak"
                             name="kontak" value="{{ old('kontak') }}" required>
                         @error('kontak')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="poster" class="form-label">Poster Lowongan (Gambar)</label>
+                        <input type="file" class="form-control @error('poster') is-invalid @enderror" id="poster" name="poster" accept="image/*">
+                        @error('poster')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

@@ -21,11 +21,13 @@ class event extends Model
         'harga',
         'pembicara',
         'poster',
-        'status'
+        'status',
+        'tanggal_selesai'
     ];
 
     protected $casts = [
-        'tanggal' => 'date'
+        'tanggal' => 'date',
+        'tanggal_selesai' => 'date'
     ];
 
     public function userEvents()

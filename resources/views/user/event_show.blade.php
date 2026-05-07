@@ -28,6 +28,12 @@
             <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex flex-col items-center justify-center text-white font-bold flex-shrink-0 shadow-md">
                 <span class="text-2xl leading-none font-black">{{ $event->tanggal->format('d') }}</span>
                 <span class="text-[10px] uppercase tracking-widest mt-0.5">{{ $event->tanggal->format('M') }}</span>
+                @if($event->tanggal_selesai)
+                    <div class="mt-1 pt-1 border-t border-white/20 w-8 text-center">
+                        <span class="text-[8px] opacity-75">S/D</span>
+                        <div class="text-[10px] leading-tight">{{ $event->tanggal_selesai->format('d M') }}</div>
+                    </div>
+                @endif
             </div>
             
             {{-- INFO UTAMA --}}
@@ -38,7 +44,7 @@
                         <i class="fas fa-map-marker-alt text-red-400"></i> {{ $event->tempat }}
                     </span>
                     <span class="flex items-center gap-1.5 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-100">
-                        <i class="fas fa-clock text-amber-400"></i> {{ $event->jam }} WIB
+                        <i class="fas fa-clock text-amber-400"></i> {{ $event->jam ? \Carbon\Carbon::parse($event->jam)->format('H:i') . ' WIB' : 'Waktu menyusul' }}
                     </span>
                     <span class="flex items-center gap-1.5 bg-green-50 text-green-700 px-2.5 py-1 rounded-md border border-green-100 text-[11px] font-bold uppercase tracking-wider">
                         <i class="fas fa-door-open"></i> Terbuka
@@ -91,6 +97,15 @@
             </div>
 
             <div class="space-y-6">
+                @if($event->poster)
+                    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                        <h4 class="font-bold text-gray-900 mb-4 text-sm flex items-center gap-2">
+                            <i class="fas fa-image text-blue-500"></i> Poster Event
+                        </h4>
+                        <img src="{{ asset('storage/' . $event->poster) }}" alt="{{ $event->judul }}" class="w-full h-auto rounded-lg shadow-sm">
+                    </div>
+                @endif
+
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                     <h4 class="font-bold text-gray-900 mb-4 text-sm flex items-center gap-2">
                         <i class="fas fa-users text-indigo-500"></i> Partisipasi
@@ -120,6 +135,7 @@
                         </div>
                     </div>
                 </div>
+
 
             </div>
         </div>
